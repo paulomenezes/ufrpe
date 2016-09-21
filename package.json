@@ -1,0 +1,25 @@
+{
+  "name": "ufrpe",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulomenezes/ufrpe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paulomenezes/ufrpe/issues"
+  },
+  "homepage": "https://github.com/paulomenezes/ufrpe#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "request": "^2.75.0",
+    "requests": "^0.1.7"
+  }
+}
