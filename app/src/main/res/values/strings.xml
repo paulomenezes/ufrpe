@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">UFRPE</string>
+    <string name="start">Iniciar</string>
+    <string name="next">Próximo</string>
+    <string name="socialTitle">Fazer Login</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="google_plus">Google+</string>
+    <string name="login_tip">Selecione a rede social de sua preferência para realizar o login. \n\nLembre-se que você deverá usar a mesma conta para realizar o login em outro dispositivo.</string>
+    <string name="skip">Pular</string>
+
+    <string name="confirmTitle">Confirmar Dados</string>
+    <string name="confirm">Confirmar</string>
+    <string name="first_name">Nome</string>
+    <string name="last_name">Sobrenome</string>
+
+    <string-array name="units">
+        <item>Selecione sua Unidade</item>
+        <item>Dois Irmãos (SEDE)</item>
+        <item>Garanhuns (UAG)</item>
+        <item>Serra Talhada (UAST)</item>
+        <item>Cabo de Santo Agostinho (UACSA)</item>
+        <item>Educação a Distância</item>
+        <item>CODAI</item>
+    </string-array>
+</resources>
