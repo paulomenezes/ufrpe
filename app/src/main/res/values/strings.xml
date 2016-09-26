@@ -13,6 +13,7 @@
     <string name="confirm">Confirmar</string>
     <string name="first_name">Nome</string>
     <string name="last_name">Sobrenome</string>
+    <string name="login_failed">Seu login falhou :/</string>
 
     <string-array name="units">
         <item>Selecione sua Unidade</item>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "664976837494",
+    "firebase_url": "https://scrooble-d7508.firebaseio.com",
+    "project_id": "scrooble-d7508",
+    "storage_bucket": "scrooble-d7508.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664976837494:android:0facb9616785e02e",
+        "android_client_info": {
+          "package_name": "br.deinfo.ufrpe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "664976837494-a2lh0urc6732b6nr9b2eclfho1930j5s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.deinfo.ufrpe",
+            "certificate_hash": "F8BD9AB5B074F807B2802B8333FB195B408A8B47"
+          }
+        },
+        {
+          "client_id": "664976837494-nfrnj87upa8d8biof7aus16oeo1vgehi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABpFCAoTKXKvFtomaZOpCwdrPMKsd4gZY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "664976837494-nfrnj87upa8d8biof7aus16oeo1vgehi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

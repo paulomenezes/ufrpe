@@ -1,131 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="br.deinfo.ufrpe.start.ConfirmActivity">
-
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="user"
+            type="br.deinfo.ufrpe.models.User" />
+    </data>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context="br.deinfo.ufrpe.start.ConfirmActivity">
         <RelativeLayout
-            android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@color/colorPrimaryDark">
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom">
             <RelativeLayout
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="@drawable/shape_circle_white">
-                <ImageView
-                    android:contentDescription="@string/socialTitle"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:src="@drawable/ic_contact_mail_dark_18dp"/>
-            </RelativeLayout>
-        </RelativeLayout>
-        <ScrollView
-            android:id="@+id/scrollview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
+                android:id="@+id/header"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp" />
+                android:layout_height="150dp"
+                android:background="@color/colorPrimaryDark">
+                <RelativeLayout
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/shape_circle_white">
+                    <ImageView
+                        android:contentDescription="@string/socialTitle"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:src="@drawable/ic_contact_mail_dark_18dp"/>
+                </RelativeLayout>
+            </RelativeLayout>
+            <ScrollView
+                android:id="@+id/scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:background="@color/colorPrimary">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/confirmTitle"
-                        android:textColor="@color/colorTextIcons"
-                        android:padding="@dimen/activity_horizontal_margin"
-                        style="@style/Base.TextAppearance.AppCompat.Title"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:background="?android:colorBackground"
-                    android:padding="@dimen/activity_horizontal_margin">
-                    <com.pkmmte.view.CircularImageView
-                        android:id="@+id/picture"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        app:shadow="true"/>
+                    android:orientation="vertical">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin">
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <EditText
-                                android:id="@+id/edtFirstName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:singleLine="true"
-                                android:inputType="textPersonName"
-                                android:hint="@string/first_name" />
-                        </android.support.design.widget.TextInputLayout>
-                        <android.support.design.widget.TextInputLayout
+                        android:elevation="2dp"
+                        android:background="@color/colorPrimary">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/confirmTitle"
+                            android:textColor="@color/colorTextIcons"
+                            android:padding="@dimen/activity_horizontal_margin"
+                            style="@style/Base.TextAppearance.AppCompat.Title"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="?android:colorBackground"
+                        android:padding="@dimen/activity_horizontal_margin">
+                        <com.pkmmte.view.CircularImageView
+                            android:id="@+id/ivPicture"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:shadow="true"
+                            app:imageUrl="@{ user.picture }"
+                            app:error="@{ @drawable/ic_person_dark_48dp }"/>
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/activity_vertical_margin"
-                            android:layout_marginBottom="@dimen/activity_vertical_margin">
+                            android:orientation="vertical"
+                            android:layout_marginStart="@dimen/activity_horizontal_margin">
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
 
-                            <EditText
-                                android:id="@+id/edtLastName"
+                                <EditText
+                                    android:id="@+id/etFirstName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:singleLine="true"
+                                    android:inputType="textPersonName"
+                                    android:hint="@string/first_name"
+                                    android:text="@{ user.firstName }"/>
+                            </android.support.design.widget.TextInputLayout>
+                            <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:singleLine="true"
-                                android:inputType="textPersonName"
-                                android:hint="@string/last_name" />
-                        </android.support.design.widget.TextInputLayout>
-                        <Spinner
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:entries="@array/units"
-                            android:layout_marginTop="@dimen/activity_vertical_margin"
-                            style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
+                                android:layout_marginTop="@dimen/activity_vertical_margin">
+
+                                <EditText
+                                    android:id="@+id/etLastName"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:singleLine="true"
+                                    android:inputType="textPersonName"
+                                    android:hint="@string/last_name"
+                                    android:text="@{ user.lastName }"/>
+                            </android.support.design.widget.TextInputLayout>
+                            <Spinner
+                                android:id="@+id/spUnit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:entries="@array/units"
+                                android:layout_marginTop="@dimen/activity_vertical_margin"
+                                style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
-    </RelativeLayout>
+            </ScrollView>
+        </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/bottom"
-        android:elevation="4dp"
-        android:background="#FFF"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/next"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/confirm"
-            android:drawablePadding="2dp"
-            android:textColor="@color/colorPrimary"
-            android:drawableEnd="@drawable/ic_keyboard_arrow_right_primary_24dp"
-            style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+        <RelativeLayout
+            android:id="@+id/bottom"
+            android:elevation="4dp"
+            android:background="#FFF"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/next"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm"
+                android:drawablePadding="2dp"
+                android:textColor="@color/colorPrimary"
+                android:drawableEnd="@drawable/ic_keyboard_arrow_right_primary_24dp"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"/>
+        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+</layout>
