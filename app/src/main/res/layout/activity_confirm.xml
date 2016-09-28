@@ -6,6 +6,9 @@
         <variable
             name="user"
             type="br.deinfo.ufrpe.models.User" />
+        <variable
+            name="handlers"
+            type="br.deinfo.ufrpe.start.ConfirmActivity" />
     </data>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -87,7 +90,6 @@
                                     android:id="@+id/etFirstName"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:singleLine="true"
                                     android:inputType="textPersonName"
                                     android:hint="@string/first_name"
                                     android:text="@{ user.firstName }"/>
@@ -101,17 +103,17 @@
                                     android:id="@+id/etLastName"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:singleLine="true"
                                     android:inputType="textPersonName"
                                     android:hint="@string/last_name"
                                     android:text="@{ user.lastName }"/>
                             </android.support.design.widget.TextInputLayout>
-                            <Spinner
+                            <android.support.v7.widget.AppCompatSpinner
                                 android:id="@+id/spUnit"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:entries="@array/units"
                                 android:layout_marginTop="@dimen/activity_vertical_margin"
+                                app:selection="@{ user.unit }"
                                 style="@style/Base.Widget.AppCompat.Spinner.Underlined"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -136,6 +138,7 @@
                 android:drawablePadding="2dp"
                 android:textColor="@color/colorPrimary"
                 android:drawableEnd="@drawable/ic_keyboard_arrow_right_primary_24dp"
+                android:onClick="@{ handlers::onClickConfirm }"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"/>
         </RelativeLayout>
     </RelativeLayout>

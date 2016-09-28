@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -35,9 +37,12 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        findViewById(R.id.btnGooglePlus).setOnClickListener((v) -> {
-            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-            startActivityForResult(signInIntent, RC_SIGN_IN);
+        findViewById(R.id.btnGooglePlus).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
         });
     }
 
@@ -58,7 +63,7 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
 
                 login(user);
             } else {
-                Snackbar.make(null, R.string.login_failed, Snackbar.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.login_failed, Toast.LENGTH_SHORT).show();
             }
         }
     }

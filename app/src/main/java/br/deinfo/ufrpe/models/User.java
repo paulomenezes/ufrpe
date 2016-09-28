@@ -13,7 +13,7 @@ public class User implements Parcelable {
     private String firstName;
     private String lastName;
     private String picture;
-    private String unit;
+    private int unit;
 
     public User(GoogleSignInAccount googleSignInAccount) {
         setFirstName(googleSignInAccount.getGivenName());
@@ -27,7 +27,7 @@ public class User implements Parcelable {
         firstName = in.readString();
         lastName = in.readString();
         picture = in.readString();
-        unit = in.readString();
+        unit = in.readInt();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class User implements Parcelable {
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(picture);
-        dest.writeString(unit);
+        dest.writeInt(unit);
     }
 
     @SuppressWarnings("unused")
@@ -89,11 +89,11 @@ public class User implements Parcelable {
         this.picture = picture;
     }
 
-    public String getUnit() {
+    public int getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(int unit) {
         this.unit = unit;
     }
 }
