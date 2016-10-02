@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.FirebaseUser;
+
+import br.deinfo.ufrpe.R;
 
 /**
  * Created by paulo on 25/09/2016.
@@ -20,6 +23,25 @@ public class User implements Parcelable {
         setLastName(googleSignInAccount.getFamilyName());
         setPicture(googleSignInAccount.getPhotoUrl() != null ? googleSignInAccount.getPhotoUrl().toString() : null);
         setEmail(googleSignInAccount.getEmail());
+    }
+
+    public User(FirebaseUser firebaseUser) {
+        if (firebaseUser.getDisplayName() != null) {
+            String[] name = firebaseUser.getDisplayName().split(" ");
+
+            if (name.length == 1) {
+                setFirstName(firebaseUser.getDisplayName());
+            } else {
+                setFirstName(name[0]);
+                setLastName(name[name.length - 1]);
+            }
+
+            setPicture(firebaseUser.getPhotoUrl() != null ? firebaseUser.getPhotoUrl().toString() : null);
+        } else {
+            setPicture(String.valueOf(R.drawable.ic_person_dark_48dp));
+        }
+
+        setEmail(firebaseUser.getEmail());
     }
 
     protected User(Parcel in) {

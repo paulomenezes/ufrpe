@@ -1,4 +1,8 @@
 <resources>
+    <string name="facebook_app_id">555177991349994</string>
+    <string name="twitter_key">UiaemesA70uoXOWaBeGcOHRII</string>
+    <string name="twitter_secret">jvdO6sRmwKvgavW2UJxSYngHqgZGu9Jszt9PmdjXVzq3uHjfoS</string>
+
     <string name="app_name">UFRPE</string>
     <string name="start">Iniciar</string>
     <string name="next">Próximo</string>
@@ -14,9 +18,11 @@
     <string name="first_name">Nome</string>
     <string name="last_name">Sobrenome</string>
     <string name="login_failed">Seu login falhou :/</string>
+    <string name="error_select_unit">Selecione uma unidade acadêmica</string>
+    <string name="error_select_name">O campo nome é obrigatório</string>
 
     <string-array name="units">
-        <item>Selecione sua Unidade</item>
+        <item>Selecione sua unidade</item>
         <item>Dois Irmãos (SEDE)</item>
         <item>Garanhuns (UAG)</item>
         <item>Serra Talhada (UAST)</item>
