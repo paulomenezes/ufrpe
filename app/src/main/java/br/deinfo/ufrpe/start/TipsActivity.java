@@ -5,9 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import br.deinfo.ufrpe.MainActivity;
 import br.deinfo.ufrpe.R;
+import com.crashlytics.android.Crashlytics;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+
+import br.deinfo.ufrpe.models.User;
+import br.deinfo.ufrpe.utils.Data;
 import io.fabric.sdk.android.Fabric;
 
 public class TipsActivity extends AppCompatActivity {
@@ -20,8 +25,18 @@ public class TipsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        User user = Data.getUser(this);
+
+        if (user != null) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra(Data.KEY_USER, user);
+            startActivity(intent);
+        }
+
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig));
+        Fabric.with(this, new Twitter(authConfig), new Crashlytics());
         setContentView(R.layout.activity_tips);
 
         findViewById(R.id.btnStart).setOnClickListener(new View.OnClickListener() {

@@ -2,7 +2,7 @@
     <string name="facebook_app_id">555177991349994</string>
     <string name="twitter_key">UiaemesA70uoXOWaBeGcOHRII</string>
     <string name="twitter_secret">jvdO6sRmwKvgavW2UJxSYngHqgZGu9Jszt9PmdjXVzq3uHjfoS</string>
-    <string name="fabric_key">b079d87d8d8ab269c4625266e5cf85e3ddec5cab</string>
+    <string name="fabric_key">uRHTNPaKrPhE3Xs8GF29dgeH9</string>
 
     <string name="app_name">UFRPE</string>
     <string name="start">Iniciar</string>
@@ -36,4 +36,11 @@
         <item>Educação a Distância</item>
         <item>CODAI</item>
     </string-array>
+
+    <string name="title_activity_main">Minhas Cadeiras</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Configurações</string>
 </resources>

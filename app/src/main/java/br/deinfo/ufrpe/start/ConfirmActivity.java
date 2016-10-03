@@ -57,6 +57,8 @@ public class ConfirmActivity extends AppCompatActivity {
         } else if (mSpUnit.getSelectedItemId() == 0) {
             Snackbar.make(findViewById(R.id.relativeLayout), R.string.error_select_unit, Snackbar.LENGTH_LONG).show();
         } else {
+            mUser.setUnit(mSpUnit.getSelectedItemPosition());
+
             Intent intent = new Intent(this, LoginActivity.class);
             intent.putExtra("user", mUser);
             startActivity(intent);

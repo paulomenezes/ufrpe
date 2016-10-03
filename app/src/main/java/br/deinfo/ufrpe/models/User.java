@@ -47,7 +47,7 @@ public class User extends BaseObservable implements Parcelable {
                 setLastName(name[name.length - 1]);
             }
 
-            setId(firebaseUser.getProviderId());
+            setId(firebaseUser.getUid());
             setPicture(firebaseUser.getPhotoUrl() != null ? firebaseUser.getPhotoUrl().toString() : null);
         } else {
             setId(UUID.randomUUID().toString());
