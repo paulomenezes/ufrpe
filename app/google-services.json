@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "664976837494-pkf2he0khvv4bvuqd7bq9i25o78prvl6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.deinfo.ufrpe",
+            "certificate_hash": "DEE14E324F1F09B8EF842BB28A44F0BD1AA8E462"
+          }
+        },
+        {
           "client_id": "664976837494-a2lh0urc6732b6nr9b2eclfho1930j5s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

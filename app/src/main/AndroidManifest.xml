@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="br.deinfo.ufrpe">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,13 +11,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name"
-            tools:replace="android:theme" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="@string/fabric_key" />
 
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
         <activity
             android:name=".start.TipsActivity"
             android:theme="@style/AppThemeNoActionbar">
@@ -35,9 +41,11 @@
             android:name=".start.ConfirmActivity"
             android:parentActivityName=".start.SocialActivity"
             android:theme="@style/AppThemeNoActionbar" />
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="b079d87d8d8ab269c4625266e5cf85e3ddec5cab" />
+
+        <activity
+            android:name=".start.LoginActivity"
+            android:parentActivityName=".start.ConfirmActivity"
+            android:theme="@style/AppThemeNoActionbar" />
     </application>
 
 </manifest>

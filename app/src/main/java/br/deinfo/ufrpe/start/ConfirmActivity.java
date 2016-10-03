@@ -1,5 +1,6 @@
 package br.deinfo.ufrpe.start;
 
+import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.tool.util.StringUtils;
@@ -51,12 +52,14 @@ public class ConfirmActivity extends AppCompatActivity {
     }
 
     public void onClickConfirm(View view) {
-        if (mUser.getFirstName() == null || mUser.getFirstName().length() > 0) {
+        if (mUser.getFirstName() == null || mUser.getFirstName().length() == 0) {
             Snackbar.make(findViewById(R.id.relativeLayout), R.string.error_select_name, Snackbar.LENGTH_LONG).show();
         } else if (mSpUnit.getSelectedItemId() == 0) {
             Snackbar.make(findViewById(R.id.relativeLayout), R.string.error_select_unit, Snackbar.LENGTH_LONG).show();
         } else {
-
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.putExtra("user", mUser);
+            startActivity(intent);
         }
     }
 }

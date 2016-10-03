@@ -2,6 +2,7 @@
     <string name="facebook_app_id">555177991349994</string>
     <string name="twitter_key">UiaemesA70uoXOWaBeGcOHRII</string>
     <string name="twitter_secret">jvdO6sRmwKvgavW2UJxSYngHqgZGu9Jszt9PmdjXVzq3uHjfoS</string>
+    <string name="fabric_key">b079d87d8d8ab269c4625266e5cf85e3ddec5cab</string>
 
     <string name="app_name">UFRPE</string>
     <string name="start">Iniciar</string>
@@ -20,6 +21,11 @@
     <string name="login_failed">Seu login falhou :/</string>
     <string name="error_select_unit">Selecione uma unidade acadêmica</string>
     <string name="error_select_name">O campo nome é obrigatório</string>
+    <string name="user_name">Usuário</string>
+    <string name="password">Senha</string>
+    <string name="loginTitle">Ambiente Virtual de Aprendizagem</string>
+    <string name="ava_tip">Você deve realizar o login com sua conta do AVA. \n\nUse seu usuário que está informado no seu Sig@ e sua Senha de Serviços Integrados</string>
+    <string name="access">Acessar</string>
 
     <string-array name="units">
         <item>Selecione sua unidade</item>
