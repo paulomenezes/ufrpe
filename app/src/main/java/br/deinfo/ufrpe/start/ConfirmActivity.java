@@ -14,6 +14,8 @@ import android.widget.Spinner;
 
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.databinding.ActivityConfirmBinding;
 import br.deinfo.ufrpe.models.User;
@@ -30,7 +32,7 @@ public class ConfirmActivity extends AppCompatActivity {
         ActivityConfirmBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_confirm);
 
         if (getIntent().hasExtra("user")) {
-            mUser = getIntent().getParcelableExtra("user");
+            mUser = Parcels.unwrap(getIntent().getParcelableExtra("user"));
 
             mSpUnit = (Spinner) findViewById(R.id.spUnit);
 
@@ -60,7 +62,7 @@ public class ConfirmActivity extends AppCompatActivity {
             mUser.setUnit(mSpUnit.getSelectedItemPosition());
 
             Intent intent = new Intent(this, LoginActivity.class);
-            intent.putExtra("user", mUser);
+            intent.putExtra("user", Parcels.wrap(mUser));
             startActivity(intent);
         }
     }

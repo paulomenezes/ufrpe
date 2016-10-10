@@ -3,6 +3,8 @@ package br.deinfo.ufrpe;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,9 +14,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import br.deinfo.ufrpe.adapters.CoursesAdapter;
+import br.deinfo.ufrpe.models.Classes;
+import br.deinfo.ufrpe.models.User;
+import br.deinfo.ufrpe.utils.Data;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private User mUser;
+    private List<Classes> mClasses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +60,34 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        mUser = Data.getUser(this);
+
+        try {
+            loadSchedule();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+        CoursesAdapter coursesAdapter = new CoursesAdapter(mUser.getCourses(), mClasses);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(coursesAdapter);
+
+        Calendar calendar = Calendar.getInstance();
+
+        TextView day = (TextView) findViewById(R.id.day);
+        day.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+
+        TextView date = (TextView) findViewById(R.id.date);
+
+        String dayOfWeek = getResources().getStringArray(R.array.day_of_week)[calendar.get(Calendar.DAY_OF_WEEK) - 1];
+        String month = getResources().getStringArray(R.array.month)[calendar.get(Calendar.MONTH)].toLowerCase();
+
+        date.setText(String.format("%s, %s", dayOfWeek, month));
     }
 
     @Override
@@ -97,5 +145,24 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void loadSchedule() throws Exception {
+        InputStream is = this.getResources().openRawResource(R.raw.schedules);
+        int size = is.available();
+        byte[] buffer = new byte[size];
+        is.read(buffer);
+        is.close();
+
+        String bufferString = new String(buffer);
+
+        JSONArray jsonArray = new JSONArray(bufferString);
+
+        mClasses = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            Classes classes = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), Classes.class);
+            mClasses.add(classes);
+        }
     }
 }

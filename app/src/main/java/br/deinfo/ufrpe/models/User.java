@@ -2,22 +2,21 @@ package br.deinfo.ufrpe.models;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.os.Parcel;
-import android.os.Parcelable;
 
-import com.android.databinding.library.baseAdapters.BR;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.Exclude;
 
+import java.util.List;
 import java.util.UUID;
 
+import br.deinfo.ufrpe.BR;
 import br.deinfo.ufrpe.R;
 
 /**
  * Created by paulo on 25/09/2016.
  */
-public class User extends BaseObservable implements Parcelable {
+@org.parceler.Parcel
+public class User extends BaseObservable {
     private String id;
     private String email;
     private String firstName;
@@ -26,15 +25,12 @@ public class User extends BaseObservable implements Parcelable {
     private String password;
     private String picture;
     private String token;
+    private int avaID;
     private int unit;
 
-    public User(GoogleSignInAccount googleSignInAccount) {
-        setId(googleSignInAccount.getId());
-        setFirstName(googleSignInAccount.getGivenName());
-        setLastName(googleSignInAccount.getFamilyName());
-        setPicture(googleSignInAccount.getPhotoUrl() != null ? googleSignInAccount.getPhotoUrl().toString() : null);
-        setEmail(googleSignInAccount.getEmail());
-    }
+    private List<Course> courses;
+
+    public User() {}
 
     public User(FirebaseUser firebaseUser) {
         if (firebaseUser.getDisplayName() != null) {
@@ -56,49 +52,6 @@ public class User extends BaseObservable implements Parcelable {
 
         setEmail(firebaseUser.getEmail());
     }
-
-    protected User(Parcel in) {
-        id = in.readString();
-        email = in.readString();
-        firstName = in.readString();
-        lastName = in.readString();
-        userName = in.readString();
-        password = in.readString();
-        picture = in.readString();
-        token = in.readString();
-        unit = in.readInt();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(email);
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeString(userName);
-        dest.writeString(password);
-        dest.writeString(picture);
-        dest.writeString(token);
-        dest.writeInt(unit);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     public String getId() {
         return id;
@@ -185,5 +138,21 @@ public class User extends BaseObservable implements Parcelable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public int getAvaID() {
+        return avaID;
+    }
+
+    public void setAvaID(int avaID) {
+        this.avaID = avaID;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 }

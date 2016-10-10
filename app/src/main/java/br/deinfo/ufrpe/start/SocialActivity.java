@@ -39,6 +39,8 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
+import org.parceler.Parcels;
+
 import java.util.Collections;
 
 import br.deinfo.ufrpe.R;
@@ -212,7 +214,7 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
 
     private void login(User user) {
         Intent intent = new Intent(this, ConfirmActivity.class);
-        intent.putExtra("user", user);
+        intent.putExtra("user", Parcels.wrap(user));
 
         startActivity(intent);
     }

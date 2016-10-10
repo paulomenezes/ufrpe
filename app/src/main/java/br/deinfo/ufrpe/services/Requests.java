@@ -16,6 +16,9 @@ public class Requests {
 
     public static String LOGIN_SERVICE = "moodle_mobile_app";
 
+    public static String FUNCTION_GET_USER_COURSES = "core_enrol_get_users_courses";
+    public static String FUNCTION_GET_SITE_INFO = "core_webservice_get_site_info";
+
     private Requests() {
         retrofit = new Retrofit.Builder()
                 .baseUrl(AVA_URL)
@@ -34,4 +37,6 @@ public class Requests {
     public AVAService getAVAService() {
         return retrofit.create(AVAService.class);
     }
+
+
 }

@@ -11,12 +11,15 @@ import android.widget.RelativeLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.json.JSONObject;
+import org.parceler.Parcels;
+
+import java.util.List;
 
 import br.deinfo.ufrpe.MainActivity;
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.databinding.ActivityLoginBinding;
-import br.deinfo.ufrpe.databinding.ActivitySocialBinding;
+import br.deinfo.ufrpe.models.Course;
+import br.deinfo.ufrpe.models.SiteInfo;
 import br.deinfo.ufrpe.models.Token;
 import br.deinfo.ufrpe.models.User;
 import br.deinfo.ufrpe.services.AVAService;
@@ -42,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
         if (getIntent().hasExtra("user")) {
-            mUser = getIntent().getParcelableExtra("user");
+            mUser = Parcels.unwrap(getIntent().getParcelableExtra("user"));
 
             binding.setUser(mUser);
             binding.setHandlers(this);
@@ -71,14 +74,48 @@ public class LoginActivity extends AppCompatActivity {
                 if (token != null && token.getToken() != null) {
                     mUser.setToken(token.getToken());
 
-                    mDatabase.child("users").child(mUser.getId()).setValue(mUser);
+                    Call<SiteInfo> siteInfoCall = mAVAServices.getSiteInfo(Requests.FUNCTION_GET_SITE_INFO, mUser.getToken());
+                    siteInfoCall.enqueue(new Callback<SiteInfo>() {
+                        @Override
+                        public void onResponse(Call<SiteInfo> call, Response<SiteInfo> response) {
+                            SiteInfo siteInfo = response.body();
 
-                    Data.saveUser(LoginActivity.this, mUser);
+                            mUser.setAvaID(siteInfo.getUserid());
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    intent.putExtra(Data.KEY_USER, mUser);
-                    startActivity(intent);
+                            Call<List<Course>> coursesCall = mAVAServices.getUsersCourses(
+                                    siteInfo.getUserid(),
+                                    Requests.FUNCTION_GET_USER_COURSES,
+                                    mUser.getToken());
+
+                            coursesCall.enqueue(new Callback<List<Course>>() {
+                                @Override
+                                public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
+                                    List<Course> courses = response.body();
+
+                                    mUser.setCourses(courses);
+
+                                    mDatabase.child("users").child(mUser.getId()).setValue(mUser);
+
+                                    Data.saveUser(LoginActivity.this, mUser);
+
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.putExtra(Data.KEY_USER, Parcels.wrap(mUser));
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<Course>> call, Throwable t) {
+                                    Snackbar.make(mRelativeLayout, R.string.login_courses_error, Snackbar.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Call<SiteInfo> call, Throwable t) {
+                            Snackbar.make(mRelativeLayout, R.string.login_siteinfo_error, Snackbar.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     Snackbar.make(mRelativeLayout, R.string.login_failed, Snackbar.LENGTH_SHORT).show();
                 }

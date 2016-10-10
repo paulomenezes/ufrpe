@@ -11,6 +11,8 @@ import com.crashlytics.android.Crashlytics;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.parceler.Parcels;
+
 import br.deinfo.ufrpe.models.User;
 import br.deinfo.ufrpe.utils.Data;
 import io.fabric.sdk.android.Fabric;
@@ -31,7 +33,7 @@ public class TipsActivity extends AppCompatActivity {
         if (user != null) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra(Data.KEY_USER, user);
+            intent.putExtra(Data.KEY_USER, Parcels.wrap(user));
             startActivity(intent);
         }
 
