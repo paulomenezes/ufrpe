@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.parceler.Parcels;
 
+import java.util.Collections;
 import java.util.List;
 
 import br.deinfo.ufrpe.MainActivity;
@@ -92,9 +93,11 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                                     List<Course> courses = response.body();
 
+                                    Collections.reverse(courses);
+
                                     mUser.setCourses(courses);
 
-                                    mDatabase.child("users").child(mUser.getId()).setValue(mUser);
+                                    // mDatabase.child("users").child(mUser.getId()).setValue(mUser);
 
                                     Data.saveUser(LoginActivity.this, mUser);
 

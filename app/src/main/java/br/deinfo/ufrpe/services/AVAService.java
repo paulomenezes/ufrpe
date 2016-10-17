@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import br.deinfo.ufrpe.models.Course;
+import br.deinfo.ufrpe.models.CourseAssignment;
 import br.deinfo.ufrpe.models.SiteInfo;
 import br.deinfo.ufrpe.models.Token;
 import retrofit2.Call;
@@ -34,6 +35,13 @@ public interface AVAService {
     @POST("/webservice/rest/server.php?moodlewsrestformat=json")
     Call<List<Course>> getUsersCourses(
             @Field("userid") int userid,
+            @Field("wsfunction") String wsfunction,
+            @Field("wstoken") String wstoken);
+
+    @FormUrlEncoded
+    @POST("/webservice/rest/server.php?moodlewsrestformat=json")
+    Call<CourseAssignment> getAssigments(
+            @Field("courseids[]") int[] courseids,
             @Field("wsfunction") String wsfunction,
             @Field("wstoken") String wstoken);
 }

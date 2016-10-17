@@ -27,8 +27,17 @@ import java.util.List;
 
 import br.deinfo.ufrpe.adapters.CoursesAdapter;
 import br.deinfo.ufrpe.models.Classes;
+import br.deinfo.ufrpe.models.Course;
+import br.deinfo.ufrpe.models.CourseAssignment;
+import br.deinfo.ufrpe.models.Courses;
 import br.deinfo.ufrpe.models.User;
+import br.deinfo.ufrpe.services.AVAService;
+import br.deinfo.ufrpe.services.Requests;
 import br.deinfo.ufrpe.utils.Data;
+import br.deinfo.ufrpe.utils.Functions;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -71,7 +80,7 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
-        CoursesAdapter coursesAdapter = new CoursesAdapter(mUser.getCourses(), mClasses);
+        final CoursesAdapter coursesAdapter = new CoursesAdapter(mUser.getCourses(), mClasses);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -88,6 +97,41 @@ public class MainActivity extends AppCompatActivity
         String month = getResources().getStringArray(R.array.month)[calendar.get(Calendar.MONTH)].toLowerCase();
 
         date.setText(String.format("%s, %s", dayOfWeek, month));
+
+        AVAService mAVAServices = Requests.getInstance().getAVAService();
+        List<Integer> courseids = new ArrayList<>();
+        for (Course course: mUser.getCourses()) {
+            if (Functions.thisSemester(course.getShortname())) {
+                courseids.add(course.getId());
+            }
+        }
+
+        int[] courseIDS = new int[courseids.size()];
+        for (int i = 0; i < courseids.size(); i++) {
+            courseIDS[i] = courseids.get(i);
+        }
+
+        Call<CourseAssignment> object = mAVAServices.getAssigments(courseIDS, Requests.FUNCTION_GET_ASSIGNMENTS, mUser.getToken());
+        object.enqueue(new Callback<CourseAssignment>() {
+            @Override
+            public void onResponse(Call<CourseAssignment> call, Response<CourseAssignment> response) {
+                CourseAssignment assignment = response.body();
+
+                for (Courses assigments: assignment.getCourses()) {
+                    for (int j = 0; j < mUser.getCourses().size(); j++) {
+                        if (assigments.getId().equals(String.valueOf(mUser.getCourses().get(j).getId()))) {
+                            coursesAdapter.setAssignments(Integer.parseInt(assigments.getId()), assigments.getAssignments());
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CourseAssignment> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override

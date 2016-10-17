@@ -27,6 +27,8 @@ public class Course extends BaseObservable {
     private boolean enablecompletion;
 
     private Classes classes;
+    private Assignments[] assignments;
+    private String nextAssignment;
 
     public Course() {}
 
@@ -135,5 +137,23 @@ public class Course extends BaseObservable {
 
     public void setClasses(Classes classes) {
         this.classes = classes;
+    }
+
+    @Exclude
+    public Assignments[] getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(Assignments[] assignments) {
+        this.assignments = assignments;
+    }
+
+    @Bindable
+    public String getNextAssignment() {
+        return nextAssignment;
+    }
+
+    public void setNextAssignment(String nextAssignment) {
+        this.nextAssignment = nextAssignment;
     }
 }
