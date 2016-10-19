@@ -7,15 +7,15 @@ import org.parceler.Parcel;
  */
 @Parcel
 public class Schedule {
-    private String dayOfWeek;
+    private int dayOfWeek;
     private String timeStart;
     private String timeEnd;
 
-    public String getDayOfWeek() {
+    public int getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(String dayOfWeek) {
+    public void setDayOfWeek(int dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 

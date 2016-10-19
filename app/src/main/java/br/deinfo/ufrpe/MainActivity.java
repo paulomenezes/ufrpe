@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import br.deinfo.ufrpe.adapters.CoursesAdapter;
@@ -33,6 +34,7 @@ import br.deinfo.ufrpe.models.Courses;
 import br.deinfo.ufrpe.models.User;
 import br.deinfo.ufrpe.services.AVAService;
 import br.deinfo.ufrpe.services.Requests;
+import br.deinfo.ufrpe.utils.CompareCourse;
 import br.deinfo.ufrpe.utils.Data;
 import br.deinfo.ufrpe.utils.Functions;
 import retrofit2.Call;
@@ -80,13 +82,34 @@ public class MainActivity extends AppCompatActivity
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
-        final CoursesAdapter coursesAdapter = new CoursesAdapter(mUser.getCourses(), mClasses);
+        Calendar calendar = Calendar.getInstance();
+        final List<Course> todayCourses = new ArrayList<>();
+
+        for (int i = 0; i < mUser.getCourses().size(); i++) {
+            if (Functions.thisSemester(mUser.getCourses().get(i).getShortname())) {
+                for (int j = 0; j < mClasses.size(); j++) {
+                    if (mClasses.get(j).getCod().equals(mUser.getCourses().get(i).getShortname().split("-")[1])) {
+                        mUser.getCourses().get(i).setClasses(mClasses.get(j));
+                        break;
+                    }
+                }
+
+                for (int j = 0; j < mUser.getCourses().get(i).getClasses().getSchedules().size(); j++) {
+                    if (mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() == calendar.get(Calendar.DAY_OF_WEEK) - 1) {
+                        todayCourses.add(mUser.getCourses().get(i));
+                        break;
+                    }
+                }
+            }
+        }
+
+        Collections.sort(todayCourses, new CompareCourse());
+
+        final CoursesAdapter coursesAdapter = new CoursesAdapter(todayCourses);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(coursesAdapter);
-
-        Calendar calendar = Calendar.getInstance();
 
         TextView day = (TextView) findViewById(R.id.day);
         day.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
@@ -99,16 +122,12 @@ public class MainActivity extends AppCompatActivity
         date.setText(String.format("%s, %s", dayOfWeek, month));
 
         AVAService mAVAServices = Requests.getInstance().getAVAService();
-        List<Integer> courseids = new ArrayList<>();
-        for (Course course: mUser.getCourses()) {
-            if (Functions.thisSemester(course.getShortname())) {
-                courseids.add(course.getId());
-            }
-        }
 
-        int[] courseIDS = new int[courseids.size()];
-        for (int i = 0; i < courseids.size(); i++) {
-            courseIDS[i] = courseids.get(i);
+        int[] courseIDS = new int[todayCourses.size()];
+        for (int i = 0; i < todayCourses.size(); i++) {
+            if (Functions.thisSemester(todayCourses.get(i).getShortname())) {
+                courseIDS[i] = todayCourses.get(i).getId();
+            }
         }
 
         Call<CourseAssignment> object = mAVAServices.getAssigments(courseIDS, Requests.FUNCTION_GET_ASSIGNMENTS, mUser.getToken());
@@ -118,13 +137,15 @@ public class MainActivity extends AppCompatActivity
                 CourseAssignment assignment = response.body();
 
                 for (Courses assigments: assignment.getCourses()) {
-                    for (int j = 0; j < mUser.getCourses().size(); j++) {
-                        if (assigments.getId().equals(String.valueOf(mUser.getCourses().get(j).getId()))) {
-                            coursesAdapter.setAssignments(Integer.parseInt(assigments.getId()), assigments.getAssignments());
+                    for (int j = 0; j < todayCourses.size(); j++) {
+                        if (assigments.getId().equals(String.valueOf(todayCourses.get(j).getId()))) {
+                            todayCourses.get(j).setAssignments(assigments.getAssignments());
                             break;
                         }
                     }
                 }
+
+                coursesAdapter.notifyDataSetChanged();
             }
 
             @Override
