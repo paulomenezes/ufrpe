@@ -1,6 +1,7 @@
 package br.deinfo.ufrpe.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
@@ -13,11 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import br.deinfo.ufrpe.BR;
+import br.deinfo.ufrpe.CourseActivity;
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.models.Assignments;
 import br.deinfo.ufrpe.models.Classes;
@@ -31,6 +35,7 @@ import br.deinfo.ufrpe.utils.Functions;
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseViewHolder> {
 
     private List<Course> mCourses;
+    private Context mContext;
 
     public CoursesAdapter(List<Course> courses) {
         mCourses = courses;
@@ -39,6 +44,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
     @Override
     public CourseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_course, parent, false);
+
+        if (mContext == null)
+            mContext = parent.getContext();
 
         return new CourseViewHolder(view);
     }
@@ -72,9 +80,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
     }
 
     public void onItemClick(Course course) {
-        if (course != null) {
-
-        }
+        Intent intent = new Intent(mContext, CourseActivity.class);
+        intent.putExtra("course", Parcels.wrap(course));
+        mContext.startActivity(intent);
     }
 
     class CourseViewHolder extends RecyclerView.ViewHolder {

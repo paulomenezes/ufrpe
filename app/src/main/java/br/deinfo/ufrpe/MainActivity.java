@@ -37,6 +37,7 @@ import br.deinfo.ufrpe.services.Requests;
 import br.deinfo.ufrpe.utils.CompareCourse;
 import br.deinfo.ufrpe.utils.Data;
 import br.deinfo.ufrpe.utils.Functions;
+import br.deinfo.ufrpe.utils.Session;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mUser = Data.getUser(this);
+
+        Session.setUser(mUser);
 
         try {
             loadSchedule();
