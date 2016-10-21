@@ -3,6 +3,7 @@ package br.deinfo.ufrpe;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import br.deinfo.ufrpe.adapters.CoursesAdapter;
+import br.deinfo.ufrpe.fragments.TodayFragment;
 import br.deinfo.ufrpe.models.Classes;
 import br.deinfo.ufrpe.models.Course;
 import br.deinfo.ufrpe.models.CourseAssignment;
@@ -46,7 +48,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private User mUser;
-    private List<Classes> mClasses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,107 +56,19 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_camera));
+
         mUser = Data.getUser(this);
 
         Session.setUser(mUser);
-
-        try {
-            loadSchedule();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
-        Calendar calendar = Calendar.getInstance();
-        final List<Course> todayCourses = new ArrayList<>();
-
-        for (int i = 0; i < mUser.getCourses().size(); i++) {
-            if (Functions.thisSemester(mUser.getCourses().get(i).getShortname())) {
-                for (int j = 0; j < mClasses.size(); j++) {
-                    if (mClasses.get(j).getCod().equals(mUser.getCourses().get(i).getShortname().split("-")[1])) {
-                        mUser.getCourses().get(i).setClasses(mClasses.get(j));
-                        break;
-                    }
-                }
-
-                for (int j = 0; j < mUser.getCourses().get(i).getClasses().getSchedules().size(); j++) {
-                    if (mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() == calendar.get(Calendar.DAY_OF_WEEK) - 1) {
-                        todayCourses.add(mUser.getCourses().get(i));
-                        break;
-                    }
-                }
-            }
-        }
-
-        Collections.sort(todayCourses, new CompareCourse());
-
-        final CoursesAdapter coursesAdapter = new CoursesAdapter(todayCourses);
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(coursesAdapter);
-
-        TextView day = (TextView) findViewById(R.id.day);
-        day.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
-
-        TextView date = (TextView) findViewById(R.id.date);
-
-        String dayOfWeek = getResources().getStringArray(R.array.day_of_week)[calendar.get(Calendar.DAY_OF_WEEK) - 1];
-        String month = getResources().getStringArray(R.array.month)[calendar.get(Calendar.MONTH)].toLowerCase();
-
-        date.setText(String.format("%s, %s", dayOfWeek, month));
-
-        AVAService mAVAServices = Requests.getInstance().getAVAService();
-
-        int[] courseIDS = new int[todayCourses.size()];
-        for (int i = 0; i < todayCourses.size(); i++) {
-            if (Functions.thisSemester(todayCourses.get(i).getShortname())) {
-                courseIDS[i] = todayCourses.get(i).getId();
-            }
-        }
-
-        Call<CourseAssignment> object = mAVAServices.getAssigments(courseIDS, Requests.FUNCTION_GET_ASSIGNMENTS, mUser.getToken());
-        object.enqueue(new Callback<CourseAssignment>() {
-            @Override
-            public void onResponse(Call<CourseAssignment> call, Response<CourseAssignment> response) {
-                CourseAssignment assignment = response.body();
-
-                for (Courses assigments: assignment.getCourses()) {
-                    for (int j = 0; j < todayCourses.size(); j++) {
-                        if (assigments.getId().equals(String.valueOf(todayCourses.get(j).getId()))) {
-                            todayCourses.get(j).setAssignments(assigments.getAssignments());
-                            break;
-                        }
-                    }
-                }
-
-                coursesAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<CourseAssignment> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
     }
 
     @Override
@@ -170,19 +83,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -193,11 +101,18 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        if (item.isChecked())
+            item.setChecked(false);
+        else
+            item.setChecked(true);
+
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+            TodayFragment fragment = new TodayFragment();
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.content, fragment);
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -213,24 +128,5 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void loadSchedule() throws Exception {
-        InputStream is = this.getResources().openRawResource(R.raw.schedules);
-        int size = is.available();
-        byte[] buffer = new byte[size];
-        is.read(buffer);
-        is.close();
-
-        String bufferString = new String(buffer);
-
-        JSONArray jsonArray = new JSONArray(bufferString);
-
-        mClasses = new ArrayList<>();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            Classes classes = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), Classes.class);
-            mClasses.add(classes);
-        }
     }
 }
