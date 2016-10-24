@@ -34,6 +34,8 @@ public class CourseActivity extends AppCompatActivity {
         mAvaService = Requests.getInstance().getAVAService();
         mCourse = Parcels.unwrap(getIntent().getParcelableExtra("course"));
 
+        setTitle(mCourse.getFullname());
+
         mCourseContent = new ArrayList<>();
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -48,7 +50,7 @@ public class CourseActivity extends AppCompatActivity {
             public void onResponse(Call<List<CourseContent>> call, Response<List<CourseContent>> response) {
                 mCourseContent = response.body();
 
-                CourseContentAdapter courseContentAdapter = new CourseContentAdapter(mCourseContent);
+                CourseContentAdapter courseContentAdapter = new CourseContentAdapter(CourseActivity.this, mCourseContent);
                 recyclerView.setAdapter(courseContentAdapter);
             }
 

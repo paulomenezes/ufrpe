@@ -49,7 +49,12 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".CourseActivity"></activity>
+        <activity
+            android:name=".CourseActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ModuleActivity"
+            android:parentActivityName=".CourseActivity"/>
     </application>
 
 </manifest>

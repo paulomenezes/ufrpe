@@ -45,6 +45,10 @@
     <string name="action_settings">Configurações</string>
     <string name="login_siteinfo_error">Houve um erro ao recuperar seu usuário</string>
     <string name="login_courses_error">Houve um error ao recuperar suas disciplinas</string>
+    <string name="add_url">Acessar Link</string>
+    <string name="submissionStatus">Detalhes da submissão</string>
+    <string name="dueDate">Data de entrega</string>
+    <string name="timeRemaining">Tempo restante</string>
 
     <string-array name="day_of_week">
         <item>Domingo</item>

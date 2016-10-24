@@ -13,20 +13,37 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
-            <TextView
-                android:text="@{ content.name }"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/contentTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/Base.TextAppearance.AppCompat.Title"/>
-            <ImageView
-                android:layout_alignParentEnd="true"
-                android:layout_width="wrap_content"
+                android:padding="16dp"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground">
+                <TextView
+                    android:text="@{ content.name }"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Base.TextAppearance.AppCompat.Title"/>
+                <ImageView
+                    android:id="@+id/arrow"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_keyboard_arrow_down_grey_24dp"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/contentModules"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_keyboard_arrow_up_black_24dp"/>
-        </RelativeLayout>
+                android:orientation="vertical"
+                android:visibility="gone">
+
+            </LinearLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 </layout>
