@@ -58,6 +58,7 @@
     <string name="minute">minutos</string>
     <string name="second">segundos</string>
     <string name="timend">"A data de encerramento pra essa tarefa já foi atingida"</string>
+    <string name="replies">Respostas</string>
 
     <string-array name="day_of_week">
         <item>Domingo</item>
