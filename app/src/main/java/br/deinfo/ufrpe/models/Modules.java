@@ -24,7 +24,7 @@ public class Modules
 
     private String modname;
 
-    private String instance;
+    private int instance;
 
     private String modplural;
 
@@ -110,12 +110,12 @@ public class Modules
         this.modname = modname;
     }
 
-    public String getInstance ()
+    public int getInstance ()
     {
         return instance;
     }
 
-    public void setInstance (String instance)
+    public void setInstance (int instance)
     {
         this.instance = instance;
     }

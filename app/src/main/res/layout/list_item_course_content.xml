@@ -28,6 +28,8 @@
                     android:text="@{ content.name }"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toStartOf="@+id/arrow"
+                    android:layout_marginEnd="8dp"
                     style="@style/Base.TextAppearance.AppCompat.Title"/>
                 <ImageView
                     android:id="@+id/arrow"

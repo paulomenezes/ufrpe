@@ -49,6 +49,15 @@
     <string name="submissionStatus">Detalhes da submissão</string>
     <string name="dueDate">Data de entrega</string>
     <string name="timeRemaining">Tempo restante</string>
+    <string name="addAssign">Adicionar tarefa</string>
+    <string name="goToSite">Ir para o site</string>
+    <string name="contentUnavailable">Esse conteúdo não está disponível no aplicativo.</string>
+
+    <string name="day">dias</string>
+    <string name="hour">horas</string>
+    <string name="minute">minutos</string>
+    <string name="second">segundos</string>
+    <string name="timend">"A data de encerramento pra essa tarefa já foi atingida"</string>
 
     <string-array name="day_of_week">
         <item>Domingo</item>

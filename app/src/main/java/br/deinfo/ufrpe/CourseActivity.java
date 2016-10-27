@@ -50,7 +50,7 @@ public class CourseActivity extends AppCompatActivity {
             public void onResponse(Call<List<CourseContent>> call, Response<List<CourseContent>> response) {
                 mCourseContent = response.body();
 
-                CourseContentAdapter courseContentAdapter = new CourseContentAdapter(CourseActivity.this, mCourseContent);
+                CourseContentAdapter courseContentAdapter = new CourseContentAdapter(CourseActivity.this, mCourseContent, mCourse);
                 recyclerView.setAdapter(courseContentAdapter);
             }
 

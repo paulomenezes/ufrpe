@@ -20,6 +20,7 @@ public class Requests {
     public static String FUNCTION_GET_SITE_INFO = "core_webservice_get_site_info";
     public static String FUNCTION_GET_ASSIGNMENTS = "mod_assign_get_assignments";
     public static String FUNCTION_GET_COURSE_CONTENTS = "core_course_get_contents";
+    public static String FUNCTION_GET_DISCUSSIONS = "mod_forum_get_forum_discussions_paginated";
 
     private Requests() {
         retrofit = new Retrofit.Builder()
