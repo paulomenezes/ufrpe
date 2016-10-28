@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +62,9 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHol
                 .into(holder.mImageView);
 
         holder.mMessage.setText(Html.fromHtml(discussion.getMessage()));
+        holder.mMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
-        Date date = new Date(discussion.getCreated() * 1000);
+        Date date = new Date((long)discussion.getCreated() * 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         holder.mDate.setText(sdf.format(date));
 

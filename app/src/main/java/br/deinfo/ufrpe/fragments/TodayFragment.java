@@ -41,7 +41,7 @@ import retrofit2.Response;
  */
 
 public class TodayFragment extends Fragment {
-    private List<Classes> mClasses;
+    public static List<Classes> sClasses;
     private User mUser;
 
     @Nullable
@@ -51,10 +51,12 @@ public class TodayFragment extends Fragment {
 
         mUser = Session.getUser();
 
-        try {
-            loadSchedule();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (sClasses == null || sClasses.size() == 0) {
+            try {
+                loadSchedule();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -64,9 +66,9 @@ public class TodayFragment extends Fragment {
 
         for (int i = 0; i < mUser.getCourses().size(); i++) {
             if (Functions.thisSemester(mUser.getCourses().get(i).getShortname())) {
-                for (int j = 0; j < mClasses.size(); j++) {
-                    if (mClasses.get(j).getCod().equals(mUser.getCourses().get(i).getShortname().split("-")[1])) {
-                        mUser.getCourses().get(i).setClasses(mClasses.get(j));
+                for (int j = 0; j < sClasses.size(); j++) {
+                    if (sClasses.get(j).getCod().equals(mUser.getCourses().get(i).getShortname().split("-")[1])) {
+                        mUser.getCourses().get(i).setClasses(sClasses.get(j));
                         break;
                     }
                 }
@@ -145,11 +147,11 @@ public class TodayFragment extends Fragment {
 
         JSONArray jsonArray = new JSONArray(bufferString);
 
-        mClasses = new ArrayList<>();
+        sClasses = new ArrayList<>();
 
         for (int i = 0; i < jsonArray.length(); i++) {
             Classes classes = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), Classes.class);
-            mClasses.add(classes);
+            sClasses.add(classes);
         }
     }
 }

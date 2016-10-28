@@ -5,21 +5,22 @@
             name="module"
             type="br.deinfo.ufrpe.models.Modules" />
     </data>
-    <ScrollView
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/forum"
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/forum"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:layout_height="match_parent">
 
-            </android.support.v7.widget.RecyclerView>
+        </android.support.v7.widget.RecyclerView>
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <LinearLayout
                 android:id="@+id/activity_module"
                 android:layout_width="match_parent"
@@ -110,6 +111,6 @@
                     android:layout_height="wrap_content"
                     style="@style/Base.Widget.AppCompat.Button.Colored"/>
             </LinearLayout>
-        </RelativeLayout>
-    </ScrollView>
+        </ScrollView>
+    </RelativeLayout>
 </layout>

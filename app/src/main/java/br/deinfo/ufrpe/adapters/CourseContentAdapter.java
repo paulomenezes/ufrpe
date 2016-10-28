@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,9 @@ public class CourseContentAdapter extends RecyclerView.Adapter<CourseContentAdap
     public void onBindViewHolder(final CourseContentViewHolder holder, int position) {
         final CourseContent courseContent = mCourseContent.get(position);
 
+        if (mCourseContent.size() == 1)
+            openModule(holder, courseContent);
+
         holder.mContentTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,62 +83,67 @@ public class CourseContentAdapter extends RecyclerView.Adapter<CourseContentAdap
                     holder.mContentModules.setVisibility(View.GONE);
                     holder.mArrow.setImageDrawable(mContext.getDrawable(R.drawable.ic_keyboard_arrow_down_grey_24dp));
                 } else {
-                    if (courseContent.getSummary() != null && courseContent.getSummary().length() > 0) {
-                        TextView textView = new TextView(mContext);
-
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.WRAP_CONTENT);
-                        params.setMargins(Functions.dpToPx(mContext, 16),
-                                Functions.dpToPx(mContext, 8),
-                                Functions.dpToPx(mContext, 16),
-                                Functions.dpToPx(mContext, 8));
-
-                        textView.setLayoutParams(params);
-                        textView.setText(Html.fromHtml(courseContent.getSummary()));
-
-                        holder.mContentModules.addView(textView);
-                    }
-
-                    for (int i = 0; i < courseContent.getModules().length; i++) {
-                        View module = holder.mView.inflate(mContext, R.layout.list_item_course_content_module, null);
-
-                        LinearLayout icon = (LinearLayout) module.findViewById(R.id.icon);
-                        SVGImageView imageView = new SVGImageView(mContext);
-                        imageView.setImageAsset(String.format("%s.svg", courseContent.getModules()[i].getModname()));
-                        icon.addView(imageView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-                        TextView name = (TextView) module.findViewById(R.id.name);
-                        name.setText(courseContent.getModules()[i].getName());
-
-                        final int k = i;
-
-                        module.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (courseContent.getModules()[k].getModname().equals("resource")) {
-                                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                            Uri.parse(courseContent.getModules()[k].getContents()[0].getFileurl() + "&token=" + Session.getUser().getToken()));
-                                    mContext.startActivity(browserIntent);
-                                } else {
-                                    Intent intent = new Intent(mContext, ModuleActivity.class);
-                                    intent.putExtra("course", Parcels.wrap(mCourse));
-                                    intent.putExtra("module", Parcels.wrap(courseContent.getModules()[k]));
-                                    mContext.startActivity(intent);
-                                }
-                            }
-                        });
-                        holder.mContentModules.addView(module);
-                    }
-
-                    holder.mContentModules.setTag(true);
-                    holder.mContentModules.setVisibility(View.VISIBLE);
-                    holder.mArrow.setImageDrawable(mContext.getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp));
+                    openModule(holder, courseContent);
                 }
             }
         });
 
         holder.getBinding().setVariable(BR.content, courseContent);
         holder.getBinding().executePendingBindings();
+    }
+
+    private void openModule(final CourseContentViewHolder holder, final CourseContent courseContent) {
+        if (courseContent.getSummary() != null && courseContent.getSummary().length() > 0) {
+            TextView textView = new TextView(mContext);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(Functions.dpToPx(mContext, 16),
+                    Functions.dpToPx(mContext, 8),
+                    Functions.dpToPx(mContext, 16),
+                    Functions.dpToPx(mContext, 8));
+
+            textView.setLayoutParams(params);
+            textView.setText(Html.fromHtml(courseContent.getSummary()));
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+            holder.mContentModules.addView(textView);
+        }
+
+        for (int i = 0; i < courseContent.getModules().length; i++) {
+            View module = holder.mView.inflate(mContext, R.layout.list_item_course_content_module, null);
+
+            LinearLayout icon = (LinearLayout) module.findViewById(R.id.icon);
+            SVGImageView imageView = new SVGImageView(mContext);
+            imageView.setImageAsset(String.format("%s.svg", courseContent.getModules()[i].getModname()));
+            icon.addView(imageView, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+            TextView name = (TextView) module.findViewById(R.id.name);
+            name.setText(courseContent.getModules()[i].getName());
+
+            final int k = i;
+
+            module.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (courseContent.getModules()[k].getModname().equals("resource")) {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(courseContent.getModules()[k].getContents()[0].getFileurl() + "&token=" + Session.getUser().getToken()));
+                        mContext.startActivity(browserIntent);
+                    } else {
+                        Intent intent = new Intent(mContext, ModuleActivity.class);
+                        intent.putExtra("course", Parcels.wrap(mCourse));
+                        intent.putExtra("module", Parcels.wrap(courseContent.getModules()[k]));
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+            holder.mContentModules.addView(module);
+        }
+
+        holder.mContentModules.setTag(true);
+        holder.mContentModules.setVisibility(View.VISIBLE);
+        holder.mArrow.setImageDrawable(mContext.getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp));
     }
 
     @Override

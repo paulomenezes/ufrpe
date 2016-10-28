@@ -9,9 +9,11 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.parceler.Parcels;
@@ -58,12 +60,14 @@ public class ModuleActivity extends AppCompatActivity {
 
         LinearLayout activityModule = (LinearLayout) findViewById(R.id.activity_module);
         final RecyclerView forum = (RecyclerView) findViewById(R.id.forum);
+        final ScrollView scroll = (ScrollView) findViewById(R.id.scroll);
 
         switch (module.getModname()) {
             case "url":
-                if (module.getDescription() != null)
+                if (module.getDescription() != null) {
                     mDescription.setText(Html.fromHtml(module.getDescription()));
-                else
+                    mDescription.setMovementMethod(LinkMovementMethod.getInstance());
+                } else
                     mDescription.setVisibility(View.GONE);
 
                 if (module.getContents().length > 0) {
@@ -85,6 +89,7 @@ public class ModuleActivity extends AppCompatActivity {
                     for (int i = 0; i < course.getAssignments().length; i++) {
                         if (course.getAssignments()[i].getCmid().equals(module.getId())) {
                             mDescription.setText(Html.fromHtml(course.getAssignments()[i].getIntro()));
+                            mDescription.setMovementMethod(LinkMovementMethod.getInstance());
 
                             Date date = new Date(Long.parseLong(course.getAssignments()[i].getDuedate()) * 1000);
 
@@ -123,6 +128,7 @@ public class ModuleActivity extends AppCompatActivity {
                 break;
             case "label":
                 mDescription.setText(Html.fromHtml(module.getDescription()));
+                mDescription.setMovementMethod(LinkMovementMethod.getInstance());
                 mAddURL.setVisibility(View.GONE);
                 break;
             case "quiz":
@@ -131,8 +137,9 @@ public class ModuleActivity extends AppCompatActivity {
                 setButtonClick(mAddURL, module.getUrl());
                 break;
             case "forum":
-                activityModule.setVisibility(View.GONE);
                 forum.setVisibility(View.VISIBLE);
+                scroll.setVisibility(View.GONE);
+
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                 forum.setLayoutManager(linearLayoutManager);
 
