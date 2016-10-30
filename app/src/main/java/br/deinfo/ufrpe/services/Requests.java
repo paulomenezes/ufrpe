@@ -21,6 +21,8 @@ public class Requests {
     public static String FUNCTION_GET_ASSIGNMENTS = "mod_assign_get_assignments";
     public static String FUNCTION_GET_COURSE_CONTENTS = "core_course_get_contents";
     public static String FUNCTION_GET_DISCUSSIONS = "mod_forum_get_forum_discussions_paginated";
+    public static String FUNCTION_GET_DISCUSSIONS_POSTS = "mod_forum_get_forum_discussion_posts";
+    public static String FUNCTION_GET_CALENDAR_EVENTS = "core_calendar_get_calendar_events";
 
     private Requests() {
         retrofit = new Retrofit.Builder()

@@ -15,12 +15,13 @@ import android.view.MenuItem;
 import br.deinfo.ufrpe.fragments.CalendarFragment;
 import br.deinfo.ufrpe.fragments.TodayFragment;
 import br.deinfo.ufrpe.fragments.WeekFragment;
+import br.deinfo.ufrpe.listeners.MainTitle;
 import br.deinfo.ufrpe.models.User;
 import br.deinfo.ufrpe.utils.Data;
 import br.deinfo.ufrpe.utils.Session;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainTitle {
 
     private User mUser;
 
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        boolean first = sSelectedMenu == -1 ? true : false;
+        boolean first = sSelectedMenu == -1;
 
         sSelectedMenu = id;
 
@@ -106,9 +107,17 @@ public class MainActivity extends AppCompatActivity
             item.setChecked(true);
 
         if (id == R.id.home) {
+            setTitle(getString(R.string.title_activity_main));
+
+            invalidateOptionsMenu();
             changeFragment(new TodayFragment(), first);
         } else if (id == R.id.calendar) {
-            changeFragment(new CalendarFragment(), first);
+            setTitle(getString(R.string.calendar));
+
+            invalidateOptionsMenu();
+            CalendarFragment calendarFragment = new CalendarFragment();
+            calendarFragment.setMainTitle(this);
+            changeFragment(calendarFragment, first);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -122,5 +131,10 @@ public class MainActivity extends AppCompatActivity
         if (!first)
             fragmentTransaction.addToBackStack(fragment.getClass().getName());
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void updateTitle(String title) {
+        setTitle(title);
     }
 }

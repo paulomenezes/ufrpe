@@ -5,11 +5,11 @@
         <item
             android:id="@+id/home"
             android:icon="@drawable/ic_view_day_black_24dp"
-            android:title="Inicio" />
+            android:title="@string/title_activity_main" />
         <item
             android:id="@+id/calendar"
             android:icon="@drawable/ic_today_black_24dp"
-            android:title="Calendário" />
+            android:title="@string/calendar" />
     </group>
 
     <item android:title="Communicate">

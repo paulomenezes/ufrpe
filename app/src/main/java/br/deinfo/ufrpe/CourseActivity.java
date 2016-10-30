@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 
 import org.parceler.Parcels;
 
@@ -18,6 +20,7 @@ import br.deinfo.ufrpe.models.Course;
 import br.deinfo.ufrpe.models.CourseContent;
 import br.deinfo.ufrpe.services.AVAService;
 import br.deinfo.ufrpe.services.Requests;
+import br.deinfo.ufrpe.utils.Functions;
 import br.deinfo.ufrpe.utils.Session;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,8 +41,9 @@ public class CourseActivity extends AppCompatActivity {
         mCourse = Parcels.unwrap(getIntent().getParcelableExtra("course"));
 
         setTitle(mCourse.getClasses().getName());
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(mCourse.getNormalColor())));
         getSupportActionBar().setSubtitle(mCourse.getShortname());
+
+        Functions.actionBarColor(this, mCourse.getNormalColor(), mCourse.getDarkColor());
 
         mCourseContent = new ArrayList<>();
 

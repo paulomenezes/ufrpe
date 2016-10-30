@@ -88,6 +88,7 @@ public class CourseContentAdapter extends RecyclerView.Adapter<CourseContentAdap
             }
         });
 
+
         holder.getBinding().setVariable(BR.content, courseContent);
         holder.getBinding().executePendingBindings();
     }

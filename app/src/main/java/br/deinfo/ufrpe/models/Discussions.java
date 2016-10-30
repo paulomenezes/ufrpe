@@ -8,7 +8,7 @@ import org.parceler.Parcel;
 @Parcel
 public class Discussions
 {
-    private String discussion;
+    private int discussion;
 
     private String messageformat;
 
@@ -60,12 +60,12 @@ public class Discussions
 
     private String mailed;
 
-    public String getDiscussion ()
+    public int getDiscussion ()
     {
         return discussion;
     }
 
-    public void setDiscussion (String discussion)
+    public void setDiscussion (int discussion)
     {
         this.discussion = discussion;
     }

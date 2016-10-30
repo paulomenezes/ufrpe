@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pkmmte.view.CircularImageView;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import br.deinfo.ufrpe.BR;
 import br.deinfo.ufrpe.CourseActivity;
+import br.deinfo.ufrpe.ModuleRepliesActivity;
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.models.Course;
 import br.deinfo.ufrpe.models.Discussions;
@@ -37,10 +39,12 @@ import br.deinfo.ufrpe.utils.Session;
 public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHolder> {
 
     private List<Discussions> mDiscussions;
+    private Course mCourse;
     private Context mContext;
 
-    public ForumAdapter(List<Discussions> discussions) {
+    public ForumAdapter(Course course, List<Discussions> discussions) {
         mDiscussions = discussions;
+        mCourse = course;
     }
 
     @Override
@@ -64,6 +68,19 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHol
         holder.mMessage.setText(Html.fromHtml(discussion.getMessage()));
         holder.mMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
+        if (Integer.parseInt(discussion.getNumreplies()) > 0) {
+            holder.mReplies.setVisibility(View.VISIBLE);
+            holder.mReplies.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, ModuleRepliesActivity.class);
+                    intent.putExtra("course", Parcels.wrap(mCourse));
+                    intent.putExtra("discussion", Parcels.wrap(discussion));
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+
         Date date = new Date((long)discussion.getCreated() * 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         holder.mDate.setText(sdf.format(date));
@@ -84,6 +101,8 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHol
         private TextView mDate;
         private TextView mMessage;
 
+        private RelativeLayout mReplies;
+
         ForumViewHolder(View itemView) {
             super(itemView);
 
@@ -92,6 +111,8 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHol
             mImageView = (CircularImageView) itemView.findViewById(R.id.userpicture);
             mDate = (TextView) itemView.findViewById(R.id.date);
             mMessage = (TextView) itemView.findViewById(R.id.message);
+
+            mReplies = (RelativeLayout) itemView.findViewById(R.id.replies);
         }
 
         ViewDataBinding getBinding() {

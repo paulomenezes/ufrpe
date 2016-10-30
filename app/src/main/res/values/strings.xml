@@ -58,6 +58,7 @@
     <string name="minute">minutos</string>
     <string name="second">segundos</string>
 
+    <string name="noDiscussions">Não há nenhum tópico nesse forum ainda</string>
     <string name="timend">"A data de encerramento pra essa tarefa já foi atingida"</string>
     <string name="replies">Respostas</string>
 
@@ -69,6 +70,10 @@
     <string name="wed">Qua</string>
     <string name="thu">Qui</string>
     <string name="fri">Sex</string>
+
+    <string name="home">Inicio</string>
+    <string name="calendar">Calendário</string>
+    <string name="noEvents">Você não tem nenhum evento para esse dia</string>
 
     <string-array name="day_of_week">
         <item>Domingo</item>

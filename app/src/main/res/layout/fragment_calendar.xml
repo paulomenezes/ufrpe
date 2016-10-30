@@ -17,9 +17,20 @@
             app:mcv_dateTextAppearance="@style/CalendarAppearance"
             app:mcv_headerTextAppearance="@style/CalendarAppearance"
             app:mcv_weekDayTextAppearance="@style/CalendarAppearance"
-            app:mcv_arrowColor="#000"
-            app:mcv_tileHeight="40dp"
+            app:mcv_arrowColor="#FFF"
+            app:mcv_tileHeight="35dp"
             app:mcv_showOtherDates="all"
-            app:mcv_selectionColor="#000" />
+            app:mcv_selectionColor="@color/colorPrimaryDark" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/message"
+        android:text="@string/noEvents"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

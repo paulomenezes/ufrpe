@@ -42,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private String[] normalColors = new String[] { "#F44336", "#E91E63", "#9C27B0", "#673AB7",
             "#3F51B5", "#2196F3", "#039BE5", "#0097A7", "#009688", "#43A047", "#689F38", "#EF6C00", "#FF5722", "#795548", "#757575" };
-    private String[] darkColors = new String[] { "#B71C1C", "#880E4F", "#4A148C", "#311B92",
-            "#1A237E", "#0D47A1", "#01579B", "#006064", "#004D40", "#1B5E20", "#33691E", "#E65100", "#BF360C", "#3E2723", "#616161" };
+    private String[] darkColors = new String[] { "#E53935", "#D81B60", "#8E24AA", "#5E35B1",
+            "#3949AB", "#1E88E5", "#0288D1", "#00838F", "#00897B", "#388E3C", "#558B2F", "#E65100", "#F4511E", "#6D4C41", "#616161" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
