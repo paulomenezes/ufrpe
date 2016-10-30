@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity
     private User mUser;
 
     private static boolean sTodaySelectWeek = false;
-    private static int sSelectedMenu = 0;
+    private static int sSelectedMenu = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        sSelectedMenu = R.id.home;
 
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.home));
 
@@ -81,23 +79,24 @@ public class MainActivity extends AppCompatActivity
                 sTodaySelectWeek = false;
                 invalidateOptionsMenu();
 
-                changeFragment(new TodayFragment());
+                changeFragment(new TodayFragment(), true);
                 break;
             case R.id.week:
                 sTodaySelectWeek = true;
                 invalidateOptionsMenu();
 
-                changeFragment(new WeekFragment());
+                changeFragment(new WeekFragment(), true);
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        boolean first = sSelectedMenu == -1 ? true : false;
 
         sSelectedMenu = id;
 
@@ -107,9 +106,9 @@ public class MainActivity extends AppCompatActivity
             item.setChecked(true);
 
         if (id == R.id.home) {
-            changeFragment(new TodayFragment());
+            changeFragment(new TodayFragment(), first);
         } else if (id == R.id.calendar) {
-            changeFragment(new CalendarFragment());
+            changeFragment(new CalendarFragment(), first);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -117,9 +116,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void changeFragment(Fragment fragment) {
+    private void changeFragment(Fragment fragment, boolean first) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content, fragment).addToBackStack(fragment.getClass().getName());
+        fragmentTransaction.replace(R.id.content, fragment);
+        if (!first)
+            fragmentTransaction.addToBackStack(fragment.getClass().getName());
         fragmentTransaction.commit();
     }
 }
