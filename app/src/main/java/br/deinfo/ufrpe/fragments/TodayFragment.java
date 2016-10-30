@@ -64,6 +64,10 @@ public class TodayFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         final List<Course> todayCourses = new ArrayList<>();
 
+        int today = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (today == 0 || today == 6)
+            today = 1;
+
         for (int i = 0; i < mUser.getCourses().size(); i++) {
             if (Functions.thisSemester(mUser.getCourses().get(i).getShortname())) {
                 for (int j = 0; j < sClasses.size(); j++) {
@@ -74,7 +78,7 @@ public class TodayFragment extends Fragment {
                 }
 
                 for (int j = 0; j < mUser.getCourses().get(i).getClasses().getSchedules().size(); j++) {
-                    if (mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() == calendar.get(Calendar.DAY_OF_WEEK) - 1) {
+                    if (mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() == today) {
                         todayCourses.add(mUser.getCourses().get(i));
                         break;
                     }
@@ -95,7 +99,7 @@ public class TodayFragment extends Fragment {
 
         TextView date = (TextView) view.findViewById(R.id.date);
 
-        String dayOfWeek = getResources().getStringArray(R.array.day_of_week)[calendar.get(Calendar.DAY_OF_WEEK) - 1];
+        String dayOfWeek = getResources().getStringArray(R.array.day_of_week)[today];
         String month = getResources().getStringArray(R.array.month)[calendar.get(Calendar.MONTH)].toLowerCase();
 
         date.setText(String.format("%s, %s", dayOfWeek, month));

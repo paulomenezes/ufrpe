@@ -26,6 +26,9 @@ public class Course extends BaseObservable {
     private String lang;
     private boolean enablecompletion;
 
+    private String normalColor;
+    private String darkColor;
+
     private Classes classes;
     private Assignments[] assignments;
     private String nextAssignment;
@@ -155,5 +158,21 @@ public class Course extends BaseObservable {
 
     public void setNextAssignment(String nextAssignment) {
         this.nextAssignment = nextAssignment;
+    }
+
+    public String getNormalColor() {
+        return normalColor;
+    }
+
+    public void setNormalColor(String normalColor) {
+        this.normalColor = normalColor;
+    }
+
+    public String getDarkColor() {
+        return darkColor;
+    }
+
+    public void setDarkColor(String darkColor) {
+        this.darkColor = darkColor;
     }
 }

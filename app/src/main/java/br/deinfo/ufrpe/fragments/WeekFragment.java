@@ -1,13 +1,18 @@
 package br.deinfo.ufrpe.fragments;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -17,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import br.deinfo.ufrpe.CourseActivity;
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.models.Classes;
 import br.deinfo.ufrpe.models.Course;
@@ -84,7 +90,7 @@ public class WeekFragment extends Fragment {
         LinearLayout fri = (LinearLayout) view.findViewById(R.id.fri);
 
         for (int i = 1; i < courses.length; i++) {
-            Map<Integer, Course> course = new TreeMap(courses[i]);
+            final Map<Integer, Course> course = new TreeMap(courses[i]);
 
             for (int j = 0; j < course.size(); j++) {
                 if (course.size() > j) {
@@ -93,7 +99,7 @@ public class WeekFragment extends Fragment {
                     if (i != 5)
                         viewItem.setPadding(viewItem.getPaddingLeft(), viewItem.getPaddingTop(), 0, 0);
 
-                    Object key = course.keySet().toArray()[j];
+                    final Object key = course.keySet().toArray()[j];
                     if (j == 0 && (Integer)key > minHour) {
                         viewItem.setPadding(viewItem.getPaddingLeft(),
                                 Functions.dpToPx(getContext(), ((Integer)key - minHour) * 66),
@@ -128,6 +134,18 @@ public class WeekFragment extends Fragment {
 
                     TextView textView = (TextView) viewItem.findViewById(R.id.title);
                     textView.setText(Functions.getCamelSentence(course.get(key).getFullname().split(" \\| ")[1].split(" - ")[0]));
+
+                    CardView card = (CardView) viewItem.findViewById(R.id.card);
+                    card.setCardBackgroundColor(Color.parseColor(course.get(key).getNormalColor()));
+
+                    card.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getContext(), CourseActivity.class);
+                            intent.putExtra("course", Parcels.wrap(course.get(key)));
+                            getContext().startActivity(intent);
+                        }
+                    });
 
                     if (i == 1) mon.addView(viewItem);
                     else if (i == 2) tue.addView(viewItem);

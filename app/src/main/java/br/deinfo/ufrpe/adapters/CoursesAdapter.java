@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,8 +58,13 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         final Course course = mCourses.get(position);
 
         Calendar calendar = Calendar.getInstance();
+
+        int today = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (today == 0 || today == 6)
+            today = 1;
+
         for (int i = 0; i < course.getClasses().getSchedules().size(); i++) {
-            if (course.getClasses().getSchedules().get(i).getDayOfWeek() == calendar.get(Calendar.DAY_OF_WEEK) - 1) {
+            if (course.getClasses().getSchedules().get(i).getDayOfWeek() == today) {
                 holder.mSchedule.setText(String.format("%s - %s",
                         course.getClasses().getSchedules().get(i).getTimeStart(),
                         course.getClasses().getSchedules().get(i).getTimeEnd()));
@@ -68,6 +75,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         if (course.getAssignments()  != null && course.getAssignments().length > 0) {
             course.setNextAssignment(course.getAssignments()[0].getName());
         }
+
+        holder.mCard.setCardBackgroundColor(Color.parseColor(course.getNormalColor()));
+        holder.mDark.setBackgroundColor(Color.parseColor(course.getDarkColor()));
 
         holder.getBinding().setVariable(BR.handler, this);
         holder.getBinding().setVariable(BR.course, course);
@@ -89,11 +99,17 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
         private ViewDataBinding mBinding;
         private TextView mSchedule;
 
+        private CardView mCard;
+        private LinearLayout mDark;
+
         CourseViewHolder(View itemView) {
             super(itemView);
 
             mBinding = DataBindingUtil.bind(itemView);
             mSchedule = (TextView) itemView.findViewById(R.id.schedule);
+
+            mCard = (CardView) itemView.findViewById(R.id.card);
+            mDark = (LinearLayout) itemView.findViewById(R.id.dark);
         }
 
         ViewDataBinding getBinding() {

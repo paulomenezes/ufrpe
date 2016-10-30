@@ -18,15 +18,19 @@ public class CompareTodayCourse implements Comparator<Course> {
         int indexT1 = 0;
         int indexT2 = 0;
 
+        int today = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (today == 0 || today == 6)
+            today = 1;
+
         for (int i = 0; i < t1.getClasses().getSchedules().size(); i++) {
-            if (calendar.get(Calendar.DAY_OF_WEEK) - 1 == t1.getClasses().getSchedules().get(i).getDayOfWeek()) {
+            if (today == t1.getClasses().getSchedules().get(i).getDayOfWeek()) {
                 indexT1 = i;
                 break;
             }
         }
 
         for (int i = 0; i < t2.getClasses().getSchedules().size(); i++) {
-            if (calendar.get(Calendar.DAY_OF_WEEK) - 1 == t2.getClasses().getSchedules().get(i).getDayOfWeek()) {
+            if (today == t2.getClasses().getSchedules().get(i).getDayOfWeek()) {
                 indexT2 = i;
                 break;
             }

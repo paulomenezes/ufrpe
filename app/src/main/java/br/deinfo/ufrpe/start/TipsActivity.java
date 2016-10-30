@@ -32,9 +32,11 @@ public class TipsActivity extends AppCompatActivity {
 
         if (user != null) {
             Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.putExtra(Data.KEY_USER, Parcels.wrap(user));
             startActivity(intent);
+            finish();
         }
 
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);

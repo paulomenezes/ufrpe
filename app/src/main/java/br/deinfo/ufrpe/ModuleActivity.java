@@ -2,6 +2,8 @@ package br.deinfo.ufrpe;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,6 +54,8 @@ public class ModuleActivity extends AppCompatActivity {
         binding.setModule(module);
 
         setTitle(module.getName());
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(course.getNormalColor())));
 
         CardView submission = (CardView) findViewById(R.id.submission);
 

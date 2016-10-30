@@ -1,5 +1,7 @@
 package br.deinfo.ufrpe;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,7 +36,9 @@ public class CourseActivity extends AppCompatActivity {
         mAvaService = Requests.getInstance().getAVAService();
         mCourse = Parcels.unwrap(getIntent().getParcelableExtra("course"));
 
-        setTitle(mCourse.getFullname());
+        setTitle(mCourse.getClasses().getName());
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(mCourse.getNormalColor())));
+        getSupportActionBar().setSubtitle(mCourse.getShortname());
 
         mCourseContent = new ArrayList<>();
 

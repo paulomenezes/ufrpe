@@ -26,6 +26,7 @@ import br.deinfo.ufrpe.models.User;
 import br.deinfo.ufrpe.services.AVAService;
 import br.deinfo.ufrpe.services.Requests;
 import br.deinfo.ufrpe.utils.Data;
+import br.deinfo.ufrpe.utils.Functions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,6 +39,11 @@ public class LoginActivity extends AppCompatActivity {
     private RelativeLayout mRelativeLayout;
 
     private DatabaseReference mDatabase;
+
+    private String[] normalColors = new String[] { "#F44336", "#E91E63", "#9C27B0", "#673AB7",
+            "#3F51B5", "#2196F3", "#039BE5", "#0097A7", "#009688", "#43A047", "#689F38", "#EF6C00", "#FF5722", "#795548", "#757575" };
+    private String[] darkColors = new String[] { "#B71C1C", "#880E4F", "#4A148C", "#311B92",
+            "#1A237E", "#0D47A1", "#01579B", "#006064", "#004D40", "#1B5E20", "#33691E", "#E65100", "#BF360C", "#3E2723", "#616161" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +100,21 @@ public class LoginActivity extends AppCompatActivity {
                                     List<Course> courses = response.body();
 
                                     Collections.reverse(courses);
+
+                                    int k = 0;
+                                    for (int i = 0; i < courses.size(); i++) {
+                                        if (Functions.thisSemester(courses.get(i).getShortname())) {
+                                            courses.get(i).setNormalColor(normalColors[k]);
+                                            courses.get(i).setDarkColor(darkColors[k]);
+
+                                            k++;
+                                            if (k >= normalColors.length - 1)
+                                                k = 0;
+                                        } else {
+                                            courses.get(i).setNormalColor(normalColors[normalColors.length - 1]);
+                                            courses.get(i).setDarkColor(darkColors[normalColors.length - 1]);
+                                        }
+                                    }
 
                                     mUser.setCourses(courses);
 

@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity
 
     private void changeFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content, fragment);
+        fragmentTransaction.replace(R.id.content, fragment).addToBackStack(fragment.getClass().getName());
         fragmentTransaction.commit();
     }
 }
