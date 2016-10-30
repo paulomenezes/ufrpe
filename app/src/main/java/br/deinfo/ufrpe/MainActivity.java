@@ -1,13 +1,8 @@
 package br.deinfo.ufrpe;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,36 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
-
-import br.deinfo.ufrpe.adapters.CoursesAdapter;
 import br.deinfo.ufrpe.fragments.CalendarFragment;
 import br.deinfo.ufrpe.fragments.TodayFragment;
 import br.deinfo.ufrpe.fragments.WeekFragment;
-import br.deinfo.ufrpe.models.Classes;
-import br.deinfo.ufrpe.models.Course;
-import br.deinfo.ufrpe.models.CourseAssignment;
-import br.deinfo.ufrpe.models.Courses;
 import br.deinfo.ufrpe.models.User;
-import br.deinfo.ufrpe.services.AVAService;
-import br.deinfo.ufrpe.services.Requests;
-import br.deinfo.ufrpe.utils.CompareCourse;
 import br.deinfo.ufrpe.utils.Data;
-import br.deinfo.ufrpe.utils.Functions;
 import br.deinfo.ufrpe.utils.Session;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

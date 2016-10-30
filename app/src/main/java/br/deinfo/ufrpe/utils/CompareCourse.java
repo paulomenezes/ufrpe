@@ -6,10 +6,18 @@ import java.util.Comparator;
 import br.deinfo.ufrpe.models.Course;
 
 /**
- * Created by phgm on 19/10/2016.
+ * Created by paulo on 29/10/2016.
  */
 
 public class CompareCourse implements Comparator<Course> {
+
+    private int mDayOfWeek;
+
+     public CompareCourse(int dayOfWeek) {
+        super();
+
+         mDayOfWeek = dayOfWeek;
+     }
 
     @Override
     public int compare(Course t1, Course t2) {
@@ -19,16 +27,15 @@ public class CompareCourse implements Comparator<Course> {
         int indexT2 = 0;
 
         for (int i = 0; i < t1.getClasses().getSchedules().size(); i++) {
-            if (calendar.get(Calendar.DAY_OF_WEEK) - 1 == t1.getClasses().getSchedules().get(i).getDayOfWeek()) {
-                indexT1 = i;
-                break;
-            }
-        }
+            for (int j = 0; j < t2.getClasses().getSchedules().size(); j++) {
+                if (t1.getClasses().getSchedules().get(i).getDayOfWeek() == mDayOfWeek &&
+                        t2.getClasses().getSchedules().get(j).getDayOfWeek() == mDayOfWeek) {
+                    indexT1 = i;
+                    indexT2 = j;
 
-        for (int i = 0; i < t2.getClasses().getSchedules().size(); i++) {
-            if (calendar.get(Calendar.DAY_OF_WEEK) - 1 == t2.getClasses().getSchedules().get(i).getDayOfWeek()) {
-                indexT2 = i;
-                break;
+                    i = t1.getClasses().getSchedules().size();
+                    j = t2.getClasses().getSchedules().size();
+                }
             }
         }
 

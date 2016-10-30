@@ -29,7 +29,7 @@ import br.deinfo.ufrpe.models.Courses;
 import br.deinfo.ufrpe.models.User;
 import br.deinfo.ufrpe.services.AVAService;
 import br.deinfo.ufrpe.services.Requests;
-import br.deinfo.ufrpe.utils.CompareCourse;
+import br.deinfo.ufrpe.utils.CompareTodayCourse;
 import br.deinfo.ufrpe.utils.Functions;
 import br.deinfo.ufrpe.utils.Session;
 import retrofit2.Call;
@@ -82,7 +82,7 @@ public class TodayFragment extends Fragment {
             }
         }
 
-        Collections.sort(todayCourses, new CompareCourse());
+        Collections.sort(todayCourses, new CompareTodayCourse());
 
         final CoursesAdapter coursesAdapter = new CoursesAdapter(todayCourses);
 
