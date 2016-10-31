@@ -41,7 +41,9 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.databinding.ActivitySocialBinding;
@@ -168,7 +170,10 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void onClickFacebook(View view) {
-        LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile"));
+        List<String> permissions = new ArrayList<>();
+        permissions.add("public_profile");
+        permissions.add("email");
+        LoginManager.getInstance().logInWithReadPermissions(this, permissions);
     }
 
     public void onClickTwitter(View view) {

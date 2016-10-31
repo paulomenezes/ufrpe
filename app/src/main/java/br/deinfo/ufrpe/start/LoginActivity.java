@@ -1,5 +1,6 @@
 package br.deinfo.ufrpe.start;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.design.widget.Snackbar;
@@ -45,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private String[] darkColors = new String[] { "#E53935", "#D81B60", "#8E24AA", "#5E35B1",
             "#3949AB", "#1E88E5", "#0288D1", "#00838F", "#00897B", "#388E3C", "#558B2F", "#E65100", "#F4511E", "#6D4C41", "#616161" };
 
+    private ProgressDialog mLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +76,12 @@ public class LoginActivity extends AppCompatActivity {
     public void onClickAccess(View view) {
         Call<Token> object = mAVAServices.login(mUser.getUserName(), mUser.getPassword(), Requests.LOGIN_SERVICE);
 
+        mLoading = new ProgressDialog(this);
+        mLoading.setTitle(R.string.loading);
+        mLoading.setMessage(getString(R.string.loadingAVA));
+        mLoading.setIndeterminate(true);
+        mLoading.show();
+
         object.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(Call<Token> call, Response<Token> response) {
@@ -80,6 +89,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (token != null && token.getToken() != null) {
                     mUser.setToken(token.getToken());
+
+                    mLoading.setMessage(getString(R.string.loadingUser));
 
                     Call<SiteInfo> siteInfoCall = mAVAServices.getSiteInfo(Requests.FUNCTION_GET_SITE_INFO, mUser.getToken());
                     siteInfoCall.enqueue(new Callback<SiteInfo>() {
@@ -94,10 +105,13 @@ public class LoginActivity extends AppCompatActivity {
                                     Requests.FUNCTION_GET_USER_COURSES,
                                     mUser.getToken());
 
+                            mLoading.setMessage(getString(R.string.loadingCourses));
+
                             coursesCall.enqueue(new Callback<List<Course>>() {
                                 @Override
                                 public void onResponse(Call<List<Course>> call, Response<List<Course>> response) {
                                     List<Course> courses = response.body();
+                                    mLoading.setMessage(getString(R.string.saving));
 
                                     Collections.reverse(courses);
 
@@ -122,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                     Data.saveUser(LoginActivity.this, mUser);
 
+                                    mLoading.dismiss();
                                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.putExtra(Data.KEY_USER, Parcels.wrap(mUser));
@@ -130,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onFailure(Call<List<Course>> call, Throwable t) {
+                                    mLoading.dismiss();
                                     Snackbar.make(mRelativeLayout, R.string.login_courses_error, Snackbar.LENGTH_SHORT).show();
                                 }
                             });
@@ -137,16 +153,19 @@ public class LoginActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<SiteInfo> call, Throwable t) {
+                            mLoading.dismiss();
                             Snackbar.make(mRelativeLayout, R.string.login_siteinfo_error, Snackbar.LENGTH_SHORT).show();
                         }
                     });
                 } else {
+                    mLoading.dismiss();
                     Snackbar.make(mRelativeLayout, R.string.login_failed, Snackbar.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Token> call, Throwable t) {
+                mLoading.dismiss();
                 Snackbar.make(mRelativeLayout, R.string.login_failed, Snackbar.LENGTH_SHORT).show();
             }
         });

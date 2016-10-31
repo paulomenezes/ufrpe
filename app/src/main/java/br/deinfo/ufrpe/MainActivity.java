@@ -1,5 +1,6 @@
 package br.deinfo.ufrpe;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -11,12 +12,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
+import com.pkmmte.view.CircularImageView;
+import com.squareup.picasso.Picasso;
+
+import org.parceler.Parcels;
+
+import java.util.Locale;
 
 import br.deinfo.ufrpe.fragments.CalendarFragment;
 import br.deinfo.ufrpe.fragments.TodayFragment;
 import br.deinfo.ufrpe.fragments.WeekFragment;
 import br.deinfo.ufrpe.listeners.MainTitle;
 import br.deinfo.ufrpe.models.User;
+import br.deinfo.ufrpe.start.TipsActivity;
 import br.deinfo.ufrpe.utils.Data;
 import br.deinfo.ufrpe.utils.Session;
 
@@ -43,11 +58,21 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.home));
-
         mUser = Data.getUser(this);
-
         Session.setUser(mUser);
+
+        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+
+        CircularImageView imageView = (CircularImageView) headerView.findViewById(R.id.picture);
+        Picasso.with(this).load(mUser.getPicture()).into(imageView);
+
+        TextView name = (TextView) headerView.findViewById(R.id.name);
+        TextView email = (TextView) headerView.findViewById(R.id.email);
+
+        name.setText(String.format(Locale.ENGLISH, "%s %s", mUser.getFirstName(), mUser.getLastName()));
+        email.setText(mUser.getEmail());
+
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.home));
     }
 
     @Override
@@ -118,6 +143,15 @@ public class MainActivity extends AppCompatActivity
             CalendarFragment calendarFragment = new CalendarFragment();
             calendarFragment.setMainTitle(this);
             changeFragment(calendarFragment, first);
+        } else if (id == R.id.logout) {
+            Data.saveUser(this, null);
+
+            FirebaseAuth.getInstance().signOut();
+
+            Intent intent = new Intent(this, TipsActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

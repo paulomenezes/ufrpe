@@ -19,9 +19,9 @@
                 android:icon="@drawable/ic_view_day_black_24dp"
                 android:title="Inicio" />
             <item
-                android:id="@+id/other2"
-                android:icon="@drawable/ic_today_black_24dp"
-                android:title="Calendário" />
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_input_black_24dp"
+                android:title="@string/logout" />
         </menu>
     </item>
 

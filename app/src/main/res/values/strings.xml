@@ -74,6 +74,12 @@
     <string name="home">Inicio</string>
     <string name="calendar">Calendário</string>
     <string name="noEvents">Você não tem nenhum evento para esse dia</string>
+    <string name="loading">Carregando...</string>
+    <string name="logout">Sair</string>
+    <string name="loadingAVA">Realizando login</string>
+    <string name="loadingUser">Carregando informações</string>
+    <string name="loadingCourses">Carregando cadeiras</string>
+    <string name="saving">Salvando informações</string>
 
     <string-array name="day_of_week">
         <item>Domingo</item>
