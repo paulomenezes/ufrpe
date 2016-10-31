@@ -10,6 +10,10 @@
             android:id="@+id/calendar"
             android:icon="@drawable/ic_today_black_24dp"
             android:title="@string/calendar" />
+        <item
+            android:id="@+id/messages"
+            android:icon="@drawable/ic_chat_black_24dp"
+            android:title="@string/messages" />
     </group>
 
     <item android:title="Communicate">

@@ -11,6 +11,7 @@ import br.deinfo.ufrpe.models.CourseAssignment;
 import br.deinfo.ufrpe.models.CourseContent;
 import br.deinfo.ufrpe.models.Forum;
 import br.deinfo.ufrpe.models.ForumPosts;
+import br.deinfo.ufrpe.models.Messages;
 import br.deinfo.ufrpe.models.SiteInfo;
 import br.deinfo.ufrpe.models.Token;
 import retrofit2.Call;
@@ -82,6 +83,19 @@ public interface AVAService {
             @Field("options[timestart]") long timestart,
             @Field("options[timeend]") long timeend,
             @Field("events[courseids][]") int[] events,
+            @Field("wsfunction") String wsfunction,
+            @Field("wstoken") String wstoken);
+
+    @FormUrlEncoded
+    @POST("/webservice/rest/server.php?moodlewsrestformat=json")
+    Call<Messages> getMessages(
+            @Field("useridto") int useridto,
+            @Field("useridfrom") int useridfrom,
+            @Field("limitfrom") int limitfrom,
+            @Field("limitnum") int limitnum,
+            @Field("read") int read,
+            @Field("type") String type,
+            @Field("newestfirst") int newestfirst,
             @Field("wsfunction") String wsfunction,
             @Field("wstoken") String wstoken);
 }

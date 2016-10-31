@@ -27,6 +27,7 @@ import org.parceler.Parcels;
 import java.util.Locale;
 
 import br.deinfo.ufrpe.fragments.CalendarFragment;
+import br.deinfo.ufrpe.fragments.MessagesFragment;
 import br.deinfo.ufrpe.fragments.TodayFragment;
 import br.deinfo.ufrpe.fragments.WeekFragment;
 import br.deinfo.ufrpe.listeners.MainTitle;
@@ -143,6 +144,11 @@ public class MainActivity extends AppCompatActivity
             CalendarFragment calendarFragment = new CalendarFragment();
             calendarFragment.setMainTitle(this);
             changeFragment(calendarFragment, first);
+        } else if (id == R.id.messages) {
+            setTitle(getString(R.string.messages));
+
+            invalidateOptionsMenu();
+            changeFragment(new MessagesFragment(), first);
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
 
