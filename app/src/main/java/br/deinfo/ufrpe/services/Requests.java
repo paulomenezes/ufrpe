@@ -16,14 +16,15 @@ public class Requests {
 
     public static String LOGIN_SERVICE = "moodle_mobile_app";
 
+    public static String FUNCTION_GET_USER = "core_user_get_users_by_id";
     public static String FUNCTION_GET_USER_COURSES = "core_enrol_get_users_courses";
     public static String FUNCTION_GET_SITE_INFO = "core_webservice_get_site_info";
-    public static String FUNCTION_GET_ASSIGNMENTS = "mod_assign_get_assignments";
     public static String FUNCTION_GET_COURSE_CONTENTS = "core_course_get_contents";
-    public static String FUNCTION_GET_DISCUSSIONS = "mod_forum_get_forum_discussions_paginated";
-    public static String FUNCTION_GET_DISCUSSIONS_POSTS = "mod_forum_get_forum_discussion_posts";
     public static String FUNCTION_GET_CALENDAR_EVENTS = "core_calendar_get_calendar_events";
     public static String FUNCTION_GET_MESSAGES = "core_message_get_messages";
+    public static String FUNCTION_GET_ASSIGNMENTS = "mod_assign_get_assignments";
+    public static String FUNCTION_GET_DISCUSSIONS = "mod_forum_get_forum_discussions_paginated";
+    public static String FUNCTION_GET_DISCUSSIONS_POSTS = "mod_forum_get_forum_discussion_posts";
 
     private Requests() {
         retrofit = new Retrofit.Builder()

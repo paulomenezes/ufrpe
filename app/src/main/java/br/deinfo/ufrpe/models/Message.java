@@ -16,7 +16,7 @@ public class Message {
     private String fullmessagehtml;
     private String smallmessage;
     private int notification;
-    private Object contexturl;
+    private String contexturl;
     private Object contexturlname;
     private int timecreated;
     private int timeread;
@@ -166,14 +166,14 @@ public class Message {
     /**
      * @return The contexturl
      */
-    public Object getContexturl() {
+    public String getContexturl() {
         return contexturl;
     }
 
     /**
      * @param contexturl The contexturl
      */
-    public void setContexturl(Object contexturl) {
+    public void setContexturl(String contexturl) {
         this.contexturl = contexturl;
     }
 

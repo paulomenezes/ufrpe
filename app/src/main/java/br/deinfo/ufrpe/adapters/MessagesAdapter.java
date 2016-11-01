@@ -1,6 +1,7 @@
 package br.deinfo.ufrpe.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,15 @@ import android.widget.TextView;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
 
+import org.parceler.Parcels;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import br.deinfo.ufrpe.MessageActivity;
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.models.Message;
 
@@ -53,7 +57,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
 
     @Override
     public void onBindViewHolder(MessagesAdapter.MessagesViewHolder holder, int position) {
-        List<Message> msg = mMessages.get(mMessages.keySet().toArray()[position]);
+        final List<Message> msg = mMessages.get(mMessages.keySet().toArray()[position]);
 
         holder.mName.setText(msg.get(0).getUserfromfullname());
         holder.mMessage.setText(msg.get(0).getSubject());
@@ -61,6 +65,18 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         Date date = new Date((long)msg.get(0).getTimecreated() * 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
         holder.mDate.setText(sdf.format(date));
+
+        if (msg.get(0).getContexturl() != null)
+            Picasso.with(mContext).load(msg.get(0).getContexturl()).into(holder.mImage);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, MessageActivity.class);
+                intent.putExtra("messages", Parcels.wrap(msg));
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
