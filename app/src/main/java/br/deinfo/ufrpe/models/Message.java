@@ -20,7 +20,7 @@ public class Message {
     private int notification;
     private String contexturl;
     private String contexturlname;
-    private int timecreated;
+    private long timecreated;
     private int timeread;
     private String usertofullname;
     private String userfromfullname;
@@ -196,14 +196,14 @@ public class Message {
     /**
      * @return The timecreated
      */
-    public int getTimecreated() {
+    public long getTimecreated() {
         return timecreated;
     }
 
     /**
      * @param timecreated The timecreated
      */
-    public void setTimecreated(int timecreated) {
+    public void setTimecreated(long timecreated) {
         this.timecreated = timecreated;
     }
 

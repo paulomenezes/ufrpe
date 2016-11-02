@@ -11,6 +11,6 @@ import br.deinfo.ufrpe.models.Message;
 public class CompareMessages implements Comparator<Message> {
     @Override
     public int compare(Message t1, Message t2) {
-        return t2.getTimecreated() - t1.getTimecreated();
+        return (int) (t2.getTimecreated() - t1.getTimecreated());
     }
 }

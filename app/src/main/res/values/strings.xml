@@ -83,6 +83,7 @@
     <string name="messages">Mensagens</string>
     <string name="send">Enviar</string>
     <string name="typeMessage">Digite sua mensagem</string>
+    <string name="required_field">Digite sua mensagem</string>
 
     <string-array name="day_of_week">
         <item>Domingo</item>

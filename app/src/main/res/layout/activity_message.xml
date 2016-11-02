@@ -17,6 +17,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true">
         <EditText
+            android:id="@+id/type"
             android:hint="@string/typeMessage"
             android:layout_toStartOf="@+id/send"
             android:layout_marginStart="16dp"
@@ -26,7 +27,8 @@
             android:padding="8dp"
             android:background="#FFF"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"/>
         <Button
             android:id="@+id/send"
             android:text="@string/send"
