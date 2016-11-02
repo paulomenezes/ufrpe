@@ -1,9 +1,11 @@
 package br.deinfo.ufrpe.models;
 
+import org.parceler.Parcel;
+
 /**
  * Created by paulo on 30/10/2016.
  */
-
+@Parcel
 public class Message {
 
     private int id;
@@ -17,7 +19,7 @@ public class Message {
     private String smallmessage;
     private int notification;
     private String contexturl;
-    private Object contexturlname;
+    private String contexturlname;
     private int timecreated;
     private int timeread;
     private String usertofullname;
@@ -180,14 +182,14 @@ public class Message {
     /**
      * @return The contexturlname
      */
-    public Object getContexturlname() {
+    public String getContexturlname() {
         return contexturlname;
     }
 
     /**
      * @param contexturlname The contexturlname
      */
-    public void setContexturlname(Object contexturlname) {
+    public void setContexturlname(String contexturlname) {
         this.contexturlname = contexturlname;
     }
 

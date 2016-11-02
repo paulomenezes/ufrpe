@@ -23,6 +23,7 @@ import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.models.Course;
 import br.deinfo.ufrpe.models.Posts;
 import br.deinfo.ufrpe.utils.Session;
+import br.deinfo.ufrpe.utils.ULTagHandler;
 
 /**
  * Created by paulo on 30/10/2016.
@@ -57,7 +58,7 @@ public class ForumPostAdapter extends RecyclerView.Adapter<ForumPostAdapter.Foru
                 .load(post.getUserpictureurl() + "&token=" + Session.getUser().getToken())
                 .into(holder.mImageView);
 
-        holder.mMessage.setText(Html.fromHtml(post.getMessage()));
+        holder.mMessage.setText(Html.fromHtml(post.getMessage(), null, new ULTagHandler()));
         holder.mMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
         Date date = new Date((long)post.getCreated() * 1000);

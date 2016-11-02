@@ -58,7 +58,9 @@
         <activity
             android:name=".ModuleRepliesActivity"
             android:parentActivityName=".ModuleActivity" />
-        <activity android:name=".MessageActivity"></activity>
+        <activity
+            android:name=".MessageActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

@@ -33,6 +33,7 @@ import br.deinfo.ufrpe.models.CourseContent;
 import br.deinfo.ufrpe.models.Function;
 import br.deinfo.ufrpe.utils.Functions;
 import br.deinfo.ufrpe.utils.Session;
+import br.deinfo.ufrpe.utils.ULTagHandler;
 
 /**
  * Created by phgm on 19/10/2016.
@@ -105,7 +106,7 @@ public class CourseContentAdapter extends RecyclerView.Adapter<CourseContentAdap
                     Functions.dpToPx(mContext, 8));
 
             textView.setLayoutParams(params);
-            textView.setText(Html.fromHtml(courseContent.getSummary()));
+            textView.setText(Html.fromHtml(courseContent.getSummary(), null, new ULTagHandler()));
             textView.setMovementMethod(LinkMovementMethod.getInstance());
 
             holder.mContentModules.addView(textView);

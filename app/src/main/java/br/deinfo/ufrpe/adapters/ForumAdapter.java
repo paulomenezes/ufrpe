@@ -31,6 +31,7 @@ import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.models.Course;
 import br.deinfo.ufrpe.models.Discussions;
 import br.deinfo.ufrpe.utils.Session;
+import br.deinfo.ufrpe.utils.ULTagHandler;
 
 /**
  * Created by phgm on 26/10/2016.
@@ -65,7 +66,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHol
                 .load(discussion.getUsermodifiedpictureurl() + "&token=" + Session.getUser().getToken())
                 .into(holder.mImageView);
 
-        holder.mMessage.setText(Html.fromHtml(discussion.getMessage()));
+        holder.mMessage.setText(Html.fromHtml(discussion.getMessage(), null, new ULTagHandler()));
         holder.mMessage.setMovementMethod(LinkMovementMethod.getInstance());
 
         if (Integer.parseInt(discussion.getNumreplies()) > 0) {

@@ -31,6 +31,7 @@ import br.deinfo.ufrpe.services.AVAService;
 import br.deinfo.ufrpe.services.Requests;
 import br.deinfo.ufrpe.utils.Functions;
 import br.deinfo.ufrpe.utils.Session;
+import br.deinfo.ufrpe.utils.ULTagHandler;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,7 +71,7 @@ public class ModuleActivity extends AppCompatActivity {
         switch (module.getModname()) {
             case "url":
                 if (module.getDescription() != null) {
-                    mDescription.setText(Html.fromHtml(module.getDescription()));
+                    mDescription.setText(Html.fromHtml(module.getDescription(), null, new ULTagHandler()));
                     mDescription.setMovementMethod(LinkMovementMethod.getInstance());
                 } else
                     mDescription.setVisibility(View.GONE);
@@ -113,7 +114,7 @@ public class ModuleActivity extends AppCompatActivity {
                 }
                 break;
             case "label":
-                mDescription.setText(Html.fromHtml(module.getDescription()));
+                mDescription.setText(Html.fromHtml(module.getDescription(), null, new ULTagHandler()));
                 mDescription.setMovementMethod(LinkMovementMethod.getInstance());
                 mAddURL.setVisibility(View.GONE);
                 break;
@@ -162,7 +163,7 @@ public class ModuleActivity extends AppCompatActivity {
     }
 
     private void drawModule(String description, long dateDue) {
-        mDescription.setText(Html.fromHtml(description));
+        mDescription.setText(Html.fromHtml(description, null, new ULTagHandler()));
         mDescription.setMovementMethod(LinkMovementMethod.getInstance());
 
         Date date = new Date(dateDue * 1000);
