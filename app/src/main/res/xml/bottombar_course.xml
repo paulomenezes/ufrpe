@@ -12,8 +12,4 @@
         id="@+id/grades"
         icon="@drawable/ic_show_chart_black_24dp"
         title="@string/grades" />
-    <tab
-        id="@+id/absences"
-        icon="@drawable/ic_not_interested_black_24dp"
-        title="@string/absences" />
 </tabs>

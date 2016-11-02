@@ -12,6 +12,7 @@ import br.deinfo.ufrpe.models.CourseAssignment;
 import br.deinfo.ufrpe.models.CourseContent;
 import br.deinfo.ufrpe.models.Forum;
 import br.deinfo.ufrpe.models.ForumPosts;
+import br.deinfo.ufrpe.models.Grades;
 import br.deinfo.ufrpe.models.Messages;
 import br.deinfo.ufrpe.models.SendMessage;
 import br.deinfo.ufrpe.models.SiteInfo;
@@ -114,6 +115,27 @@ public interface AVAService {
             @Field("messages[0][touserid]") int touserid,
             @Field("messages[0][text]") String text,
             @Field("messages[0][textformat]") int textformat,
+            @Field("wsfunction") String wsfunction,
+            @Field("wstoken") String wstoken);
+
+    @FormUrlEncoded
+    @POST("/webservice/rest/server.php?moodlewsrestformat=json")
+    Call<List<AVAUser>> getParticipants(
+            @Field("courseid") int courseid,
+            @Field("options[0][name]") String opname1,
+            @Field("options[0][value]") int opvalue1,
+            @Field("options[1][name]") String opname2,
+            @Field("options[1][value]") int opvalue2,
+            @Field("options[2][name]") String opname3,
+            @Field("options[2][value]") String opvalue3,
+            @Field("wsfunction") String wsfunction,
+            @Field("wstoken") String wstoken);
+
+    @FormUrlEncoded
+    @POST("/webservice/rest/server.php?moodlewsrestformat=json")
+    Call<Grades> getGrades(
+            @Field("courseid") int courseid,
+            @Field("userid") int userid,
             @Field("wsfunction") String wsfunction,
             @Field("wstoken") String wstoken);
 }
