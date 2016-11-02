@@ -62,9 +62,14 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHol
     public void onBindViewHolder(final ForumAdapter.ForumViewHolder holder, int position) {
         final Discussions discussion = mDiscussions.get(position);
 
-        Picasso.with(mContext)
-                .load(discussion.getUsermodifiedpictureurl() + "&token=" + Session.getUser().getToken())
-                .into(holder.mImageView);
+        try {
+            Picasso.with(mContext)
+                    .load(discussion.getUsermodifiedpictureurl() + "&token=" + Session.getUser().getToken())
+                    .placeholder(R.drawable.ic_person_dark_48dp)
+                    .into(holder.mImageView);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         holder.mMessage.setText(Html.fromHtml(discussion.getMessage(), null, new ULTagHandler()));
         holder.mMessage.setMovementMethod(LinkMovementMethod.getInstance());

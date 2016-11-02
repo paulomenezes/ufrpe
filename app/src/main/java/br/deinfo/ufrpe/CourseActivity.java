@@ -2,13 +2,20 @@ package br.deinfo.ufrpe;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
 
 import org.parceler.Parcels;
 
@@ -44,6 +51,38 @@ public class CourseActivity extends AppCompatActivity {
         getSupportActionBar().setSubtitle(mCourse.getShortname());
 
         Functions.actionBarColor(this, mCourse.getNormalColor(), mCourse.getDarkColor());
+
+        View bottomSheet = findViewById(R.id.bottomSheet);
+        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_COLLAPSED)
+                    bottomSheetBehavior.setPeekHeight(0);
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setActiveTabColor(Color.parseColor(mCourse.getNormalColor()));
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                switch (tabId) {
+                    case R.id.topics:
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        break;
+                    case R.id.participants:
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        break;
+                }
+            }
+        });
 
         mCourseContent = new ArrayList<>();
 

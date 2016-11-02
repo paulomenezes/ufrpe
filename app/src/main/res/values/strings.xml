@@ -85,6 +85,11 @@
     <string name="typeMessage">Digite sua mensagem</string>
     <string name="required_field">Digite sua mensagem</string>
 
+    <string name="topics">Tópicos</string>
+    <string name="participants">Participantes</string>
+    <string name="grades">Notas</string>
+    <string name="absences">Faltas</string>
+
     <string-array name="day_of_week">
         <item>Domingo</item>
         <item>Segunda-feira</item>

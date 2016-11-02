@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/topics"
+        icon="@drawable/ic_inbox_black_24dp"
+        title="@string/topics" />
+    <tab
+        id="@+id/participants"
+        icon="@drawable/ic_people_black_24dp"
+        title="@string/participants" />
+    <tab
+        id="@+id/grades"
+        icon="@drawable/ic_show_chart_black_24dp"
+        title="@string/grades" />
+    <tab
+        id="@+id/absences"
+        icon="@drawable/ic_not_interested_black_24dp"
+        title="@string/absences" />
+</tabs>
