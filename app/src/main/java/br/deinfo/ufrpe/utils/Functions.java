@@ -28,7 +28,7 @@ public class Functions {
     }
 
     public static boolean thisSemester(String shortName) {
-        String semester = Calendar.getInstance().get(Calendar.YEAR) + "." + (Calendar.getInstance().get(Calendar.YEAR) > 6 ? 2 : 1);
+        String semester = "2016.2"; // Calendar.getInstance().get(Calendar.YEAR) + "." + (Calendar.getInstance().get(Calendar.YEAR) > 6 ? 2 : 1);
 
         return shortName.contains(semester);
     }
