@@ -89,6 +89,12 @@
     <string name="participants">Participantes</string>
     <string name="grades">Notas</string>
     <string name="absences">Faltas</string>
+    <string name="library">Biblioteca</string>
+    <string name="search_book">Procurar livro</string>
+    <string name="all">Tudo</string>
+    <string name="title">Título</string>
+    <string name="author">Autor</string>
+    <string name="subject">Assunto</string>
 
     <string-array name="day_of_week">
         <item>Domingo</item>

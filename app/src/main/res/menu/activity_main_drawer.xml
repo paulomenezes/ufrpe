@@ -16,12 +16,12 @@
             android:title="@string/messages" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="UFRPE">
         <menu>
             <item
-                android:id="@+id/outher1"
-                android:icon="@drawable/ic_view_day_black_24dp"
-                android:title="Inicio" />
+                android:id="@+id/library"
+                android:icon="@drawable/ic_book_black_24dp"
+                android:title="@string/library" />
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_input_black_24dp"

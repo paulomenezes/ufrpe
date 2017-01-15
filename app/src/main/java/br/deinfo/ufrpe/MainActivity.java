@@ -27,6 +27,7 @@ import org.parceler.Parcels;
 import java.util.Locale;
 
 import br.deinfo.ufrpe.fragments.CalendarFragment;
+import br.deinfo.ufrpe.fragments.LibraryFragment;
 import br.deinfo.ufrpe.fragments.MessagesFragment;
 import br.deinfo.ufrpe.fragments.TodayFragment;
 import br.deinfo.ufrpe.fragments.WeekFragment;
@@ -149,6 +150,11 @@ public class MainActivity extends AppCompatActivity
 
             invalidateOptionsMenu();
             changeFragment(new MessagesFragment(), first);
+        } else if (id == R.id.library) {
+            setTitle(getString(R.string.library));
+
+            invalidateOptionsMenu();
+            changeFragment(new LibraryFragment(), first);
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
 

@@ -68,6 +68,8 @@ dependencies {
         transitive = true;
     }
     compile 'org.parceler:parceler-api:1.1.5'
+    compile 'org.jsoup:jsoup:1.10.2'
+
     apt 'org.parceler:parceler:1.1.5'
     apt 'com.android.databinding:compiler:1.0-rc0'
 }
