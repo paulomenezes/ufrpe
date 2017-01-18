@@ -3,11 +3,20 @@ package br.deinfo.ufrpe.models;
 /**
  * Created by paulo on 15/01/2017.
  */
-
+@org.parceler.Parcel
 public class Book {
+    private int id;
     private String title;
     private String image;
     private String author;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;
@@ -33,7 +42,10 @@ public class Book {
         this.author = author;
     }
 
-    public Book(String title, String image, String author) {
+    public Book() {}
+
+    public Book(int id, String title, String image, String author) {
+        this.id = id;
         this.title = title;
         this.image = image;
         this.author = author;

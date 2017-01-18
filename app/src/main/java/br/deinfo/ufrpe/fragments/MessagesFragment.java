@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.common.primitives.Ints;
-
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;

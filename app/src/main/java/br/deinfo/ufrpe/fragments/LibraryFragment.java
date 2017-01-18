@@ -61,7 +61,7 @@ public class LibraryFragment extends Fragment implements BookListener {
                     if (getActivity().getCurrentFocus() != null)
                         inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
-                    search(searchField.getText().toString(), 2);
+                    search(searchField.getText().toString(), 0);
                     return true; // consume.
                 }
 
@@ -73,7 +73,7 @@ public class LibraryFragment extends Fragment implements BookListener {
         ((RadioGroup) view.findViewById(R.id.group)).setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                search(searchField.getText().toString(), 2);
+                search(searchField.getText().toString(), 0);
             }
         });
 

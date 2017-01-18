@@ -20,6 +20,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import br.deinfo.ufrpe.MainActivity;
 import br.deinfo.ufrpe.R;
@@ -80,7 +82,15 @@ public class BookAsync extends AsyncTask<String[], Void, List<Book>> {
 
                         String author = e.parent().childNodes().size() > 5 ? e.parent().childNodes().get(5).outerHtml() : "";
 
-                        books.add(new Book(title, img, author));
+                        int id = 0;
+
+                        final Pattern pattern = Pattern.compile("carrega_dados_acervo\\((.+?)\\);");
+                        final Matcher matcher = pattern.matcher(e.toString());
+
+                        if (matcher.find())
+                            id = Integer.parseInt(matcher.group(1).replaceAll("\"", "").replaceAll("\\\\", ""));
+
+                        books.add(new Book(id, title, img, author));
                     }
                 }
             }

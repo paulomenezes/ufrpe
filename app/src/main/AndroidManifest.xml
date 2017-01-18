@@ -61,6 +61,15 @@
         <activity
             android:name=".MessageActivity"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".BookDetailActivity"
+            android:label="@string/title_activity_book_detail"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.deinfo.ufrpe.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

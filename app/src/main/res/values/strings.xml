@@ -121,4 +121,18 @@
         <item>Novembro</item>
         <item>Dezembro</item>
     </string-array>
+    <string name="title_activity_book_detail">Livro</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="book_detail">Dados</string>
+    <string name="copies">Cópias</string>
+    <string name="references">Referências</string>
+    <string name="book_title">Detalhes do Livro</string>
+    <string name="callNumber">Número de Chamada</string>
+    <string name="bookTitle">Título Uniforme/Original</string>
+    <string name="secondaryAuthor">Autor Secundário</string>
+    <string name="bookMainTitle">Título Principal</string>
+    <string name="bookPublish">Publicação</string>
+    <string name="bookDescription">Descrição Física</string>
+    <string name="bookISBN">ISBN</string>
+    <string name="bookSubjects">Assuntos</string>
 </resources>
