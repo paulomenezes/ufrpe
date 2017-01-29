@@ -21,7 +21,9 @@ import android.widget.TextView;
 
 import org.parceler.Parcels;
 
+import br.deinfo.ufrpe.fragments.BookCopiesFragment;
 import br.deinfo.ufrpe.fragments.BookDetailFragment;
+import br.deinfo.ufrpe.fragments.BookReferencesFragment;
 import br.deinfo.ufrpe.models.Book;
 
 public class BookDetailActivity extends AppCompatActivity {
@@ -53,24 +55,35 @@ public class BookDetailActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        private Fragment[] mPages;
 
         SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+
+            mPages = new Fragment[this.getCount()];
+            mPages[0] = BookDetailFragment.newInstance(mBook);
+            mPages[1] = BookCopiesFragment.newInstance(mBook);
+            mPages[2] = BookReferencesFragment.newInstance(mBook);
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return BookDetailFragment.newInstance(mBook);
-                case 1:
-                    return BookDetailFragment.newInstance(mBook);
-                case 2:
-                    return BookDetailFragment.newInstance(mBook);
-                default:
-                    return BookDetailFragment.newInstance(mBook);
-            }
+            return mPages[position];
         }
 
         @Override

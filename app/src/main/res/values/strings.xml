@@ -140,4 +140,8 @@
     <string name="bookSubjects">Assuntos</string>
     <string name="ufrpe">UFRPE</string>
     <string name="system">Sistema</string>
+    <string name="primaryAuthor">Autor Principal</string>
+    <string name="quantityAvailable">Disponível no acervo</string>
+    <string name="loaned">Emprestado</string>
+    <string name="seeBooks">Ver exemplares</string>
 </resources>

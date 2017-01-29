@@ -96,7 +96,12 @@ public class TodayFragment extends Fragment {
         recyclerView.setAdapter(coursesAdapter);
 
         TextView day = (TextView) view.findViewById(R.id.day);
-        day.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
+
+        if (calendar.get(Calendar.DAY_OF_WEEK) - 1 == 0 ) {
+            day.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH) + 1));
+        } else if (calendar.get(Calendar.DAY_OF_WEEK) - 1 == 6) {
+            day.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH) + 2));
+        }
 
         TextView date = (TextView) view.findViewById(R.id.date);
 

@@ -53,7 +53,9 @@ public class BookAsync extends AsyncTask<String[], Void, List<Book>> {
         List<Book> books = new ArrayList<>();
 
         try {
-            URLConnection connection = (new URL("http://ww2.bc.ufrpe.br/pergamum/biblioteca/index.php?rs=ajax_resultados&rst=&rsrnd=" + new Date().getTime() + "&rsargs[]=20&rsargs[]=" + params[0][2] + "&rsargs[]=" + params[0][0] + "&rsargs[]=" + params[0][1] + "&rsargs[]=&rsargs[]=%2C&rsargs[]=palavra&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=obra_formatado&rsargs[]=587d40e95f249&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=")).openConnection();
+            String url = "http://ww2.bc.ufrpe.br/pergamum/biblioteca/index.php?rs=ajax_resultados&rst=&rsrnd=" + new Date().getTime() + "&rsargs[]=50&rsargs[]=" + params[0][2] + "&rsargs[]=" + params[0][0] + "&rsargs[]=" + params[0][1] + "&rsargs[]=&rsargs[]=%2C&rsargs[]=palavra&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=" + (params[0][3] != null ? params[0][3] : "") + "&rsargs[]=&rsargs[]=obra_formatado&rsargs[]=587d40e95f249&rsargs[]=&rsargs[]=&rsargs[]=&rsargs[]=";
+
+            URLConnection connection = (new URL(url)).openConnection();
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             connection.connect();

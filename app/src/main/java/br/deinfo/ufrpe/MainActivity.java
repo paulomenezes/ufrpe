@@ -188,4 +188,14 @@ public class MainActivity extends AppCompatActivity
     public void updateTitle(String title) {
         setTitle(title);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (sSelectedMenu == R.id.library) {
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.content);
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 }

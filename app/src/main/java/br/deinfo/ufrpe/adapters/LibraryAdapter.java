@@ -1,5 +1,6 @@
 package br.deinfo.ufrpe.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import org.parceler.Parcels;
 import java.util.List;
 
 import br.deinfo.ufrpe.BookDetailActivity;
+import br.deinfo.ufrpe.MainActivity;
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.models.Book;
 
@@ -29,16 +31,14 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
     private List<Book> mBooks;
     private Context mContext;
 
-    public LibraryAdapter(List<Book> discussions) {
+    public LibraryAdapter(Activity activity, List<Book> discussions) {
         mBooks = discussions;
+        mContext = activity;
     }
 
     @Override
     public LibraryAdapter.LibraryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_book, parent, false);
-
-        if (mContext == null)
-            mContext = parent.getContext();
 
         return new LibraryAdapter.LibraryViewHolder(view);
     }
@@ -69,7 +69,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, BookDetailActivity.class);
                 intent.putExtra("book", Parcels.wrap(book));
-                mContext.startActivity(intent);
+                ((Activity) mContext).startActivityForResult(intent, 0);
             }
         });
     }
