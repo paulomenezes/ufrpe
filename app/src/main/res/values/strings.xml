@@ -37,7 +37,10 @@
         <item>CODAI</item>
     </string-array>
 
-    <string name="title_activity_main">Minhas Cadeiras</string>
+    <string name="overview">Visão Geral</string>
+    <string name="timetable">Horário</string>
+    <string name="restaurant">Restaurante Universitário</string>
+    <string name="bus">Ônibus</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -135,4 +138,6 @@
     <string name="bookDescription">Descrição Física</string>
     <string name="bookISBN">ISBN</string>
     <string name="bookSubjects">Assuntos</string>
+    <string name="ufrpe">UFRPE</string>
+    <string name="system">Sistema</string>
 </resources>

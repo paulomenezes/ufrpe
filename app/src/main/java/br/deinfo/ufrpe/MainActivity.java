@@ -87,38 +87,38 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (sSelectedMenu == R.id.home) {
-            if (!sTodaySelectWeek)
-                getMenuInflater().inflate(R.menu.menu_today_week, menu);
-            else
-                getMenuInflater().inflate(R.menu.menu_today_day, menu);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.day:
-                sTodaySelectWeek = false;
-                invalidateOptionsMenu();
-
-                changeFragment(new TodayFragment(), true);
-                break;
-            case R.id.week:
-                sTodaySelectWeek = true;
-                invalidateOptionsMenu();
-
-                changeFragment(new WeekFragment(), true);
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        if (sSelectedMenu == R.id.home) {
+//            if (!sTodaySelectWeek)
+//                getMenuInflater().inflate(R.menu.menu_today_week, menu);
+//            else
+//                getMenuInflater().inflate(R.menu.menu_today_day, menu);
+//        }
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//
+//        switch (id) {
+//            case R.id.day:
+//                sTodaySelectWeek = false;
+//                invalidateOptionsMenu();
+//
+//                changeFragment(new TodayFragment(), true);
+//                break;
+//            case R.id.week:
+//                sTodaySelectWeek = true;
+//                invalidateOptionsMenu();
+//
+//                changeFragment(new WeekFragment(), true);
+//                break;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity
             item.setChecked(true);
 
         if (id == R.id.home) {
-            setTitle(getString(R.string.title_activity_main));
+            setTitle(getString(R.string.overview));
 
             invalidateOptionsMenu();
             changeFragment(new TodayFragment(), first);
@@ -145,6 +145,11 @@ public class MainActivity extends AppCompatActivity
             CalendarFragment calendarFragment = new CalendarFragment();
             calendarFragment.setMainTitle(this);
             changeFragment(calendarFragment, first);
+        } else if (id == R.id.timetable) {
+            setTitle(getString(R.string.timetable));
+
+            invalidateOptionsMenu();
+            changeFragment(new WeekFragment(), first);
         } else if (id == R.id.messages) {
             setTitle(getString(R.string.messages));
 
