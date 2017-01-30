@@ -1,6 +1,5 @@
 package br.deinfo.ufrpe.fragments;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +22,8 @@ import java.util.List;
 
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.adapters.CoursesAdapter;
+import br.deinfo.ufrpe.async.LoadScheduleAsync;
+import br.deinfo.ufrpe.listeners.LoadScheduleListener;
 import br.deinfo.ufrpe.models.Classes;
 import br.deinfo.ufrpe.models.Course;
 import br.deinfo.ufrpe.models.CourseAssignment;
@@ -48,18 +49,27 @@ public class TodayFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_today, container, false);
+        final View view = inflater.inflate(R.layout.fragment_today, container, false);
 
         mUser = Session.getUser();
 
         if (sClasses == null || sClasses.size() == 0) {
-            try {
-                loadSchedule();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            new LoadScheduleAsync(getContext(), new LoadScheduleListener() {
+                @Override
+                public void schedule(List<Classes> classes) {
+                    sClasses = classes;
+
+                    load(view);
+                }
+            }).execute();
+        } else {
+            load(view);
         }
 
+        return view;
+    }
+
+    private void load(View view) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
         Calendar calendar = Calendar.getInstance();
@@ -142,26 +152,5 @@ public class TodayFragment extends Fragment {
                 t.printStackTrace();
             }
         });
-
-        return view;
-    }
-
-    private void loadSchedule() throws Exception {
-        InputStream is = this.getResources().openRawResource(R.raw.schedules);
-        int size = is.available();
-        byte[] buffer = new byte[size];
-        is.read(buffer);
-        is.close();
-
-        String bufferString = new String(buffer);
-
-        JSONArray jsonArray = new JSONArray(bufferString);
-
-        sClasses = new ArrayList<>();
-
-        for (int i = 0; i < jsonArray.length(); i++) {
-            Classes classes = new Gson().fromJson(jsonArray.getJSONObject(i).toString(), Classes.class);
-            sClasses.add(classes);
-        }
     }
 }
