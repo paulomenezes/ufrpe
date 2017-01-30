@@ -29,6 +29,7 @@ import java.util.Locale;
 import br.deinfo.ufrpe.fragments.CalendarFragment;
 import br.deinfo.ufrpe.fragments.LibraryFragment;
 import br.deinfo.ufrpe.fragments.MessagesFragment;
+import br.deinfo.ufrpe.fragments.RestaurantFragment;
 import br.deinfo.ufrpe.fragments.TodayFragment;
 import br.deinfo.ufrpe.fragments.WeekFragment;
 import br.deinfo.ufrpe.listeners.MainTitle;
@@ -160,6 +161,11 @@ public class MainActivity extends AppCompatActivity
 
             invalidateOptionsMenu();
             changeFragment(new LibraryFragment(), first);
+        } else if (id == R.id.restaurant) {
+            setTitle(getString(R.string.restaurant));
+
+            invalidateOptionsMenu();
+            changeFragment(new RestaurantFragment(), first);
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
 

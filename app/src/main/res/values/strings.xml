@@ -100,6 +100,12 @@
     <string name="subject">Assunto</string>
     <string name="noBooks">Nenhum livro encontrado.</string>
 
+    <string name="monday">Segunda</string>
+    <string name="tuesday">Terça</string>
+    <string name="wednesday">Quarta</string>
+    <string name="thursday">Quinta</string>
+    <string name="friday">Sexta</string>
+
     <string-array name="day_of_week">
         <item>Domingo</item>
         <item>Segunda-feira</item>
@@ -144,4 +150,14 @@
     <string name="quantityAvailable">Disponível no acervo</string>
     <string name="loaned">Emprestado</string>
     <string name="seeBooks">Ver exemplares</string>
+    <string name="lunch">Almoço</string>
+    <string name="main">Principal</string>
+    <string name="grill">Grelha</string>
+    <string name="vegetarian">Vegetariano</string>
+    <string name="fastgrill">Fastgrill</string>
+    <string name="accompaniment">Acompanhamento</string>
+    <string name="salad">Salada</string>
+    <string name="dessert">Salada</string>
+    <string name="juice">Suco</string>
+    <string name="dinner">Jantar</string>
 </resources>
