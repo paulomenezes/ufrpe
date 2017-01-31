@@ -2,6 +2,7 @@ package br.deinfo.ufrpe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -13,18 +14,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.pkmmte.view.CircularImageView;
 import com.squareup.picasso.Picasso;
 
-import org.parceler.Parcels;
-
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import br.deinfo.ufrpe.fragments.CalendarFragment;
 import br.deinfo.ufrpe.fragments.LibraryFragment;
@@ -43,8 +41,10 @@ public class MainActivity extends AppCompatActivity
 
     private User mUser;
 
-    private static boolean sTodaySelectWeek = false;
+    private NavigationView mNavigationView;
     private static int sSelectedMenu = -1;
+
+    private Map<Integer, Fragment> mFragmentMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +58,24 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        mFragmentMap = new HashMap<>();
+        mFragmentMap.put(R.id.home, new TodayFragment());
+        mFragmentMap.put(R.id.timetable, new WeekFragment());
+        mFragmentMap.put(R.id.messages, new MessagesFragment());
+        mFragmentMap.put(R.id.library, new LibraryFragment());
+        mFragmentMap.put(R.id.restaurant, new RestaurantFragment());
+
+        CalendarFragment calendarFragment = new CalendarFragment();
+        calendarFragment.setMainTitle(this);
+        mFragmentMap.put(R.id.calendar, calendarFragment);
+
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
 
         mUser = Data.getUser(this);
         Session.setUser(mUser);
 
-        View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main);
+        View headerView = mNavigationView.inflateHeaderView(R.layout.nav_header_main);
 
         CircularImageView imageView = (CircularImageView) headerView.findViewById(R.id.picture);
         Picasso.with(this).load(mUser.getPicture()).into(imageView);
@@ -75,7 +86,37 @@ public class MainActivity extends AppCompatActivity
         name.setText(String.format(Locale.ENGLISH, "%s %s", mUser.getFirstName(), mUser.getLastName()));
         email.setText(mUser.getEmail());
 
-        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.home));
+        if (savedInstanceState != null) {
+            int menu = savedInstanceState.getInt("menu");
+            sSelectedMenu = menu;
+
+            onNavigationItemSelected(mNavigationView.getMenu().findItem(menu));
+        } else {
+            onNavigationItemSelected(mNavigationView.getMenu().findItem(R.id.home));
+        }
+    }
+
+    private int getCheckedItem() {
+        Menu menu = mNavigationView.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            if (item.isChecked()) {
+                return item.getItemId();
+            } else if (item.hasSubMenu()) {
+                for (int j = 0; j < item.getSubMenu().size(); j++) {
+                    if (item.getSubMenu().getItem(j).isChecked())
+                        return item.getSubMenu().getItem(j).getItemId();
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("menu", getCheckedItem());
     }
 
     @Override
@@ -88,39 +129,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        if (sSelectedMenu == R.id.home) {
-//            if (!sTodaySelectWeek)
-//                getMenuInflater().inflate(R.menu.menu_today_week, menu);
-//            else
-//                getMenuInflater().inflate(R.menu.menu_today_day, menu);
-//        }
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//
-//        switch (id) {
-//            case R.id.day:
-//                sTodaySelectWeek = false;
-//                invalidateOptionsMenu();
-//
-//                changeFragment(new TodayFragment(), true);
-//                break;
-//            case R.id.week:
-//                sTodaySelectWeek = true;
-//                invalidateOptionsMenu();
-//
-//                changeFragment(new WeekFragment(), true);
-//                break;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -129,43 +137,28 @@ public class MainActivity extends AppCompatActivity
 
         sSelectedMenu = id;
 
-        if (item.isChecked())
-            item.setChecked(false);
-        else
-            item.setChecked(true);
+        for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
+            mNavigationView.getMenu().getItem(i).setChecked(false);
+        }
+
+        item.setChecked(true);
 
         if (id == R.id.home) {
             setTitle(getString(R.string.overview));
-
-            invalidateOptionsMenu();
-            changeFragment(new TodayFragment(), first);
         } else if (id == R.id.calendar) {
             setTitle(getString(R.string.calendar));
-
-            invalidateOptionsMenu();
-            CalendarFragment calendarFragment = new CalendarFragment();
-            calendarFragment.setMainTitle(this);
-            changeFragment(calendarFragment, first);
         } else if (id == R.id.timetable) {
             setTitle(getString(R.string.timetable));
-
-            invalidateOptionsMenu();
-            changeFragment(new WeekFragment(), first);
         } else if (id == R.id.messages) {
             setTitle(getString(R.string.messages));
-
-            invalidateOptionsMenu();
-            changeFragment(new MessagesFragment(), first);
         } else if (id == R.id.library) {
             setTitle(getString(R.string.library));
 
-            invalidateOptionsMenu();
-            changeFragment(new LibraryFragment(), first);
+            mNavigationView.getMenu().findItem(R.id.ufrpe).getSubMenu().findItem(R.id.library).setChecked(true);
         } else if (id == R.id.restaurant) {
             setTitle(getString(R.string.restaurant));
 
-            invalidateOptionsMenu();
-            changeFragment(new RestaurantFragment(), first);
+            mNavigationView.getMenu().findItem(R.id.ufrpe).getSubMenu().findItem(R.id.restaurant).setChecked(true);
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
 
@@ -177,17 +170,28 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
+        if (id != R.id.logout) {
+            invalidateOptionsMenu();
+            changeFragment(id, first);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private void changeFragment(Fragment fragment, boolean first) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.content, fragment);
-        if (!first)
-            fragmentTransaction.addToBackStack(fragment.getClass().getName());
-        fragmentTransaction.commit();
+    private void changeFragment(int id, boolean first) {
+        if (mFragmentMap.containsKey(id)) {
+            Fragment fragment = mFragmentMap.get(id);
+
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.content, fragment);
+
+            if (!first)
+                fragmentTransaction.addToBackStack(fragment.getClass().getName());
+
+            fragmentTransaction.commit();
+        }
     }
 
     @Override

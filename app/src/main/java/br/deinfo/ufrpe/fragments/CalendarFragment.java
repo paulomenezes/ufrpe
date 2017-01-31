@@ -50,7 +50,7 @@ public class CalendarFragment extends Fragment {
     private List<Course> mSemesterCourses = new ArrayList<>();
     private HashMap<CalendarDay, List<Event>> mEvents = new HashMap<>();
 
-    private MainTitle mMainTitle;
+    private static MainTitle mMainTitle;
 
     public void setMainTitle(MainTitle mainTitle) {
         mMainTitle = mainTitle;

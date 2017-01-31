@@ -20,7 +20,7 @@
             android:title="@string/messages" />
     </group>
 
-    <item android:title="@string/ufrpe">
+    <item android:title="@string/ufrpe" android:id="@+id/ufrpe">
         <menu>
             <item
                 android:id="@+id/library"
@@ -37,7 +37,7 @@
         </menu>
     </item>
 
-    <item android:title="@string/system">
+    <item android:title="@string/system" android:id="@+id/system">
         <menu>
             <item
                 android:id="@+id/settings"

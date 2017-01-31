@@ -111,6 +111,8 @@ public class TodayFragment extends Fragment {
             day.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH) + 1));
         } else if (calendar.get(Calendar.DAY_OF_WEEK) - 1 == 6) {
             day.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH) + 2));
+        } else {
+            day.setText(String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)));
         }
 
         TextView date = (TextView) view.findViewById(R.id.date);
