@@ -1,6 +1,7 @@
 package br.deinfo.ufrpe;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     private static int sSelectedMenu = -1;
 
     private Map<Integer, Fragment> mFragmentMap;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +56,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
 
         mFragmentMap = new HashMap<>();
         mFragmentMap.put(R.id.home, new TodayFragment());
@@ -72,8 +74,12 @@ public class MainActivity extends AppCompatActivity
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        mUser = Data.getUser(this);
-        Session.setUser(mUser);
+        if (Session.getUser() == null) {
+            mUser = Data.getUser(this);
+            Session.setUser(mUser);
+        } else {
+            mUser = Session.getUser();
+        }
 
         View headerView = mNavigationView.inflateHeaderView(R.layout.nav_header_main);
 
@@ -184,14 +190,30 @@ public class MainActivity extends AppCompatActivity
         if (mFragmentMap.containsKey(id)) {
             Fragment fragment = mFragmentMap.get(id);
 
+            if (getSupportFragmentManager().findFragmentByTag(fragment.getClass().getSimpleName()) != null)
+                fragment = getSupportFragmentManager().findFragmentByTag(fragment.getClass().getSimpleName());
+
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.content, fragment);
+            fragmentTransaction.replace(R.id.content, fragment, fragment.getClass().getSimpleName());
 
             if (!first)
                 fragmentTransaction.addToBackStack(fragment.getClass().getName());
 
             fragmentTransaction.commit();
         }
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onPostCreate(savedInstanceState, persistentState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override

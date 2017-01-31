@@ -19,6 +19,8 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,6 +52,8 @@ public class CalendarFragment extends Fragment {
     private List<Course> mSemesterCourses = new ArrayList<>();
     private HashMap<CalendarDay, List<Event>> mEvents = new HashMap<>();
 
+    private MaterialCalendarView mCalendarView;
+
     private static MainTitle mMainTitle;
 
     public void setMainTitle(MainTitle mainTitle) {
@@ -68,10 +72,10 @@ public class CalendarFragment extends Fragment {
 
         final TextView mMessage = (TextView) view.findViewById(R.id.message);
 
-        final MaterialCalendarView calendarView = (MaterialCalendarView) view.findViewById(R.id.calendarView);
-        calendarView.setTopbarVisible(false);
-        calendarView.setSelectedDate(Calendar.getInstance());
-        calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
+        mCalendarView = (MaterialCalendarView) view.findViewById(R.id.calendarView);
+        mCalendarView.setTopbarVisible(false);
+        mCalendarView.setSelectedDate(Calendar.getInstance());
+        mCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 if (mCalendar != null) {
@@ -89,7 +93,7 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
+        mCalendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
                 mMainTitle.updateTitle(String.format(Locale.ENGLISH, "%s, %d",
@@ -144,15 +148,15 @@ public class CalendarFragment extends Fragment {
                     mEvents.put(withoutTime, events);
                 }
 
-                if (mEvents.containsKey(CalendarDay.from(Calendar.getInstance()))) {
-                    CalendarEventAdapter calendarEventAdapter = new CalendarEventAdapter(mSemesterCourses, mEvents.get(CalendarDay.from(Calendar.getInstance())));
+                if (mEvents.containsKey(mCalendarView.getSelectedDate())) {
+                    CalendarEventAdapter calendarEventAdapter = new CalendarEventAdapter(mSemesterCourses, mEvents.get(mCalendarView.getSelectedDate()));
                     recyclerView.setAdapter(calendarEventAdapter);
                 } else {
                     mMessage.setVisibility(View.VISIBLE);
                 }
 
                 for (final Map.Entry<CalendarDay, List<String>> entry : dates.entrySet()) {
-                    calendarView.addDecorator(new DayViewDecorator() {
+                    mCalendarView.addDecorator(new DayViewDecorator() {
                         @Override
                         public boolean shouldDecorate(CalendarDay day) {
                             return day.equals(entry.getKey());
@@ -178,6 +182,24 @@ public class CalendarFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null && mCalendarView != null) {
+            CalendarDay day = savedInstanceState.getParcelable("date");
+            mCalendarView.setSelectedDate(day);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mCalendarView != null)
+            outState.putParcelable("date", mCalendarView.getSelectedDate());
     }
 
     private String getColor(int courseId) {
