@@ -32,6 +32,7 @@ import br.deinfo.ufrpe.models.User;
 import br.deinfo.ufrpe.services.AVAService;
 import br.deinfo.ufrpe.services.Requests;
 import br.deinfo.ufrpe.utils.CompareTodayCourse;
+import br.deinfo.ufrpe.utils.Data;
 import br.deinfo.ufrpe.utils.Functions;
 import br.deinfo.ufrpe.utils.Session;
 import retrofit2.Call;
@@ -53,15 +54,28 @@ public class TodayFragment extends Fragment {
 
         mUser = Session.getUser();
 
-        if (sClasses == null || sClasses.size() == 0) {
-            new LoadScheduleAsync(getContext(), new LoadScheduleListener() {
-                @Override
-                public void schedule(List<Classes> classes) {
-                    sClasses = classes;
+        boolean classLoaded = false;
 
-                    load(view);
-                }
-            }).execute();
+        for (int i = 0; i < mUser.getCourses().size(); i++) {
+            if (mUser.getCourses().get(i).getClasses() != null) {
+                classLoaded = true;
+                break;
+            }
+        }
+
+        if (!classLoaded) {
+            if (sClasses == null || sClasses.size() == 0) {
+                new LoadScheduleAsync(getContext(), new LoadScheduleListener() {
+                    @Override
+                    public void schedule(List<Classes> classes) {
+                        sClasses = classes;
+
+                        load(view);
+                        }
+                }).execute();
+            } else {
+                load(view);
+            }
         } else {
             load(view);
         }
@@ -79,12 +93,15 @@ public class TodayFragment extends Fragment {
         if (today == 0 || today == 6)
             today = 1;
 
+
         for (int i = 0; i < mUser.getCourses().size(); i++) {
             if (Functions.thisSemester(mUser.getCourses().get(i).getShortname())) {
-                for (int j = 0; j < sClasses.size(); j++) {
-                    if (sClasses.get(j).getCod().equals(mUser.getCourses().get(i).getShortname().split("-")[1])) {
-                        mUser.getCourses().get(i).setClasses(sClasses.get(j));
-                        break;
+                if (sClasses != null) {
+                    for (int j = 0; j < sClasses.size(); j++) {
+                        if (sClasses.get(j).getCod().equals(mUser.getCourses().get(i).getShortname().split("-")[1])) {
+                            mUser.getCourses().get(i).setClasses(sClasses.get(j));
+                            break;
+                        }
                     }
                 }
 
@@ -95,6 +112,10 @@ public class TodayFragment extends Fragment {
                     }
                 }
             }
+        }
+
+        if (sClasses != null) {
+            Data.saveUser(getActivity(), mUser);
         }
 
         Collections.sort(todayCourses, new CompareTodayCourse());
