@@ -162,9 +162,8 @@ public class MainActivity extends AppCompatActivity
 
             mNavigationView.getMenu().findItem(R.id.ufrpe).getSubMenu().findItem(R.id.library).setChecked(true);
         } else if (id == R.id.restaurant) {
-            setTitle(getString(R.string.restaurant));
-
-            mNavigationView.getMenu().findItem(R.id.ufrpe).getSubMenu().findItem(R.id.restaurant).setChecked(true);
+            Intent i = new Intent(this, RestaurantActivity.class);
+            startActivity(i);
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
 
@@ -176,7 +175,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
-        if (id != R.id.logout) {
+        if (id != R.id.logout && id != R.id.restaurant) {
             invalidateOptionsMenu();
             changeFragment(id, first);
         }

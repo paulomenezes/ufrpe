@@ -160,4 +160,19 @@
     <string name="dessert">Salada</string>
     <string name="juice">Suco</string>
     <string name="dinner">Jantar</string>
+    <string name="about">Sobre</string>
+    <string name="soap">Sopa</string>
+    <string name="businessHours">Horário de atendimento</string>
+    <string name="mondayToFriday">Segunda a Sexta-feira:</string>
+    <string name="timeToLunch">- Almoço: 10h 30m as 14h</string>
+    <string name="timeToDinner">- Jantar: 16h 30m as 19h</string>
+    <string name="mealPrice">Valores das refeições</string>
+    <string name="forClients">Para clientes cadastrados:</string>
+    <string name="priceLunchClients">- Almoço: R$ 2,00</string>
+    <string name="proceDinnerClients">- Jantar: R$ 1,50</string>
+    <string name="forNonClients">Para clientes não cadastrados:</string>
+    <string name="priceLunchNonClients">- Almoço: R$ 10,00</string>
+    <string name="priceDinnerNonClients">- Jantar: R$ 9,00</string>
+    <string name="close">Fechar</string>
+    <string name="map">Mapa</string>
 </resources>

@@ -37,7 +37,6 @@ import br.deinfo.ufrpe.utils.Session;
  */
 
 public class WeekFragment extends Fragment {
-    private List<Classes> sClasses;
     private User mUser;
 
     @Nullable
@@ -46,7 +45,6 @@ public class WeekFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_week, container, false);
 
         mUser = Session.getUser();
-        sClasses = TodayFragment.sClasses;
 
         Calendar calendar = Calendar.getInstance();
         //final List<Course>[] courses = new List[6];
@@ -56,13 +54,6 @@ public class WeekFragment extends Fragment {
 
         for (int i = 0; i < mUser.getCourses().size(); i++) {
             if (Functions.thisSemester(mUser.getCourses().get(i).getShortname())) {
-                for (int j = 0; j < sClasses.size(); j++) {
-                    if (sClasses.get(j).getCod().equals(mUser.getCourses().get(i).getShortname().split("-")[1])) {
-                        mUser.getCourses().get(i).setClasses(sClasses.get(j));
-                        break;
-                    }
-                }
-
                 for (int j = 0; j < mUser.getCourses().get(i).getClasses().getSchedules().size(); j++) {
                     int time = Integer.parseInt(mUser.getCourses().get(i).getClasses().getSchedules().get(j).getTimeStart().split(":")[0]);
 

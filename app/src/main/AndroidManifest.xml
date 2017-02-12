@@ -70,6 +70,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.deinfo.ufrpe.MainActivity" />
         </activity>
+        <activity
+            android:name=".RestaurantActivity"
+            android:label="@string/restaurant"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.deinfo.ufrpe.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

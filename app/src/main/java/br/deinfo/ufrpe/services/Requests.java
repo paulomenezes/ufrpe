@@ -2,6 +2,7 @@ package br.deinfo.ufrpe.services;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 /**
  * Created by paulo on 02/10/2016.
@@ -10,9 +11,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Requests {
     private static Requests requests;
 
-    private Retrofit retrofit;
+    private Retrofit retrofitAVA;
+    private Retrofit retrofitRestaurant;
 
     private static String AVA_URL = "http://ava.ufrpe.br";
+    private static String RESTAURANT_URL = "http://restaurante.6te.net";
 
     public static String LOGIN_SERVICE = "moodle_mobile_app";
 
@@ -30,9 +33,14 @@ public class Requests {
     public static String FUNCTION_GET_GRADES = "gradereport_user_get_grades_table";
 
     private Requests() {
-        retrofit = new Retrofit.Builder()
+        retrofitAVA = new Retrofit.Builder()
                 .baseUrl(AVA_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        retrofitRestaurant = new Retrofit.Builder()
+                .baseUrl(RESTAURANT_URL)
+                .addConverterFactory(SimpleXmlConverterFactory.create())
                 .build();
     }
 
@@ -45,8 +53,10 @@ public class Requests {
     }
 
     public AVAService getAVAService() {
-        return retrofit.create(AVAService.class);
+        return retrofitAVA.create(AVAService.class);
     }
 
-
+    public RestaurantService getRestaurantService() {
+        return retrofitRestaurant.create(RestaurantService.class);
+    }
 }

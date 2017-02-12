@@ -14,12 +14,14 @@ import br.deinfo.ufrpe.models.Forum;
 import br.deinfo.ufrpe.models.ForumPosts;
 import br.deinfo.ufrpe.models.Grades;
 import br.deinfo.ufrpe.models.Messages;
+import br.deinfo.ufrpe.models.Restaurant;
 import br.deinfo.ufrpe.models.SendMessage;
 import br.deinfo.ufrpe.models.SiteInfo;
 import br.deinfo.ufrpe.models.Token;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 /**
