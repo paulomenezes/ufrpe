@@ -164,6 +164,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.restaurant) {
             Intent i = new Intent(this, RestaurantActivity.class);
             startActivity(i);
+        } else if (id == R.id.map) {
+            Intent i = new Intent(this, MapsActivity.class);
+            startActivity(i);
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
 
@@ -175,7 +178,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         }
 
-        if (id != R.id.logout && id != R.id.restaurant) {
+        if (id != R.id.logout && id != R.id.restaurant && id != R.id.map) {
             invalidateOptionsMenu();
             changeFragment(id, first);
         }
