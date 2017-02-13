@@ -109,6 +109,29 @@ public class LibraryFragment extends Fragment implements BookListener {
 
         mNobooks = (TextView) view.findViewById(R.id.noBooks);
 
+        if (savedInstanceState != null) {
+            mSearchField.setText(savedInstanceState.getString("author"));
+
+            String type = savedInstanceState.getString("type");
+
+            switch (type) {
+                case "T":
+                    mTypes[1].setChecked(true);
+                    break;
+                case "A":
+                    mTypes[2].setChecked(true);
+                    break;
+                case "S":
+                    mTypes[3].setChecked(true);
+                    break;
+                default:
+                    mTypes[0].setChecked(true);
+                    break;
+            }
+
+            search();
+        }
+
         return view;
     }
 
@@ -178,5 +201,21 @@ public class LibraryFragment extends Fragment implements BookListener {
 
             search(number);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        String type = "L";
+        if (mTypes[1].isChecked())
+            type = "T";
+        else if (mTypes[2].isChecked())
+            type = "A";
+        else if (mTypes[3].isChecked())
+            type = "S";
+
+        outState.putString("author", mSearchField.getText().toString());
+        outState.putString("type", type);
     }
 }
