@@ -42,9 +42,7 @@ import br.deinfo.ufrpe.models.BookCopies;
 public class BookReferencesFragment extends Fragment implements BookReferencesListener {
 
     private TextView mTitle, mReference;
-
-    public BookReferencesFragment() {
-    }
+    private List<String> mReferences;
 
     public static BookReferencesFragment newInstance(Book book) {
         BookReferencesFragment fragment = new BookReferencesFragment();
@@ -66,13 +64,18 @@ public class BookReferencesFragment extends Fragment implements BookReferencesLi
         String[] params = new String[1];
         params[0] = String.valueOf(book.getId());
 
-        new BookReferencesAsync(getContext(), this).execute(params);
+        if (mReferences == null)
+            new BookReferencesAsync(getContext(), this).execute(params);
+        else
+            referencesBook(mReferences);
 
         return view;
     }
 
     @Override
     public void referencesBook(List<String> references) {
+        mReferences = references;
+
         mTitle.setText(references.get(0));
         mReference.setText(references.get(1));
     }

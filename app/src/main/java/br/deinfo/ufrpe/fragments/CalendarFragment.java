@@ -1,5 +1,6 @@
 package br.deinfo.ufrpe.fragments;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,7 +52,7 @@ public class CalendarFragment extends Fragment {
     private br.deinfo.ufrpe.models.Calendar mCalendar;
     private List<Course> mSemesterCourses = new ArrayList<>();
     private HashMap<CalendarDay, List<Event>> mEvents = new HashMap<>();
-
+    private ProgressDialog mLoading;
     private MaterialCalendarView mCalendarView;
 
     private static MainTitle mMainTitle;
@@ -71,6 +72,8 @@ public class CalendarFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         final TextView mMessage = (TextView) view.findViewById(R.id.message);
+
+        mLoading = ProgressDialog.show(getContext(), null, getString(R.string.loading), true);
 
         mCalendarView = (MaterialCalendarView) view.findViewById(R.id.calendarView);
         mCalendarView.setTopbarVisible(false);
@@ -173,6 +176,7 @@ public class CalendarFragment extends Fragment {
                     });
                 }
 
+                mLoading.dismiss();
             }
 
             @Override

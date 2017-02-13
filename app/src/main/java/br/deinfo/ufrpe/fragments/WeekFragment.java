@@ -60,13 +60,8 @@ public class WeekFragment extends Fragment {
                     if (courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()] == null) {
                         courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()] = new HashMap<>();
                     }
-                        //List<Course> key = new ArrayList<>();
-                        //key.add(mUser.getCourses().get(i));
 
-                        courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()].put(time, mUser.getCourses().get(i));
-                    //} else {
-                     //   courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()].add(time, mUser.getCourses().get(i));
-                    //}
+                    courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()].put(time, mUser.getCourses().get(i));
 
                     if (time < minHour)
                         minHour = time;

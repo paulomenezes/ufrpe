@@ -47,6 +47,7 @@ public class BookCopiesAdapter extends RecyclerView.Adapter<BookCopiesAdapter.Bo
         holder.mLibrary.setText(bookCopies.getLibrary());
         holder.mQuantityAvailable.setText(String.valueOf(bookCopies.getAvailable()));
         holder.mLoaned.setText(String.valueOf(bookCopies.getLoaned()));
+        holder.mTotal.setText(String.valueOf(bookCopies.getAvailable() + bookCopies.getLoaned()));
         holder.mSeeBooks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,7 +62,7 @@ public class BookCopiesAdapter extends RecyclerView.Adapter<BookCopiesAdapter.Bo
     }
 
     class BookCopiesViewHolder extends RecyclerView.ViewHolder {
-        private TextView mLibrary, mQuantityAvailable, mLoaned;
+        private TextView mLibrary, mQuantityAvailable, mLoaned, mTotal;
         private Button mSeeBooks;
 
         BookCopiesViewHolder(View itemView) {
@@ -70,6 +71,7 @@ public class BookCopiesAdapter extends RecyclerView.Adapter<BookCopiesAdapter.Bo
             mLibrary = (TextView) itemView.findViewById(R.id.library);
             mQuantityAvailable = (TextView) itemView.findViewById(R.id.quantityAvailable);
             mLoaned = (TextView) itemView.findViewById(R.id.loaned);
+            mTotal = (TextView) itemView.findViewById(R.id.total);
 
             mSeeBooks = (Button) itemView.findViewById(R.id.seeBooks);
         }

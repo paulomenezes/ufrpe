@@ -37,8 +37,7 @@ public class BookDetailFragment extends Fragment implements BookDetailListener {
     private Button mPrimaryAuthor, mSecondaryAuthor;
     private ViewDataBinding mBinding;
 
-    public BookDetailFragment() {
-    }
+    private Map<String, String> mBook;
 
     public static BookDetailFragment newInstance(Book book) {
         BookDetailFragment fragment = new BookDetailFragment();
@@ -61,13 +60,18 @@ public class BookDetailFragment extends Fragment implements BookDetailListener {
         String[] params = new String[1];
         params[0] = String.valueOf(book.getId());
 
-        new BookDetailAsync(getContext(), this).execute(params);
+        if (mBook == null)
+            new BookDetailAsync(getContext(), this).execute(params);
+        else
+            detailBook(mBook);
 
         return mBinding.getRoot();
     }
 
     @Override
     public void detailBook(Map<String, String> book) {
+        mBook = book;
+
         mBinding.setVariable(BR.map, book);
         mBinding.executePendingBindings();
 

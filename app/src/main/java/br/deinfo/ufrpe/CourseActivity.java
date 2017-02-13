@@ -1,6 +1,7 @@
 package br.deinfo.ufrpe;
 
 import android.graphics.Color;
+import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,6 +47,8 @@ public class CourseActivity extends AppCompatActivity {
     private CourseContentAdapter mCourseContentAdapter;
     private UsersAdapter mUsersAdapter;
     private GradeAdapter mGradeAdapter;
+
+    private int mOpenTab = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +105,7 @@ public class CourseActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<AVAUser>> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
 
@@ -119,7 +122,7 @@ public class CourseActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Grades> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
 
@@ -130,12 +133,15 @@ public class CourseActivity extends AppCompatActivity {
             public void onTabSelected(@IdRes int tabId) {
                 switch (tabId) {
                     case R.id.topics:
+                        mOpenTab = R.id.topics;
                         recyclerView.setAdapter(mCourseContentAdapter);
                         break;
                     case R.id.participants:
+                        mOpenTab = R.id.participants;
                         recyclerView.setAdapter(mUsersAdapter);
                         break;
                     case R.id.grades:
+                        mOpenTab = R.id.grades;
                         recyclerView.setAdapter(mGradeAdapter);
                         break;
                 }
@@ -155,5 +161,12 @@ public class CourseActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+
+        outState.putInt("tab", mOpenTab);
     }
 }
