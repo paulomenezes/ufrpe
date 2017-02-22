@@ -103,20 +103,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     private int getCheckedItem() {
-        Menu menu = mNavigationView.getMenu();
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
-            if (item.isChecked()) {
-                return item.getItemId();
-            } else if (item.hasSubMenu()) {
-                for (int j = 0; j < item.getSubMenu().size(); j++) {
-                    if (item.getSubMenu().getItem(j).isChecked())
-                        return item.getSubMenu().getItem(j).getItemId();
-                }
-            }
-        }
+        return sSelectedMenu;
 
-        return -1;
+//        Menu menu = mNavigationView.getMenu();
+//        for (int i = 0; i < menu.size(); i++) {
+//            MenuItem item = menu.getItem(i);
+//            if (item.isChecked()) {
+//                return item.getItemId();
+//            } else if (item.hasSubMenu()) {
+//                for (int j = 0; j < item.getSubMenu().size(); j++) {
+//                    MenuItem subMenu = menu.getItem(i).getSubMenu().getItem(j);
+//
+//                    if (subMenu.isChecked())
+//                        return subMenu.getItemId();
+//                }
+//            }
+//        }
+//
+//        return -1;
     }
 
     @Override
@@ -145,6 +149,12 @@ public class MainActivity extends AppCompatActivity
 
         for (int i = 0; i < mNavigationView.getMenu().size(); i++) {
             mNavigationView.getMenu().getItem(i).setChecked(false);
+
+            if (mNavigationView.getMenu().getItem(i).hasSubMenu()) {
+                for (int j = 0; j < mNavigationView.getMenu().getItem(i).getSubMenu().size(); j++) {
+                    mNavigationView.getMenu().getItem(i).getSubMenu().getItem(j).setChecked(false);
+                }
+            }
         }
 
         item.setChecked(true);

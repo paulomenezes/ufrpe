@@ -60,6 +60,9 @@ public class BookDetailFragment extends Fragment implements BookDetailListener {
         String[] params = new String[1];
         params[0] = String.valueOf(book.getId());
 
+        if (savedInstanceState != null)
+            mBook = Parcels.unwrap(savedInstanceState.getParcelable("book"));
+
         if (mBook == null)
             new BookDetailAsync(getContext(), this).execute(params);
         else
@@ -143,5 +146,12 @@ public class BookDetailFragment extends Fragment implements BookDetailListener {
                 mBookSubjects.addView(button);
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("book", Parcels.wrap(mBook));
     }
 }

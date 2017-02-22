@@ -20,6 +20,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import org.parceler.Parcels;
+
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,7 @@ import br.deinfo.ufrpe.models.Book;
 
 public class LibraryFragment extends Fragment implements BookListener {
 
-    private List<Book> mBooks = new ArrayList<>();
+    private ArrayList<Book> mBooks = new ArrayList<>();
 
     private RadioButton[] mTypes;
     private TextView mNobooks;
@@ -100,17 +102,12 @@ public class LibraryFragment extends Fragment implements BookListener {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mRecyclerView.setAdapter(new LibraryAdapter(getActivity(), mBooks));
         mRecyclerView.setLayoutManager(linearLayout);
-//        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayout) {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                search(mSearchField.getText().toString(), page + 1);
-//            }
-//        });
 
         mNobooks = (TextView) view.findViewById(R.id.noBooks);
 
         if (savedInstanceState != null) {
             mSearchField.setText(savedInstanceState.getString("author"));
+            mNoSearch = true; //savedInstanceState.getBoolean("noSearch");
 
             String type = savedInstanceState.getString("type");
 
@@ -129,7 +126,12 @@ public class LibraryFragment extends Fragment implements BookListener {
                     break;
             }
 
-            search();
+            mBooks = Parcels.unwrap(savedInstanceState.getParcelable("books"));
+            if (mBooks != null && mBooks.size() > 0) {
+                downloadBooks(mBooks);
+            } else {
+                search();
+            }
         }
 
         return view;
@@ -217,5 +219,7 @@ public class LibraryFragment extends Fragment implements BookListener {
 
         outState.putString("author", mSearchField.getText().toString());
         outState.putString("type", type);
+        outState.putParcelable("books", Parcels.wrap(mBooks));
+        outState.putBoolean("noSearch", mNoSearch);
     }
 }

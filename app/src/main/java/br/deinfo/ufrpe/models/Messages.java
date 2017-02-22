@@ -1,15 +1,17 @@
 package br.deinfo.ufrpe.models;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by paulo on 31/10/2016.
  */
-
+@Parcel
 public class Messages {
     private List<Message> messages = new ArrayList<Message>();
-    private List<Object> warnings = new ArrayList<Object>();
+    //private List<Object> warnings = new ArrayList<Object>();
 
     /**
      *
@@ -34,17 +36,17 @@ public class Messages {
      * @return
      * The warnings
      */
-    public List<Object> getWarnings() {
-        return warnings;
-    }
-
-    /**
-     *
-     * @param warnings
-     * The warnings
-     */
-    public void setWarnings(List<Object> warnings) {
-        this.warnings = warnings;
-    }
+//    public List<Object> getWarnings() {
+//        return warnings;
+//    }
+//
+//    /**
+//     *
+//     * @param warnings
+//     * The warnings
+//     */
+//    public void setWarnings(List<Object> warnings) {
+//        this.warnings = warnings;
+//    }
 
 }

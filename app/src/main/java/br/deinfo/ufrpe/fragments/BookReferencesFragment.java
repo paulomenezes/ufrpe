@@ -64,6 +64,9 @@ public class BookReferencesFragment extends Fragment implements BookReferencesLi
         String[] params = new String[1];
         params[0] = String.valueOf(book.getId());
 
+        if (savedInstanceState != null)
+            mReferences = Parcels.unwrap(savedInstanceState.getParcelable("references"));
+
         if (mReferences == null)
             new BookReferencesAsync(getContext(), this).execute(params);
         else
@@ -78,5 +81,12 @@ public class BookReferencesFragment extends Fragment implements BookReferencesLi
 
         mTitle.setText(references.get(0));
         mReference.setText(references.get(1));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("references", Parcels.wrap(mReferences));
     }
 }

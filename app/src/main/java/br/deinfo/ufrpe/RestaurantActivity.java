@@ -2,6 +2,7 @@ package br.deinfo.ufrpe;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.PersistableBundle;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,6 +23,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+
+import org.parceler.Parcels;
+
+import java.util.Calendar;
 
 import br.deinfo.ufrpe.fragments.RestaurantFragment;
 import br.deinfo.ufrpe.listeners.RestaurantListener;
@@ -50,24 +55,40 @@ public class RestaurantActivity extends AppCompatActivity {
         ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        Calendar c = Calendar.getInstance();
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK) - 2;
+
+        mViewPager.setCurrentItem(dayOfWeek, true);
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        Call<Restaurant> restaurantCall = Requests.getInstance().getRestaurantService().getRestaurant();
-        restaurantCall.enqueue(new Callback<Restaurant>() {
-            @Override
-            public void onResponse(Call<Restaurant> call, Response<Restaurant> response) {
-                mRestaurant = response.body();
-                mSectionsPagerAdapter.notifyDataSetChanged();
-            }
+        if (savedInstanceState == null) {
+            Call<Restaurant> restaurantCall = Requests.getInstance().getRestaurantService().getRestaurant();
+            restaurantCall.enqueue(new Callback<Restaurant>() {
+                @Override
+                public void onResponse(Call<Restaurant> call, Response<Restaurant> response) {
+                    mRestaurant = response.body();
+                    mSectionsPagerAdapter.notifyDataSetChanged();
+                }
 
-            @Override
-            public void onFailure(Call<Restaurant> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Call<Restaurant> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        } else {
+            mRestaurant = Parcels.unwrap(savedInstanceState.getParcelable("restaurant"));
+            mSectionsPagerAdapter.notifyDataSetChanged();
+        }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putParcelable("restaurant", Parcels.wrap(mRestaurant));
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

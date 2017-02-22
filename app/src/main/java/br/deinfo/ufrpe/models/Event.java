@@ -1,12 +1,14 @@
 package br.deinfo.ufrpe.models;
 
+import org.parceler.Parcel;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by paulo on 30/10/2016.
  */
-
+@Parcel
 public class Event {
     private int id;
     private String name;
@@ -25,8 +27,8 @@ public class Event {
     private String uuid;
     private int sequence;
     private int timemodified;
-    private Object subscriptionid;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private String subscriptionid;
+   // private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     /**
      *
@@ -339,7 +341,7 @@ public class Event {
      * @return
      * The subscriptionid
      */
-    public Object getSubscriptionid() {
+    public String getSubscriptionid() {
         return subscriptionid;
     }
 
@@ -348,15 +350,15 @@ public class Event {
      * @param subscriptionid
      * The subscriptionid
      */
-    public void setSubscriptionid(Object subscriptionid) {
+    public void setSubscriptionid(String subscriptionid) {
         this.subscriptionid = subscriptionid;
     }
 
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
+//    public Map<String, Object> getAdditionalProperties() {
+//        return this.additionalProperties;
+//    }
+//
+//    public void setAdditionalProperty(String name, Object value) {
+//        this.additionalProperties.put(name, value);
+//    }
 }
