@@ -25,7 +25,7 @@ public class Data {
         editor.apply();
     }
 
-    public static User getUser(Activity activity) {
+    public static User getUser(Context activity) {
         SharedPreferences sharedPreferences = activity.getSharedPreferences(KEY_SHARED, Context.MODE_PRIVATE);
 
         String json = sharedPreferences.getString(KEY_USER, null);

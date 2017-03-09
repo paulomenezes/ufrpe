@@ -41,7 +41,7 @@ public class MessageActivity extends AppCompatActivity {
 
         final AVAService avaServices = Requests.getInstance().getAVAService();
         Call<Messages> messagesCall = avaServices.getMessages(messages.get(0).getUseridfrom(),
-                Session.getUser().getAvaID(), 0, 50, 0, "conversations", 1, Requests.FUNCTION_GET_MESSAGES, Session.getUser().getToken());
+                Session.getUser(this).getAvaID(), 0, 50, 0, "conversations", 1, Requests.FUNCTION_GET_MESSAGES, Session.getUser(this).getToken());
 
         final ChatAdapter adapter = new ChatAdapter(messages);
 
@@ -78,7 +78,7 @@ public class MessageActivity extends AppCompatActivity {
                 if (mType.getText().toString().isEmpty() || mType.getText().toString().replaceAll(" ", "").length() == 0) {
                     mType.setError(getString(R.string.required_field));
                 } else {
-                    Call<List<SendMessage>> send = avaServices.sendMessage(messages.get(0).getUseridto(), mType.getText().toString(), 1, Requests.FUNCTION_SEND_MESSAGE, Session.getUser().getToken());
+                    Call<List<SendMessage>> send = avaServices.sendMessage(messages.get(0).getUseridto(), mType.getText().toString(), 1, Requests.FUNCTION_SEND_MESSAGE, Session.getUser(MessageActivity.this).getToken());
                     send.enqueue(new Callback<List<SendMessage>>() {
                         @Override
                         public void onResponse(Call<List<SendMessage>> call, Response<List<SendMessage>> response) {
@@ -86,7 +86,7 @@ public class MessageActivity extends AppCompatActivity {
                                 Message newMessage = new Message();
                                 newMessage.setId(response.body().get(0).getMsgid());
                                 newMessage.setSmallmessage(mType.getText().toString());
-                                newMessage.setUseridfrom(Session.getUser().getAvaID());
+                                newMessage.setUseridfrom(Session.getUser(MessageActivity.this).getAvaID());
                                 newMessage.setTimecreated(System.currentTimeMillis() / 1000);
 
                                 messages.add(0, newMessage);

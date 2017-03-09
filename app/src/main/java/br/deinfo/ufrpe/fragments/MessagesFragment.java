@@ -48,8 +48,8 @@ public class MessagesFragment extends Fragment {
             mLoading = ProgressDialog.show(getActivity(), null,  getString(R.string.loading),  true);
 
             final AVAService avaServices = Requests.getInstance().getAVAService();
-            Call<Messages> messagesCall = avaServices.getMessages(Session.getUser().getAvaID(),
-                    0, 0, 50, 1, "conversations", 1, Requests.FUNCTION_GET_MESSAGES, Session.getUser().getToken());
+            Call<Messages> messagesCall = avaServices.getMessages(Session.getUser(getActivity()).getAvaID(),
+                    0, 0, 50, 1, "conversations", 1, Requests.FUNCTION_GET_MESSAGES, Session.getUser(getActivity()).getToken());
 
             messagesCall.enqueue(new Callback<Messages>() {
                 @Override
@@ -68,7 +68,7 @@ public class MessagesFragment extends Fragment {
                         userids[i] = (int) userIds.toArray()[i];
                     }
 
-                    Call<List<AVAUser>> usersCall = avaServices.getUserById(userids, Requests.FUNCTION_GET_USER, Session.getUser().getToken());
+                    Call<List<AVAUser>> usersCall = avaServices.getUserById(userids, Requests.FUNCTION_GET_USER, Session.getUser(getActivity()).getToken());
                     usersCall.enqueue(new Callback<List<AVAUser>>() {
                         @Override
                         public void onResponse(Call<List<AVAUser>> call, Response<List<AVAUser>> response) {

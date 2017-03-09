@@ -148,7 +148,7 @@ public class CourseContentAdapter extends RecyclerView.Adapter<CourseContentAdap
                 public void onClick(View view) {
                     if (courseContent.getModules()[k].getModname().equals("resource")) {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                Uri.parse(courseContent.getModules()[k].getContents()[0].getFileurl() + "&token=" + Session.getUser().getToken()));
+                                Uri.parse(courseContent.getModules()[k].getContents()[0].getFileurl() + "&token=" + Session.getUser(mContext).getToken()));
                         mContext.startActivity(browserIntent);
                     } else {
                         Intent intent = new Intent(mContext, ModuleActivity.class);

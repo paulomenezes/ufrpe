@@ -56,7 +56,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         holder.mTime.setText(formatTime.format(date));
         holder.mDate.setText(formatDate.format(date));
 
-        if (msg.getUseridfrom() == Session.getUser().getAvaID()) {
+        if (msg.getUseridfrom() == Session.getUser(mContext).getAvaID()) {
             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             params.setMargins(Functions.dpToPx(mContext, 48), Functions.dpToPx(mContext, 8), Functions.dpToPx(mContext, 16), Functions.dpToPx(mContext, 8));
             holder.mLayout.setLayoutParams(params);

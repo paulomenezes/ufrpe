@@ -44,7 +44,7 @@ public class WeekFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_week, container, false);
 
-        mUser = Session.getUser();
+        mUser = Session.getUser(getActivity());
 
         Calendar calendar = Calendar.getInstance();
         //final List<Course>[] courses = new List[6];

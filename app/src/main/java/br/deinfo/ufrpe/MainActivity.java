@@ -74,11 +74,11 @@ public class MainActivity extends AppCompatActivity
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
 
-        if (Session.getUser() == null) {
+        if (Session.getUser(this) == null) {
             mUser = Data.getUser(this);
             Session.setUser(mUser);
         } else {
-            mUser = Session.getUser();
+            mUser = Session.getUser(this);
         }
 
         View headerView = mNavigationView.inflateHeaderView(R.layout.nav_header_main);

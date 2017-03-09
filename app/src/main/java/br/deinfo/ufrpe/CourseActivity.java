@@ -27,6 +27,7 @@ import br.deinfo.ufrpe.models.Grade;
 import br.deinfo.ufrpe.models.Grades;
 import br.deinfo.ufrpe.models.Table;
 import br.deinfo.ufrpe.models.Tabledatum;
+import br.deinfo.ufrpe.models.User;
 import br.deinfo.ufrpe.services.AVAService;
 import br.deinfo.ufrpe.services.Requests;
 import br.deinfo.ufrpe.utils.Functions;
@@ -73,8 +74,10 @@ public class CourseActivity extends AppCompatActivity {
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        User user = Session.getUser(this);
+
         Call<List<CourseContent>> courseContentCall = mAvaService.getCourseContent(mCourse.getId(),
-                Requests.FUNCTION_GET_COURSE_CONTENTS, Session.getUser().getToken());
+                Requests.FUNCTION_GET_COURSE_CONTENTS, user.getToken());
 
         courseContentCall.enqueue(new Callback<List<CourseContent>>() {
             @Override
@@ -93,7 +96,7 @@ public class CourseActivity extends AppCompatActivity {
         });
 
         Call<List<AVAUser>> participantsCall = mAvaService.getParticipants(mCourse.getId(),
-                "limitfrom", 0, "limitnumber", 50, "sortby", "siteorder", Requests.FUNCTION_GET_PARTICIPANTS, Session.getUser().getToken());
+                "limitfrom", 0, "limitnumber", 50, "sortby", "siteorder", Requests.FUNCTION_GET_PARTICIPANTS, user.getToken());
 
         participantsCall.enqueue(new Callback<List<AVAUser>>() {
             @Override
@@ -109,8 +112,8 @@ public class CourseActivity extends AppCompatActivity {
             }
         });
 
-        Call<Grades> gradesCall = mAvaService.getGrades(mCourse.getId(), Session.getUser().getAvaID(),
-                Requests.FUNCTION_GET_GRADES, Session.getUser().getToken());
+        Call<Grades> gradesCall = mAvaService.getGrades(mCourse.getId(), user.getAvaID(),
+                Requests.FUNCTION_GET_GRADES, user.getToken());
 
         gradesCall.enqueue(new Callback<Grades>() {
             @Override

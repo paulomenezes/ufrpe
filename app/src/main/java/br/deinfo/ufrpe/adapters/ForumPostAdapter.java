@@ -56,7 +56,7 @@ public class ForumPostAdapter extends RecyclerView.Adapter<ForumPostAdapter.Foru
 
         try {
             Picasso.with(mContext)
-                    .load(post.getUserpictureurl() + "&token=" + Session.getUser().getToken())
+                    .load(post.getUserpictureurl() + "&token=" + Session.getUser(mContext).getToken())
                     .into(holder.mImageView);
         } catch (Exception e) {
             e.printStackTrace();

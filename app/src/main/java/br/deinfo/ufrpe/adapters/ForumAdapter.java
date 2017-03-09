@@ -64,7 +64,7 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHol
 
         try {
             Picasso.with(mContext)
-                    .load(discussion.getUsermodifiedpictureurl() + "&token=" + Session.getUser().getToken())
+                    .load(discussion.getUsermodifiedpictureurl() + "&token=" + Session.getUser(mContext).getToken())
                     .placeholder(R.drawable.ic_person_dark_48dp)
                     .into(holder.mImageView);
         } catch (Exception e) {

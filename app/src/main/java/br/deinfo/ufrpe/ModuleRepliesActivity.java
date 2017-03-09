@@ -46,7 +46,7 @@ public class ModuleRepliesActivity extends AppCompatActivity {
 
         AVAService mAvaService = Requests.getInstance().getAVAService();
 
-        Call<ForumPosts> getForum = mAvaService.getDiscussionPosts(discussion.getDiscussion(), Requests.FUNCTION_GET_DISCUSSIONS_POSTS, Session.getUser().getToken());
+        Call<ForumPosts> getForum = mAvaService.getDiscussionPosts(discussion.getDiscussion(), Requests.FUNCTION_GET_DISCUSSIONS_POSTS, Session.getUser(this).getToken());
         getForum.enqueue(new Callback<ForumPosts>() {
             @Override
             public void onResponse(Call<ForumPosts> call, Response<ForumPosts> response) {

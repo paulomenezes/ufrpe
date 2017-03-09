@@ -105,7 +105,7 @@ public class CalendarFragment extends Fragment {
         mMainTitle.updateTitle(String.format(Locale.ENGLISH, "%s, %d",
                 getResources().getStringArray(R.array.month)[Calendar.getInstance().get(Calendar.MONTH)], Calendar.getInstance().get(Calendar.YEAR)));
 
-        List<Course> courses = Session.getUser().getCourses();
+        List<Course> courses = Session.getUser(getActivity()).getCourses();
         for (int i = 0; i < courses.size(); i++) {
             if (Functions.thisSemester(courses.get(i).getShortname())) {
                 mSemesterCourses.add(courses.get(i));
@@ -190,7 +190,7 @@ public class CalendarFragment extends Fragment {
             }
 
             Call<br.deinfo.ufrpe.models.Calendar> calendarCall = avaServices.getCalendarEvents(1, 1, 0, 1480441941l,
-                    events, Requests.FUNCTION_GET_CALENDAR_EVENTS, Session.getUser().getToken());
+                    events, Requests.FUNCTION_GET_CALENDAR_EVENTS, Session.getUser(getActivity()).getToken());
 
             calendarCall.enqueue(new retrofit2.Callback<br.deinfo.ufrpe.models.Calendar>() {
                 @Override

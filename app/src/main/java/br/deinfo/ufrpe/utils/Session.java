@@ -1,5 +1,10 @@
 package br.deinfo.ufrpe.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+
+import br.deinfo.ufrpe.MainActivity;
 import br.deinfo.ufrpe.models.User;
 
 /**
@@ -13,7 +18,10 @@ public class Session {
         sUser = user;
     }
 
-    public static User getUser() {
+    public static User getUser(Context activity) {
+        if (sUser == null) {
+            sUser = Data.getUser(activity);
+        }
         return sUser;
     }
 }

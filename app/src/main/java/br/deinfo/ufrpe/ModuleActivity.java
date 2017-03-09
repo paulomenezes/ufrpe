@@ -130,7 +130,7 @@ public class ModuleActivity extends AppCompatActivity {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                 forum.setLayoutManager(linearLayoutManager);
 
-                Call<Forum> getForum = mAvaService.getDiscussion(module.getInstance(), "timemodified", 0, 10, Requests.FUNCTION_GET_DISCUSSIONS, Session.getUser().getToken());
+                Call<Forum> getForum = mAvaService.getDiscussion(module.getInstance(), "timemodified", 0, 10, Requests.FUNCTION_GET_DISCUSSIONS, Session.getUser(this).getToken());
                 getForum.enqueue(new Callback<Forum>() {
                     @Override
                     public void onResponse(Call<Forum> call, Response<Forum> response) {

@@ -52,7 +52,7 @@ public class TodayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_today, container, false);
 
-        mUser = Session.getUser();
+        mUser = Session.getUser(getActivity());
 
         boolean classLoaded = false;
 
