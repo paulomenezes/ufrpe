@@ -22,7 +22,9 @@ import br.deinfo.ufrpe.adapters.GradeAdapter;
 import br.deinfo.ufrpe.adapters.UsersAdapter;
 import br.deinfo.ufrpe.models.AVAUser;
 import br.deinfo.ufrpe.models.Course;
+import br.deinfo.ufrpe.models.CourseAssignment;
 import br.deinfo.ufrpe.models.CourseContent;
+import br.deinfo.ufrpe.models.Courses;
 import br.deinfo.ufrpe.models.Grade;
 import br.deinfo.ufrpe.models.Grades;
 import br.deinfo.ufrpe.models.Table;
@@ -75,6 +77,21 @@ public class CourseActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         User user = Session.getUser(this);
+
+        Call<CourseAssignment> object = mAvaService.getAssigments(new int[] { mCourse.getId() }, Requests.FUNCTION_GET_ASSIGNMENTS, user.getToken());
+        object.enqueue(new Callback<CourseAssignment>() {
+            @Override
+            public void onResponse(Call<CourseAssignment> call, Response<CourseAssignment> response) {
+                CourseAssignment assignment = response.body();
+
+                mCourse.setAssignments(assignment.getCourses()[0].getAssignments());
+            }
+
+            @Override
+            public void onFailure(Call<CourseAssignment> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
 
         Call<List<CourseContent>> courseContentCall = mAvaService.getCourseContent(mCourse.getId(),
                 Requests.FUNCTION_GET_COURSE_CONTENTS, user.getToken());

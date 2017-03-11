@@ -30,6 +30,7 @@ import br.deinfo.ufrpe.fragments.CalendarFragment;
 import br.deinfo.ufrpe.fragments.LibraryFragment;
 import br.deinfo.ufrpe.fragments.MessagesFragment;
 import br.deinfo.ufrpe.fragments.RestaurantFragment;
+import br.deinfo.ufrpe.fragments.SubjectFragment;
 import br.deinfo.ufrpe.fragments.TodayFragment;
 import br.deinfo.ufrpe.fragments.WeekFragment;
 import br.deinfo.ufrpe.listeners.MainTitle;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity
         mFragmentMap.put(R.id.messages, new MessagesFragment());
         mFragmentMap.put(R.id.library, new LibraryFragment());
         mFragmentMap.put(R.id.restaurant, new RestaurantFragment());
+        mFragmentMap.put(R.id.subjects, new SubjectFragment());
 
         CalendarFragment calendarFragment = new CalendarFragment();
         calendarFragment.setMainTitle(this);
@@ -184,6 +186,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
         } else if (id == R.id.ufrpecalendar) {
             setTitle(getString(R.string.ufrpeCalendar));
+        } else if (id == R.id.subjects) {
+            setTitle(getString(R.string.subjects));
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
 
