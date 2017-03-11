@@ -55,16 +55,20 @@ public class WeekFragment extends Fragment {
         for (int i = 0; i < mUser.getCourses().size(); i++) {
             if (Functions.thisSemester(mUser.getCourses().get(i).getShortname())) {
                 for (int j = 0; j < mUser.getCourses().get(i).getClasses().getSchedules().size(); j++) {
-                    int time = Integer.parseInt(mUser.getCourses().get(i).getClasses().getSchedules().get(j).getTimeStart().split(":")[0]);
+                    try {
+                        int time = Integer.parseInt(mUser.getCourses().get(i).getClasses().getSchedules().get(j).getTimeStart().split(":")[0]);
 
-                    if (courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()] == null) {
-                        courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()] = new HashMap<>();
+                        if (courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()] == null) {
+                            courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()] = new HashMap<>();
+                        }
+
+                        courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()].put(time, mUser.getCourses().get(i));
+
+                        if (time < minHour)
+                            minHour = time;
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
                     }
-
-                    courses[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()].put(time, mUser.getCourses().get(i));
-
-                    if (time < minHour)
-                        minHour = time;
                 }
             }
         }

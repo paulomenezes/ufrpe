@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import br.deinfo.ufrpe.fragments.AcademicCalendarFragment;
 import br.deinfo.ufrpe.fragments.CalendarFragment;
 import br.deinfo.ufrpe.fragments.LibraryFragment;
 import br.deinfo.ufrpe.fragments.MessagesFragment;
@@ -70,6 +71,10 @@ public class MainActivity extends AppCompatActivity
         CalendarFragment calendarFragment = new CalendarFragment();
         calendarFragment.setMainTitle(this);
         mFragmentMap.put(R.id.calendar, calendarFragment);
+
+        AcademicCalendarFragment academicCalendarFragment = new AcademicCalendarFragment();
+        academicCalendarFragment.setMainTitle(this);
+        mFragmentMap.put(R.id.ufrpecalendar, academicCalendarFragment);
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
@@ -177,6 +182,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.map) {
             Intent i = new Intent(this, MapsActivity.class);
             startActivity(i);
+        } else if (id == R.id.ufrpecalendar) {
+            setTitle(getString(R.string.ufrpeCalendar));
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
 

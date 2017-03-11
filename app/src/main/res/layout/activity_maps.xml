@@ -14,9 +14,10 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:padding="16dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         android:clipToPadding="false"
-        android:overScrollMode="never"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

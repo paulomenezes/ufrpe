@@ -22,19 +22,20 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import org.parceler.Parcels;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import br.deinfo.ufrpe.R;
-import br.deinfo.ufrpe.adapters.CalendarEventAdapter;
+import br.deinfo.ufrpe.adapters.AcademicCalendarEventAdapter;
 import br.deinfo.ufrpe.listeners.MainTitle;
 import br.deinfo.ufrpe.models.Course;
-import br.deinfo.ufrpe.models.Event;
 import br.deinfo.ufrpe.services.AVAService;
 import br.deinfo.ufrpe.services.Requests;
 import br.deinfo.ufrpe.utils.Functions;
@@ -44,14 +45,14 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * Created by paulo on 27/10/2016.
+ * Created by paulo on 10/03/2017.
  */
 
-public class CalendarFragment extends Fragment {
+public class AcademicCalendarFragment extends Fragment {
 
     private br.deinfo.ufrpe.models.Calendar mCalendar;
     private List<Course> mSemesterCourses = new ArrayList<>();
-    private HashMap<CalendarDay, List<Event>> mEvents = new HashMap<>();
+    private HashMap<CalendarDay, List<String>> mAcademicEvents = new HashMap<>();
     private ProgressDialog mLoading;
     private MaterialCalendarView mCalendarView;
     private RecyclerView mRecyclerView;
@@ -80,10 +81,10 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 if (mCalendar != null) {
-                    if (mEvents.containsKey(date)) {
+                    if (mAcademicEvents.containsKey(date)) {
                         mMessage.setVisibility(View.GONE);
 
-                        CalendarEventAdapter calendarEventAdapter = new CalendarEventAdapter(mSemesterCourses, mEvents.get(date));
+                        AcademicCalendarEventAdapter calendarEventAdapter = new AcademicCalendarEventAdapter(date, mAcademicEvents.get(mCalendarView.getSelectedDate()));
                         mRecyclerView.setAdapter(calendarEventAdapter);
                         mRecyclerView.setVisibility(View.VISIBLE);
                     } else {
@@ -115,38 +116,78 @@ public class CalendarFragment extends Fragment {
         return view;
     }
 
-    private void loadEvents() {
-        HashMap<CalendarDay, List<String>> dates = new HashMap<>();
+    private void loadEvents() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(getActivity().getResources().openRawResource(R.raw.calendar)));
 
-        for (int i = 0; i < mCalendar.getEvents().size(); i++) {
-            final Date date = new Date((long) mCalendar.getEvents().get(i).getTimestart() * 1000);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
+        // do reading, usually loop until end of file reading
+        StringBuilder sb = new StringBuilder();
+        String mLine = reader.readLine();
 
-            CalendarDay withoutTime = CalendarDay.from(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-            List<String> colors = new ArrayList<String>();
-            List<Event> events = new ArrayList<Event>();
+        int month = 1;
+        int year = 2017;
 
-            if (dates.containsKey(withoutTime)) {
-                colors = dates.get(withoutTime);
-                events = mEvents.get(withoutTime);
+        while (mLine != null) {
+            String[] line = mLine.split(";");
+            mLine = reader.readLine();
+
+            int dayStart = 1;
+            int dayEnd = 1;
+            boolean period = false;
+
+            if (line.length == 1) {
+                String[] date = line[0].split("/");
+                month = Integer.parseInt(date[0]) - 1;
+                year = Integer.parseInt(date[1]);
+
+                continue;
+            } else {
+                String[] range = line[0].split("-");
+                if (range.length == 1) {
+                    period = false;
+                    dayStart = Integer.parseInt(range[0]);
+                } else {
+                    period = true;
+                    dayStart = Integer.parseInt(range[0]);
+                    dayEnd = Integer.parseInt(range[1]);
+                }
             }
 
-            colors.add(getColor(mCalendar.getEvents().get(i).getCourseid()));
-            events.add(mCalendar.getEvents().get(i));
+            if (!period) {
+                CalendarDay calendarDay = CalendarDay.from(year, month, dayStart);
 
-            dates.put(withoutTime, colors);
-            mEvents.put(withoutTime, events);
+                if (mAcademicEvents.containsKey(calendarDay)) {
+                    mAcademicEvents.get(calendarDay).add(line[1]);
+                } else {
+                    List<String> eventTexts = new ArrayList<>();
+                    eventTexts.add(line[1]);
+
+                    mAcademicEvents.put(calendarDay, eventTexts);
+                }
+            } else {
+                for (int day = dayStart; day <= dayEnd; day++) {
+                    CalendarDay calendarDay = CalendarDay.from(year, month, day);
+
+                    if (mAcademicEvents.containsKey(calendarDay)) {
+                        mAcademicEvents.get(calendarDay).add(line[1]);
+                    } else {
+                        List<String> eventTexts = new ArrayList<>();
+                        eventTexts.add(line[1]);
+
+                        mAcademicEvents.put(calendarDay, eventTexts);
+                    }
+                }
+            }
         }
+        reader.close();
 
-        if (mEvents.containsKey(mCalendarView.getSelectedDate())) {
-            CalendarEventAdapter calendarEventAdapter = new CalendarEventAdapter(mSemesterCourses, mEvents.get(mCalendarView.getSelectedDate()));
+        if (mAcademicEvents.containsKey(mCalendarView.getSelectedDate())) {
+            AcademicCalendarEventAdapter calendarEventAdapter = new AcademicCalendarEventAdapter(mCalendarView.getSelectedDate(), mAcademicEvents.get(mCalendarView.getSelectedDate()));
             mRecyclerView.setAdapter(calendarEventAdapter);
         } else {
             mMessage.setVisibility(View.VISIBLE);
         }
 
-        for (final Map.Entry<CalendarDay, List<String>> entry : dates.entrySet()) {
+        for (final Map.Entry<CalendarDay, List<String>> entry : mAcademicEvents.entrySet()) {
             mCalendarView.addDecorator(new DayViewDecorator() {
                 @Override
                 public boolean shouldDecorate(CalendarDay day) {
@@ -157,7 +198,7 @@ public class CalendarFragment extends Fragment {
                 public void decorate(DayViewFacade view) {
                     int[] colors = new int[entry.getValue().size()];
                     for (int i = 0; i < colors.length; i++) {
-                        colors[i] = entry.getValue().get(i) != null ? Color.parseColor(entry.getValue().get(i)) : Color.BLACK;
+                        colors[i] = Color.WHITE;
                     }
                     view.addSpan(new MultipleDotSpan(5, colors));
                 }
@@ -170,13 +211,17 @@ public class CalendarFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null && mCalendarView != null) {
-            CalendarDay day = savedInstanceState.getParcelable("date");
-            mCalendarView.setSelectedDate(day);
+            try {
+                CalendarDay day = savedInstanceState.getParcelable("date");
+                mCalendarView.setSelectedDate(day);
 
-            br.deinfo.ufrpe.models.Calendar calendar = Parcels.unwrap(savedInstanceState.getParcelable("events"));
-            if (calendar != null) {
-                mCalendar = calendar;
-                loadEvents();
+                br.deinfo.ufrpe.models.Calendar calendar = Parcels.unwrap(savedInstanceState.getParcelable("events"));
+                if (calendar != null) {
+                    mCalendar = calendar;
+                    loadEvents();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } else {
             mLoading = ProgressDialog.show(getContext(), null, getString(R.string.loading), true);
@@ -197,7 +242,11 @@ public class CalendarFragment extends Fragment {
                 public void onResponse(Call<br.deinfo.ufrpe.models.Calendar> call, Response<br.deinfo.ufrpe.models.Calendar> response) {
                     mCalendar = response.body();
 
-                    loadEvents();
+                    try {
+                        loadEvents();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     mLoading.dismiss();
                 }
@@ -230,3 +279,4 @@ public class CalendarFragment extends Fragment {
         return null;
     }
 }
+

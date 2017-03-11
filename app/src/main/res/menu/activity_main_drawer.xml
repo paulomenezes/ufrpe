@@ -18,6 +18,10 @@
             android:id="@+id/messages"
             android:icon="@drawable/ic_chat_black_24dp"
             android:title="@string/messages" />
+        <item
+            android:id="@+id/subjects"
+            android:icon="@drawable/ic_content_copy_black_24dp"
+            android:title="@string/subjects" />
     </group>
 
     <item android:title="@string/ufrpe" android:id="@+id/ufrpe">

@@ -23,9 +23,17 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
     private List<CardItem> mData;
     private float mBaseElevation;
 
-    public CardPagerAdapter() {
+    private String[] mNames;
+    private String[] mAddress;
+    private String[] mPhones;
+
+    public CardPagerAdapter(String[] names, String[] address, String[] phones) {
         mData = new ArrayList<>();
         mViews = new ArrayList<>();
+
+        mNames = names;
+        mAddress = address;
+        mPhones = phones;
     }
 
     public void addCardItem(CardItem item) {
@@ -75,11 +83,19 @@ public class CardPagerAdapter extends PagerAdapter implements CardAdapter {
         mViews.set(position, null);
     }
 
+    @Override
+    public float getPageWidth(int position) {
+        return 0.93f;
+    }
+
     private void bind(CardItem item, View view) {
-        TextView titleTextView = (TextView) view.findViewById(R.id.titleTextView);
-        TextView contentTextView = (TextView) view.findViewById(R.id.contentTextView);
-        titleTextView.setText(item.getTitle());
-        contentTextView.setText(item.getText());
+        TextView name = (TextView) view.findViewById(R.id.name);
+        TextView address = (TextView) view.findViewById(R.id.address);
+        TextView phone = (TextView) view.findViewById(R.id.phone);
+
+        name.setText(mNames[item.getIndex()]);
+        address.setText(mAddress[item.getIndex()]);
+        phone.setText(mPhones[item.getIndex()]);
     }
 
 }

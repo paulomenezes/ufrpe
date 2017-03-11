@@ -181,4 +181,120 @@
     <string name="cegen">CEGEN</string>
     <string name="total">Total de Cópias</string>
     <string name="ufrpeCalendar">Calendário Acadêmico</string>
+    <string name="subjects">Disciplinas</string>
+
+    <!-- Map Places -->
+    <string-array name="places_names">
+        <item>Universidade Federal Rural de Pernambuco (UFRPE)</item>
+        <item>Biblioteca Central UFRPE</item>
+        <item>Departamento de Matemática</item>
+        <item>Departamento de Biologia - UFRPE</item>
+        <item>Hospital Veterinário Escola do Departamento de Medicina Veterinária da UFRPE</item>
+        <item>DLCH - Departamento de Letras e Ciências Humanas</item>
+        <item>Programa de Pós-graduação em Física Aplicada - UFRPE</item>
+        <item>Pró-Reitoria de Gestão Estudantil - PROGEST - UFRPE</item>
+        <item>CENAPESQ - Centro de Apoio á Pesquisa da UFRPE</item>
+        <item>Núcleo de Tecnologia da Informação - UFRPE</item>
+        <item>Departamento de Estatística e Informática - UFRPE</item>
+        <item>Centro de Ensino de Graduação - CEGOE/UFRPE</item>
+        <item>Departamento de Física - UFRPE 5 ANDAR CEGEN</item>
+        <item>Restaurante Universitário UFRPE</item>
+        <item>Zootecnia - UFRPE</item>
+        <item>Departamento de Economia Ufrpe</item>
+        <item>Centro De Ciências Biológicas UFRPE</item>
+        <item>Departamento de Estatística e Informática - Laboratórios de Ensino 05, 10 e 15 - UFRPE</item>
+        <item>Incubatec - Incubadora UFRPE</item>
+        <item>DEINFO - Departamento de Estatística e Informática da UFRPE</item>
+        <item>Memorial da UFRPE</item>
+        <item>Pro-Reitoria de Extensão da UFRPE (PRAE)</item>
+        <item>Departamento De Medicina Veterinária - UFRPE</item>
+        <item>Museu de Anatomia Comparada da UFRPE</item>
+        <item>UFRPE Laboratório de Síntese de Compostos Bioativos</item>
+        <item>Auditório Luis De Melo Amorim, DMV - UFRPE</item>
+        <item>Departamento de Estatística e Informática - Laboratórios de Ensino 33, 35,37,39,41 e 43 - UFRPE</item>
+        <item>Departamento de Educação - UFRPE</item>
+        <item>Laboratório de Manejo do Solo - UFRPE</item>
+        <item>Curso De LETRAS UFRPE</item>
+        <item>Departamento de Tecnologia Rural Laboratório de Materiais de Construção : Professor Romildo Morant de Holanda</item>
+        <item>Sala 2a quimica</item>
+        <item>Área de Histologia/DMFA</item>
+        <item>PADR - Programa de Pós-Graduação em Administração e Desenvolvimento</item>
+        <item>SUGEP</item>
+    </string-array>
+
+    <string-array name="places_addresses">
+        <item>Rua Manoel de Medeiros - Dois Irmãos, Recife - PE, 52171-900, Brazil</item>
+        <item>Universidade Federal Rural de Pernambuco - R. Manuel de Medeiros, s/n - Dois Irmãos, Recife - PE, 52171-030, Brazil</item>
+        <item>R. Manuel de Medeiros, s/n - Dois Irmãos, Recife - PE, 52171-900, Brazil</item>
+        <item>UFRPE - 4ª ANDAR - CEGEN - R. Manuel de Medeiros - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>Ac. associação professores UFRPE - Dois Irmãos, Recife - PE, 52171-011, Brazil</item>
+        <item>401 - R. Manuel de Medeiros, 97 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>R. Dom Manuel de Medeiros, s/n - Dois Irmãos, Recife - PE, 52171-030, Brazil</item>
+        <item>Rua Dom Manoel da Costa, s/n - Dois Irmãos, Recife - PE, 52171-900, Brazil</item>
+        <item>Rua Manoel de Medeiros - Dois Irmãos, Recife - PE, 52171-900, Brazil</item>
+        <item>R. Manuel de Medeiros - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>-96 - R. Manuel de Medeiros, 36 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>R. Manuel de Medeiros, 2 - Dois Irmãos, Recife - PE, 52171-900, Brazil</item>
+        <item>Campus Dois Irmãos - Rua Dom Manoel de Medeiros, S/N - Dois Irmãos, Recife - PE, 52171-050, Brazil</item>
+        <item>95 - R. Manuel de Medeiros, 35 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>R. Prof. Cláudio Selva - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>Dois Irmãos, Recife - State of Pernambuco, Brazil</item>
+        <item>R. Manuel de Medeiros - Dois Irmãos, Recife - PE, 52171-030, Brazil</item>
+        <item>Sítio dos Pintos, Camaragibe - State of Pernambuco, Brazil</item>
+        <item>Rod. Gov. Mário Covas - Dois Irmãos, Recife - PE, 52171-011, Brazil</item>
+        <item>R. Manuel de Medeiros, 531-587 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>95 - R. Manuel de Medeiros, 35 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>R. Manuel de Medeiros, 2-34 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>Dois Irmãos, Recife - State of Pernambuco, Brazil</item>
+        <item>R. Manuel de Medeiros, 177 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>Universidade Federal Rural de Pernambuco - R. Manuel de Medeiros, S/n - Dois Irmãos, Recife - PE, 52171-900, Brazil</item>
+        <item>R. Manuel de Medeiros, 404-530 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>Rua Dom Manoel de Medeiros 1221 - Campus Dois Irmãos - Dois Irmãos, Recife - PE, 52171-900, Brazil</item>
+        <item>R. Manuel de Medeiros, 177 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>R. Manuel de Medeiros - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>UFRPE - Rua Dom Manuel de Medeiros, s/n - Dois Irmãos, Recife - PE, 52171-900, Brazil</item>
+        <item>Rod. Gov. Mário Covas - Dois Irmãos, Recife - PE, 52171-011, Brazil</item>
+        <item>Ac. associação professores UFRPE - Dois Irmãos, Recife - PE, 52171-030, Brazil</item>
+        <item>14, - R. Prof. Cláudio Selva, 2 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>R. Manuel de Medeiros, 876 - Dois Irmãos, Recife - PE, Brazil</item>
+        <item>Rua Dom Manoel de Medeiros, S/N Campus UFRPE Bloco C 1º andar. - Dois Irmãos, Recife - PE, 52171-900, Brazil</item>
+    </string-array>
+
+    <string-array name="places_numbers">
+        <item>(81) 3320-6000</item>
+        <item></item>
+        <item>(81) 3320-6181</item>
+        <item>(81) 3320-6481</item>
+        <item>(81) 3320-6484</item>
+        <item></item>
+        <item>(81) 3320-6441</item>
+        <item>(81) 3320-6091</item>
+        <item>(81) 3320-6073</item>
+        <item></item>
+        <item>(81) 3320-6550</item>
+        <item></item>
+        <item>(81) 3320-6068</item>
+        <item></item>
+        <item>(81) 3320-6196</item>
+        <item>(81) 3320-6481</item>
+        <item>(81) 3320-6046</item>
+        <item>(81) 3320-6451</item>
+        <item></item>
+        <item>(81) 3320-6066</item>
+        <item>(81) 3320-6391</item>
+        <item></item>
+        <item>(81) 3320-6400</item>
+        <item>3320-6400</item>
+        <item></item>
+        <item></item>
+        <item>3320-6390</item>
+        <item></item>
+        <item>(81) 3320-6382</item>
+        <item></item>
+        <item>(81) 3320-6581</item>
+        <item>(81) 3320-6232</item>
+        <item>3320-6452</item>
+        <item>(81) 3320-6260</item>
+        <item>(81) 3320-6460</item>
+    </string-array>
 </resources>
