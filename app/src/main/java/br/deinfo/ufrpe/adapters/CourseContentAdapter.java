@@ -79,16 +79,13 @@ public class CourseContentAdapter extends RecyclerView.Adapter<CourseContentAdap
         if (mCourseContent.size() == 1)
             openModule(holder, courseContent);
 
+        closeModule(holder);
         holder.mContentTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Boolean visible = (Boolean) holder.mContentModules.getTag();
                 if (visible) {
-                    holder.mContentModules.removeAllViews();
-
-                    holder.mContentModules.setTag(false);
-                    holder.mContentModules.setVisibility(View.GONE);
-                    holder.mArrow.setImageDrawable(mContext.getDrawable(R.drawable.ic_keyboard_arrow_down_grey_24dp));
+                    closeModule(holder);
                 } else {
                     openModule(holder, courseContent);
                 }
@@ -98,6 +95,14 @@ public class CourseContentAdapter extends RecyclerView.Adapter<CourseContentAdap
 
         holder.getBinding().setVariable(BR.content, courseContent);
         holder.getBinding().executePendingBindings();
+    }
+
+    private void closeModule(final CourseContentViewHolder holder) {
+        holder.mContentModules.removeAllViews();
+
+        holder.mContentModules.setTag(false);
+        holder.mContentModules.setVisibility(View.GONE);
+        holder.mArrow.setImageDrawable(mContext.getDrawable(R.drawable.ic_keyboard_arrow_down_grey_24dp));
     }
 
     private void openModule(final CourseContentViewHolder holder, final CourseContent courseContent) {

@@ -15,12 +15,14 @@ import com.roughike.bottombar.OnTabSelectListener;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.deinfo.ufrpe.adapters.CourseContentAdapter;
 import br.deinfo.ufrpe.adapters.GradeAdapter;
 import br.deinfo.ufrpe.adapters.UsersAdapter;
 import br.deinfo.ufrpe.models.AVAUser;
+import br.deinfo.ufrpe.models.Assignments;
 import br.deinfo.ufrpe.models.Course;
 import br.deinfo.ufrpe.models.CourseAssignment;
 import br.deinfo.ufrpe.models.CourseContent;
@@ -46,6 +48,7 @@ public class CourseActivity extends AppCompatActivity {
     private List<CourseContent> mCourseContent;
     private List<AVAUser> mParticipants;
     private List<Tabledatum> mGrades;
+    private List<Assignments> mAssignments;
 
     private CourseContentAdapter mCourseContentAdapter;
     private UsersAdapter mUsersAdapter;
@@ -70,81 +73,103 @@ public class CourseActivity extends AppCompatActivity {
 
         Functions.actionBarColor(this, mCourse.getNormalColor(), mCourse.getDarkColor());
 
-        mCourseContent = new ArrayList<>();
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         User user = Session.getUser(this);
 
-        Call<CourseAssignment> object = mAvaService.getAssigments(new int[] { mCourse.getId() }, Requests.FUNCTION_GET_ASSIGNMENTS, user.getToken());
-        object.enqueue(new Callback<CourseAssignment>() {
-            @Override
-            public void onResponse(Call<CourseAssignment> call, Response<CourseAssignment> response) {
-                CourseAssignment assignment = response.body();
+        if (savedInstanceState != null && savedInstanceState.getParcelable("assignments") != null) {
+            mAssignments = Parcels.unwrap(savedInstanceState.getParcelable("assignments"));
+            mCourse.setAssignments(mAssignments.toArray(new Assignments[mAssignments.size()]));
+        } else {
+            Call<CourseAssignment> object = mAvaService.getAssigments(new int[]{mCourse.getId()}, Requests.FUNCTION_GET_ASSIGNMENTS, user.getToken());
+            object.enqueue(new Callback<CourseAssignment>() {
+                @Override
+                public void onResponse(Call<CourseAssignment> call, Response<CourseAssignment> response) {
+                    CourseAssignment assignment = response.body();
+                    mAssignments = Arrays.asList(assignment.getCourses()[0].getAssignments());
+                    mCourse.setAssignments(assignment.getCourses()[0].getAssignments());
+                }
 
-                mCourse.setAssignments(assignment.getCourses()[0].getAssignments());
-            }
+                @Override
+                public void onFailure(Call<CourseAssignment> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
 
-            @Override
-            public void onFailure(Call<CourseAssignment> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        if (savedInstanceState != null && savedInstanceState.getParcelable("content") != null) {
+            mCourseContent = Parcels.unwrap(savedInstanceState.getParcelable("content"));
+            mCourseContentAdapter = new CourseContentAdapter(CourseActivity.this, mCourseContent, mCourse);
+            mCourseContentAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(mCourseContentAdapter);
+        } else {
+            Call<List<CourseContent>> courseContentCall = mAvaService.getCourseContent(mCourse.getId(),
+                    Requests.FUNCTION_GET_COURSE_CONTENTS, user.getToken());
 
-        Call<List<CourseContent>> courseContentCall = mAvaService.getCourseContent(mCourse.getId(),
-                Requests.FUNCTION_GET_COURSE_CONTENTS, user.getToken());
+            courseContentCall.enqueue(new Callback<List<CourseContent>>() {
+                @Override
+                public void onResponse(Call<List<CourseContent>> call, Response<List<CourseContent>> response) {
+                    mCourseContent = response.body();
 
-        courseContentCall.enqueue(new Callback<List<CourseContent>>() {
-            @Override
-            public void onResponse(Call<List<CourseContent>> call, Response<List<CourseContent>> response) {
-                mCourseContent = response.body();
+                    mCourseContentAdapter = new CourseContentAdapter(CourseActivity.this, mCourseContent, mCourse);
+                    mCourseContentAdapter.notifyDataSetChanged();
+                    recyclerView.setAdapter(mCourseContentAdapter);
+                }
 
-                mCourseContentAdapter = new CourseContentAdapter(CourseActivity.this, mCourseContent, mCourse);
-                mCourseContentAdapter.notifyDataSetChanged();
-                recyclerView.setAdapter(mCourseContentAdapter);
-            }
+                @Override
+                public void onFailure(Call<List<CourseContent>> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
 
-            @Override
-            public void onFailure(Call<List<CourseContent>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        if (savedInstanceState != null && savedInstanceState.getParcelable("participants") != null) {
+            mParticipants = Parcels.unwrap(savedInstanceState.getParcelable("participants"));
+            mUsersAdapter = new UsersAdapter(mParticipants);
+            mUsersAdapter.notifyDataSetChanged();
+        } else {
+            Call<List<AVAUser>> participantsCall = mAvaService.getParticipants(mCourse.getId(),
+                    "limitfrom", 0, "limitnumber", 50, "sortby", "siteorder", Requests.FUNCTION_GET_PARTICIPANTS, user.getToken());
 
-        Call<List<AVAUser>> participantsCall = mAvaService.getParticipants(mCourse.getId(),
-                "limitfrom", 0, "limitnumber", 50, "sortby", "siteorder", Requests.FUNCTION_GET_PARTICIPANTS, user.getToken());
+            participantsCall.enqueue(new Callback<List<AVAUser>>() {
+                @Override
+                public void onResponse(Call<List<AVAUser>> call, Response<List<AVAUser>> response) {
+                    mParticipants = response.body();
+                    mUsersAdapter = new UsersAdapter(mParticipants);
+                    mUsersAdapter.notifyDataSetChanged();
+                }
 
-        participantsCall.enqueue(new Callback<List<AVAUser>>() {
-            @Override
-            public void onResponse(Call<List<AVAUser>> call, Response<List<AVAUser>> response) {
-                mParticipants = response.body();
-                mUsersAdapter = new UsersAdapter(mParticipants);
-                mUsersAdapter.notifyDataSetChanged();
-            }
+                @Override
+                public void onFailure(Call<List<AVAUser>> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
 
-            @Override
-            public void onFailure(Call<List<AVAUser>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+        if (savedInstanceState != null && savedInstanceState.getParcelable("grades") != null) {
+            mGrades = Parcels.unwrap(savedInstanceState.getParcelable("grades"));
+            mGradeAdapter = new GradeAdapter(mGrades);
+            mGradeAdapter.notifyDataSetChanged();
+        } else {
+            Call<Grades> gradesCall = mAvaService.getGrades(mCourse.getId(), user.getAvaID(),
+                    Requests.FUNCTION_GET_GRADES, user.getToken());
 
-        Call<Grades> gradesCall = mAvaService.getGrades(mCourse.getId(), user.getAvaID(),
-                Requests.FUNCTION_GET_GRADES, user.getToken());
+            gradesCall.enqueue(new Callback<Grades>() {
+                @Override
+                public void onResponse(Call<Grades> call, Response<Grades> response) {
+                    mGrades = response.body().getTables().get(0).getTabledata();
+                    mGradeAdapter = new GradeAdapter(mGrades);
+                    mGradeAdapter.notifyDataSetChanged();
+                }
 
-        gradesCall.enqueue(new Callback<Grades>() {
-            @Override
-            public void onResponse(Call<Grades> call, Response<Grades> response) {
-                mGrades = response.body().getTables().get(0).getTabledata();
-                mGradeAdapter = new GradeAdapter(mGrades);
-                mGradeAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<Grades> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Call<Grades> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
 
         BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setActiveTabColor(Color.parseColor(mCourse.getNormalColor()));
@@ -184,9 +209,18 @@ public class CourseActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
         outState.putInt("tab", mOpenTab);
+
+        if (mCourseContent != null)
+            outState.putParcelable("content", Parcels.wrap(mCourseContent));
+
+        if (mParticipants != null)
+            outState.putParcelable("participants", Parcels.wrap(mParticipants));
+
+        if (mGrades != null)
+            outState.putParcelable("grades", Parcels.wrap(mGrades));
     }
 }
