@@ -1,7 +1,9 @@
 
 package br.deinfo.ufrpe.models;
 
+import org.parceler.Parcel;
 
+@Parcel
 public class Feedback {
 
     private String _class;

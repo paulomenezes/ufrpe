@@ -1,6 +1,9 @@
 
 package br.deinfo.ufrpe.models;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Itemname {
 
     private String _class;

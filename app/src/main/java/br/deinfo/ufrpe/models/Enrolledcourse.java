@@ -1,9 +1,11 @@
 package br.deinfo.ufrpe.models;
 
+import org.parceler.Parcel;
+
 /**
  * Created by paulo on 31/10/2016.
  */
-
+@Parcel
 public class Enrolledcourse {
     private int id;
     private String fullname;

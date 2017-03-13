@@ -1,5 +1,6 @@
 package br.deinfo.ufrpe.fragments;
 
+import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import java.util.Calendar;
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.BR;
 import br.deinfo.ufrpe.models.Restaurant;
+import br.deinfo.ufrpe.utils.Functions;
 
 /**
  * Created by paulo on 29/01/2017.
@@ -66,32 +68,33 @@ public class RestaurantFragment extends Fragment {
             lunchArrow.setImageDrawable(getActivity().getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp));
         }
 
-        lunchTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (lunchContent.getVisibility() == View.GONE) {
-                    lunchContent.setVisibility(View.VISIBLE);
-                    lunchArrow.setImageDrawable(getActivity().getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp));
-                } else {
-                    lunchContent.setVisibility(View.GONE);
-                    lunchArrow.setImageDrawable(getActivity().getDrawable(R.drawable.ic_keyboard_arrow_down_grey_24dp));
+        if (!getActivity().getResources().getBoolean(R.bool.isTablet) || Functions.getScreenOrientation(getActivity()) == Configuration.ORIENTATION_PORTRAIT) {
+            lunchTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (lunchContent.getVisibility() == View.GONE) {
+                        lunchContent.setVisibility(View.VISIBLE);
+                        lunchArrow.setImageDrawable(getActivity().getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp));
+                    } else {
+                        lunchContent.setVisibility(View.GONE);
+                        lunchArrow.setImageDrawable(getActivity().getDrawable(R.drawable.ic_keyboard_arrow_down_grey_24dp));
+                    }
                 }
-            }
-        });
+            });
 
-        dinnerTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (dinnerContent.getVisibility() == View.GONE) {
-                    dinnerContent.setVisibility(View.VISIBLE);
-                    dinnerArrow.setImageDrawable(getActivity().getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp));
-                } else {
-                    dinnerContent.setVisibility(View.GONE);
-                    dinnerArrow.setImageDrawable(getActivity().getDrawable(R.drawable.ic_keyboard_arrow_down_grey_24dp));
+            dinnerTitle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (dinnerContent.getVisibility() == View.GONE) {
+                        dinnerContent.setVisibility(View.VISIBLE);
+                        dinnerArrow.setImageDrawable(getActivity().getDrawable(R.drawable.ic_keyboard_arrow_up_black_24dp));
+                    } else {
+                        dinnerContent.setVisibility(View.GONE);
+                        dinnerArrow.setImageDrawable(getActivity().getDrawable(R.drawable.ic_keyboard_arrow_down_grey_24dp));
+                    }
                 }
-            }
-        });
-
+            });
+        }
 
         return view;
     }

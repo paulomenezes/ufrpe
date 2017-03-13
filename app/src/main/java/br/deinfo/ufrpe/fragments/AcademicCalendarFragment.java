@@ -34,6 +34,8 @@ import java.util.Map;
 
 import br.deinfo.ufrpe.R;
 import br.deinfo.ufrpe.adapters.AcademicCalendarEventAdapter;
+import br.deinfo.ufrpe.async.AcademicCalendarAsync;
+import br.deinfo.ufrpe.listeners.AcademicCalendarListener;
 import br.deinfo.ufrpe.listeners.MainTitle;
 import br.deinfo.ufrpe.models.Course;
 import br.deinfo.ufrpe.services.AVAService;
@@ -48,12 +50,9 @@ import retrofit2.Response;
  * Created by paulo on 10/03/2017.
  */
 
-public class AcademicCalendarFragment extends Fragment {
+public class AcademicCalendarFragment extends Fragment implements AcademicCalendarListener {
 
-    private br.deinfo.ufrpe.models.Calendar mCalendar;
-    private List<Course> mSemesterCourses = new ArrayList<>();
     private HashMap<CalendarDay, List<String>> mAcademicEvents = new HashMap<>();
-    private ProgressDialog mLoading;
     private MaterialCalendarView mCalendarView;
     private RecyclerView mRecyclerView;
     private TextView mMessage;
@@ -80,7 +79,7 @@ public class AcademicCalendarFragment extends Fragment {
         mCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                if (mCalendar != null) {
+                if (mAcademicEvents != null) {
                     if (mAcademicEvents.containsKey(date)) {
                         mMessage.setVisibility(View.GONE);
 
@@ -106,79 +105,12 @@ public class AcademicCalendarFragment extends Fragment {
         mMainTitle.updateTitle(String.format(Locale.ENGLISH, "%s, %d",
                 getResources().getStringArray(R.array.month)[Calendar.getInstance().get(Calendar.MONTH)], Calendar.getInstance().get(Calendar.YEAR)));
 
-        List<Course> courses = Session.getUser(getActivity()).getCourses();
-        for (int i = 0; i < courses.size(); i++) {
-            if (Functions.thisSemester(courses.get(i).getShortname())) {
-                mSemesterCourses.add(courses.get(i));
-            }
-        }
-
         return view;
     }
 
-    private void loadEvents() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(getActivity().getResources().openRawResource(R.raw.calendar)));
-
-        // do reading, usually loop until end of file reading
-        StringBuilder sb = new StringBuilder();
-        String mLine = reader.readLine();
-
-        int month = 1;
-        int year = 2017;
-
-        while (mLine != null) {
-            String[] line = mLine.split(";");
-            mLine = reader.readLine();
-
-            int dayStart = 1;
-            int dayEnd = 1;
-            boolean period = false;
-
-            if (line.length == 1) {
-                String[] date = line[0].split("/");
-                month = Integer.parseInt(date[0]) - 1;
-                year = Integer.parseInt(date[1]);
-
-                continue;
-            } else {
-                String[] range = line[0].split("-");
-                if (range.length == 1) {
-                    period = false;
-                    dayStart = Integer.parseInt(range[0]);
-                } else {
-                    period = true;
-                    dayStart = Integer.parseInt(range[0]);
-                    dayEnd = Integer.parseInt(range[1]);
-                }
-            }
-
-            if (!period) {
-                CalendarDay calendarDay = CalendarDay.from(year, month, dayStart);
-
-                if (mAcademicEvents.containsKey(calendarDay)) {
-                    mAcademicEvents.get(calendarDay).add(line[1]);
-                } else {
-                    List<String> eventTexts = new ArrayList<>();
-                    eventTexts.add(line[1]);
-
-                    mAcademicEvents.put(calendarDay, eventTexts);
-                }
-            } else {
-                for (int day = dayStart; day <= dayEnd; day++) {
-                    CalendarDay calendarDay = CalendarDay.from(year, month, day);
-
-                    if (mAcademicEvents.containsKey(calendarDay)) {
-                        mAcademicEvents.get(calendarDay).add(line[1]);
-                    } else {
-                        List<String> eventTexts = new ArrayList<>();
-                        eventTexts.add(line[1]);
-
-                        mAcademicEvents.put(calendarDay, eventTexts);
-                    }
-                }
-            }
-        }
-        reader.close();
+    @Override
+    public void loadEvents(HashMap<CalendarDay, List<String>> events) {
+        mAcademicEvents = events;
 
         if (mAcademicEvents.containsKey(mCalendarView.getSelectedDate())) {
             AcademicCalendarEventAdapter calendarEventAdapter = new AcademicCalendarEventAdapter(mCalendarView.getSelectedDate(), mAcademicEvents.get(mCalendarView.getSelectedDate()));
@@ -215,47 +147,17 @@ public class AcademicCalendarFragment extends Fragment {
                 CalendarDay day = savedInstanceState.getParcelable("date");
                 mCalendarView.setSelectedDate(day);
 
-                br.deinfo.ufrpe.models.Calendar calendar = Parcels.unwrap(savedInstanceState.getParcelable("events"));
+                HashMap<CalendarDay, List<String>> calendar = Parcels.unwrap(savedInstanceState.getParcelable("events"));
                 if (calendar != null) {
-                    mCalendar = calendar;
-                    loadEvents();
+                    loadEvents(calendar);
+                } else {
+                    new AcademicCalendarAsync(getActivity(), this).execute();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            mLoading = ProgressDialog.show(getContext(), null, getString(R.string.loading), true);
-
-            AVAService avaServices = Requests.getInstance().getAVAService();
-
-            int[] events = new int[mSemesterCourses.size()];
-
-            for (int i = 0; i < mSemesterCourses.size(); i++) {
-                events[i] = mSemesterCourses.get(i).getId();
-            }
-
-            Call<br.deinfo.ufrpe.models.Calendar> calendarCall = avaServices.getCalendarEvents(1, 1, 0, 1480441941l,
-                    events, Requests.FUNCTION_GET_CALENDAR_EVENTS, Session.getUser(getActivity()).getToken());
-
-            calendarCall.enqueue(new retrofit2.Callback<br.deinfo.ufrpe.models.Calendar>() {
-                @Override
-                public void onResponse(Call<br.deinfo.ufrpe.models.Calendar> call, Response<br.deinfo.ufrpe.models.Calendar> response) {
-                    mCalendar = response.body();
-
-                    try {
-                        loadEvents();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    mLoading.dismiss();
-                }
-
-                @Override
-                public void onFailure(Call<br.deinfo.ufrpe.models.Calendar> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            });
+            new AcademicCalendarAsync(getActivity(), this).execute();
         }
     }
 
@@ -265,18 +167,8 @@ public class AcademicCalendarFragment extends Fragment {
 
         if (mCalendarView != null) {
             outState.putParcelable("date", mCalendarView.getSelectedDate());
-            outState.putParcelable("events", Parcels.wrap(mCalendar));
+            outState.putParcelable("events", Parcels.wrap(mAcademicEvents));
         }
-    }
-
-    private String getColor(int courseId) {
-        for (int i = 0; i < mSemesterCourses.size(); i++) {
-            if (courseId == mSemesterCourses.get(i).getId()) {
-                return mSemesterCourses.get(i).getNormalColor();
-            }
-        }
-
-        return null;
     }
 }
 

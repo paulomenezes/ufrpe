@@ -2,6 +2,7 @@ package br.deinfo.ufrpe;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.PersistableBundle;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -28,15 +29,17 @@ import org.parceler.Parcels;
 
 import java.util.Calendar;
 
+import br.deinfo.ufrpe.async.RestaurantAsync;
 import br.deinfo.ufrpe.fragments.RestaurantFragment;
 import br.deinfo.ufrpe.listeners.RestaurantListener;
 import br.deinfo.ufrpe.models.Restaurant;
 import br.deinfo.ufrpe.services.Requests;
+import br.deinfo.ufrpe.utils.Functions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RestaurantActivity extends AppCompatActivity {
+public class RestaurantActivity extends AppCompatActivity implements RestaurantListener {
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private Restaurant mRestaurant;
@@ -64,19 +67,7 @@ public class RestaurantActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         if (savedInstanceState == null) {
-            Call<Restaurant> restaurantCall = Requests.getInstance().getRestaurantService().getRestaurant();
-            restaurantCall.enqueue(new Callback<Restaurant>() {
-                @Override
-                public void onResponse(Call<Restaurant> call, Response<Restaurant> response) {
-                    mRestaurant = response.body();
-                    mSectionsPagerAdapter.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onFailure(Call<Restaurant> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            });
+            new RestaurantAsync(this, this).execute();
         } else {
             mRestaurant = Parcels.unwrap(savedInstanceState.getParcelable("restaurant"));
             mSectionsPagerAdapter.notifyDataSetChanged();
@@ -116,6 +107,12 @@ public class RestaurantActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void getRestaurant(Restaurant restaurant) {
+        mRestaurant = restaurant;
+        mSectionsPagerAdapter.notifyDataSetChanged();
+    }
+
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
         private SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -141,17 +138,25 @@ public class RestaurantActivity extends AppCompatActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
+            boolean isTablet = getResources().getBoolean(R.bool.isTablet) &&
+                    Functions.getScreenOrientation(RestaurantActivity.this) == Configuration.ORIENTATION_LANDSCAPE;
+
             switch (position) {
                 case 0:
-                    return getString(R.string.monday) + (mRestaurant != null ? "\n(" + mRestaurant.getSegunda().getData().substring(0, 5) + ")" : "");
+                    return getString(R.string.monday) + (mRestaurant != null ? (isTablet ? "(" : "\n(") +
+                            mRestaurant.getSegunda().getData().substring(0, 5) + ")" : "");
                 case 1:
-                    return getString(R.string.tuesday) + (mRestaurant != null ? "\n(" + mRestaurant.getTerca().getData().substring(0, 5) + ")" : "");
+                    return getString(R.string.tuesday) + (mRestaurant != null ? (isTablet ? "(" : "\n(") +
+                            mRestaurant.getTerca().getData().substring(0, 5) + ")" : "");
                 case 2:
-                    return getString(R.string.wednesday) + (mRestaurant != null ? "\n(" + mRestaurant.getQuarta().getData().substring(0, 5) + ")" : "");
+                    return getString(R.string.wednesday) + (mRestaurant != null ? (isTablet ? "(" : "\n(") +
+                            mRestaurant.getQuarta().getData().substring(0, 5) + ")" : "");
                 case 3:
-                    return getString(R.string.thursday) + (mRestaurant != null ? "\n(" + mRestaurant.getQuinta().getData().substring(0, 5) + ")" : "");
+                    return getString(R.string.thursday) + (mRestaurant != null ? (isTablet ? "(" : "\n(") +
+                            mRestaurant.getQuinta().getData().substring(0, 5) + ")" : "");
                 case 4:
-                    return getString(R.string.friday) + (mRestaurant != null ? "\n(" + mRestaurant.getSexta().getData().substring(0, 5) + ")" : "");
+                    return getString(R.string.friday) + (mRestaurant != null ? (isTablet ? "(" : "\n(") +
+                            mRestaurant.getSexta().getData().substring(0, 5) + ")" : "");
             }
             return null;
         }

@@ -1,7 +1,9 @@
 
 package br.deinfo.ufrpe.models;
 
+import org.parceler.Parcel;
 
+@Parcel
 public class Weight {
 
     private String _class;

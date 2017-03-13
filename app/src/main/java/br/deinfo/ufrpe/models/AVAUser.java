@@ -1,12 +1,14 @@
 package br.deinfo.ufrpe.models;
 
+import org.parceler.Parcel;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by paulo on 31/10/2016.
  */
-
+@Parcel
 public class AVAUser {
     private int id;
     private String fullname;

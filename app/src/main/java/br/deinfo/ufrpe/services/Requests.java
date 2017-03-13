@@ -12,10 +12,8 @@ public class Requests {
     private static Requests requests;
 
     private Retrofit retrofitAVA;
-    private Retrofit retrofitRestaurant;
 
     private static String AVA_URL = "http://ava.ufrpe.br";
-    private static String RESTAURANT_URL = "http://restaurante.6te.net";
 
     public static String LOGIN_SERVICE = "moodle_mobile_app";
 
@@ -37,11 +35,6 @@ public class Requests {
                 .baseUrl(AVA_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
-        retrofitRestaurant = new Retrofit.Builder()
-                .baseUrl(RESTAURANT_URL)
-                .addConverterFactory(SimpleXmlConverterFactory.create())
-                .build();
     }
 
     public static Requests getInstance() {
@@ -54,9 +47,5 @@ public class Requests {
 
     public AVAService getAVAService() {
         return retrofitAVA.create(AVAService.class);
-    }
-
-    public RestaurantService getRestaurantService() {
-        return retrofitRestaurant.create(RestaurantService.class);
     }
 }

@@ -1,7 +1,9 @@
 
 package br.deinfo.ufrpe.models;
 
+import org.parceler.Parcel;
 
+@Parcel
 public class Grade {
 
     private String _class;
