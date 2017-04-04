@@ -35,6 +35,7 @@ import br.deinfo.ufrpe.fragments.TodayFragment;
 import br.deinfo.ufrpe.fragments.WeekFragment;
 import br.deinfo.ufrpe.listeners.MainTitle;
 import br.deinfo.ufrpe.models.User;
+import br.deinfo.ufrpe.start.LoginActivity;
 import br.deinfo.ufrpe.start.TipsActivity;
 import br.deinfo.ufrpe.utils.Data;
 import br.deinfo.ufrpe.utils.Session;
@@ -193,7 +194,7 @@ public class MainActivity extends AppCompatActivity
 
             FirebaseAuth.getInstance().signOut();
 
-            Intent intent = new Intent(this, TipsActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();

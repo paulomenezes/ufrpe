@@ -33,13 +33,7 @@
             tools:replace="android:theme" />
         <activity
             android:name=".start.TipsActivity"
-            android:theme="@style/AppThemeNoActionbar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppThemeNoActionbar" />
         <activity
             android:name=".start.SocialActivity"
             android:parentActivityName=".start.TipsActivity"
@@ -51,7 +45,13 @@
         <activity
             android:name=".start.LoginActivity"
             android:parentActivityName=".start.ConfirmActivity"
-            android:theme="@style/AppThemeNoActionbar" />
+            android:theme="@style/AppThemeNoActionbar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/overview"

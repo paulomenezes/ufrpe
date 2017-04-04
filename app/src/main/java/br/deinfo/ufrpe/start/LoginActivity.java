@@ -54,8 +54,16 @@ public class LoginActivity extends AppCompatActivity {
 
         ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
-        if (getIntent().hasExtra("user")) {
-            mUser = Parcels.unwrap(getIntent().getParcelableExtra("user"));
+        User user = Data.getUser(this);
+
+        if (user != null) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Data.KEY_USER, Parcels.wrap(user));
+            startActivity(intent);
+            finish();
+        } else {
+            mUser = new User();
 
             binding.setUser(mUser);
             binding.setHandlers(this);
@@ -64,8 +72,6 @@ public class LoginActivity extends AppCompatActivity {
             mDatabase = FirebaseDatabase.getInstance().getReference();
 
             mRelativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
-        } else {
-            finish();
         }
     }
 
@@ -99,6 +105,16 @@ public class LoginActivity extends AppCompatActivity {
                             SiteInfo siteInfo = response.body();
 
                             mUser.setAvaID(siteInfo.getUserid());
+                            if (siteInfo.getFirstname() != null)
+                                mUser.setFirstName(Functions.getCamelSentence(siteInfo.getFirstname()));
+
+                            if (siteInfo.getLastname() != null) {
+                                String[] lastName = siteInfo.getLastname().split(" ");
+                                mUser.setLastName(Functions.getCamelSentence(lastName[lastName.length - 1]));
+                            }
+
+                            if (siteInfo.getUserpictureurl() != null)
+                                mUser.setPicture(siteInfo.getUserpictureurl());
 
                             Call<List<Course>> coursesCall = mAVAServices.getUsersCourses(
                                     siteInfo.getUserid(),
