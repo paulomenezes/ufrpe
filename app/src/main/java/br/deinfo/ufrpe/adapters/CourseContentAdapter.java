@@ -76,10 +76,11 @@ public class CourseContentAdapter extends RecyclerView.Adapter<CourseContentAdap
     public void onBindViewHolder(final CourseContentViewHolder holder, int position) {
         final CourseContent courseContent = mCourseContent.get(position);
 
+        closeModule(holder);
+
         if (mCourseContent.size() == 1)
             openModule(holder, courseContent);
 
-        closeModule(holder);
         holder.mContentTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
