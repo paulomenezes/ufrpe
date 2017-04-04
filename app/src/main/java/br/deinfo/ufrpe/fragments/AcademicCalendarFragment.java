@@ -3,6 +3,8 @@ package br.deinfo.ufrpe.fragments;
 import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -37,9 +45,11 @@ import br.deinfo.ufrpe.adapters.AcademicCalendarEventAdapter;
 import br.deinfo.ufrpe.async.AcademicCalendarAsync;
 import br.deinfo.ufrpe.listeners.AcademicCalendarListener;
 import br.deinfo.ufrpe.listeners.MainTitle;
+import br.deinfo.ufrpe.models.Classes;
 import br.deinfo.ufrpe.models.Course;
 import br.deinfo.ufrpe.services.AVAService;
 import br.deinfo.ufrpe.services.Requests;
+import br.deinfo.ufrpe.utils.Data;
 import br.deinfo.ufrpe.utils.Functions;
 import br.deinfo.ufrpe.utils.MultipleDotSpan;
 import br.deinfo.ufrpe.utils.Session;
@@ -59,6 +69,9 @@ public class AcademicCalendarFragment extends Fragment implements AcademicCalend
 
     private static MainTitle mMainTitle;
 
+    private ProgressDialog mLoading;
+    private DatabaseReference mDatabase;
+
     public void setMainTitle(MainTitle mainTitle) {
         mMainTitle = mainTitle;
     }
@@ -72,6 +85,7 @@ public class AcademicCalendarFragment extends Fragment implements AcademicCalend
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mMessage = (TextView) view.findViewById(R.id.message);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mCalendarView = (MaterialCalendarView) view.findViewById(R.id.calendarView);
         mCalendarView.setTopbarVisible(false);
@@ -119,46 +133,84 @@ public class AcademicCalendarFragment extends Fragment implements AcademicCalend
             mMessage.setVisibility(View.VISIBLE);
         }
 
-        for (final Map.Entry<CalendarDay, List<String>> entry : mAcademicEvents.entrySet()) {
-            mCalendarView.addDecorator(new DayViewDecorator() {
-                @Override
-                public boolean shouldDecorate(CalendarDay day) {
-                    return day.equals(entry.getKey());
+        final Handler handler = new Handler(Looper.getMainLooper());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (final Map.Entry<CalendarDay, List<String>> entry : mAcademicEvents.entrySet()) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mCalendarView.addDecorator(new DayViewDecorator() {
+                                @Override
+                                public boolean shouldDecorate(CalendarDay day) {
+                                    return day.equals(entry.getKey());
+                                }
+
+                                @Override
+                                public void decorate(DayViewFacade view) {
+                                    int[] colors = new int[entry.getValue().size()];
+                                    for (int i = 0; i < colors.length; i++) {
+                                        colors[i] = Color.WHITE;
+                                    }
+                                    view.addSpan(new MultipleDotSpan(5, colors));
+                                }
+                            });
+                        }
+                    });
                 }
 
-                @Override
-                public void decorate(DayViewFacade view) {
-                    int[] colors = new int[entry.getValue().size()];
-                    for (int i = 0; i < colors.length; i++) {
-                        colors[i] = Color.WHITE;
-                    }
-                    view.addSpan(new MultipleDotSpan(5, colors));
-                }
-            });
-        }
+                mLoading.dismiss();
+            }
+        }).start();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (savedInstanceState != null && mCalendarView != null) {
-            try {
-                CalendarDay day = savedInstanceState.getParcelable("date");
-                mCalendarView.setSelectedDate(day);
+        mLoading = ProgressDialog.show(getActivity(), null, getString(R.string.loading), true);
 
-                HashMap<CalendarDay, List<String>> calendar = Parcels.unwrap(savedInstanceState.getParcelable("events"));
-                if (calendar != null) {
-                    loadEvents(calendar);
-                } else {
-                    new AcademicCalendarAsync(getActivity(), this).execute();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        List<String> savedCalendar = Data.getCalendar(getActivity());
+        if (savedCalendar != null) {
+            new AcademicCalendarAsync(getActivity(), AcademicCalendarFragment.this, savedCalendar).execute();
         } else {
-            new AcademicCalendarAsync(getActivity(), this).execute();
+            if (savedInstanceState != null && mCalendarView != null) {
+                try {
+                    CalendarDay day = savedInstanceState.getParcelable("date");
+                    mCalendarView.setSelectedDate(day);
+
+                    HashMap<CalendarDay, List<String>> calendar = Parcels.unwrap(savedInstanceState.getParcelable("events"));
+                    if (calendar != null) {
+                        loadEvents(calendar);
+                    } else {
+                        loadFirebase();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                loadFirebase();
+            }
         }
+    }
+
+    private void loadFirebase() {
+        mDatabase.child("calendar").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<String> stringList = dataSnapshot.getValue(new GenericTypeIndicator<List<String>>() { });
+
+                Data.saveCalendar(getActivity(), stringList);
+
+                new AcademicCalendarAsync(getActivity(), AcademicCalendarFragment.this, stringList).execute();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

@@ -22,13 +22,13 @@ import br.deinfo.ufrpe.listeners.AcademicCalendarListener;
 public class AcademicCalendarAsync extends AsyncTask<Void, Void, HashMap<CalendarDay, List<String>>> {
     private Context mContext;
     private AcademicCalendarListener mListener;
-    private ProgressDialog mLoading;
 
-    public AcademicCalendarAsync(Context context, AcademicCalendarListener listener) {
+    private List<String> mStringList;
+
+    public AcademicCalendarAsync(Context context, AcademicCalendarListener listener, List<String> stringList) {
         mContext = context;
         mListener = listener;
-
-        mLoading = ProgressDialog.show(mContext, null, mContext.getString(R.string.loading), true);
+        mStringList = stringList;
     }
 
     @Override
@@ -36,18 +36,13 @@ public class AcademicCalendarAsync extends AsyncTask<Void, Void, HashMap<Calenda
         HashMap<CalendarDay, List<String>> mAcademicEvents = new HashMap<>();
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(mContext.getResources().openRawResource(R.raw.calendar)));
-
-            // do reading, usually loop until end of file reading
-            StringBuilder sb = new StringBuilder();
-            String mLine = reader.readLine();
-
             int month = 1;
             int year = 2017;
 
-            while (mLine != null) {
+            for (int i = 0; i < mStringList.size(); i++) {
+                String mLine = mStringList.get(i);
+
                 String[] line = mLine.split(";");
-                mLine = reader.readLine();
 
                 int dayStart = 1;
                 int dayEnd = 1;
@@ -97,7 +92,6 @@ public class AcademicCalendarAsync extends AsyncTask<Void, Void, HashMap<Calenda
                     }
                 }
             }
-            reader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,7 +103,6 @@ public class AcademicCalendarAsync extends AsyncTask<Void, Void, HashMap<Calenda
     protected void onPostExecute(HashMap<CalendarDay, List<String>> calendarDayListHashMap) {
         super.onPostExecute(calendarDayListHashMap);
 
-        mLoading.dismiss();
         mListener.loadEvents(calendarDayListHashMap);
     }
 }

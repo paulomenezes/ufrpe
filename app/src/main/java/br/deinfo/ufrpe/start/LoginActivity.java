@@ -9,8 +9,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.parceler.Parcels;
 
@@ -148,15 +151,25 @@ public class LoginActivity extends AppCompatActivity {
 
                                     mUser.setCourses(courses);
 
-                                    // mDatabase.child("users").child(mUser.getId()).setValue(mUser);
+                                    mDatabase.child("currentSemester").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            mUser.setCurrentSemester(String.valueOf(dataSnapshot.getValue()));
+                                            Data.saveUser(LoginActivity.this, mUser);
 
-                                    Data.saveUser(LoginActivity.this, mUser);
+                                            mLoading.dismiss();
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            intent.putExtra(Data.KEY_USER, Parcels.wrap(mUser));
+                                            startActivity(intent);
+                                        }
 
-                                    mLoading.dismiss();
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    intent.putExtra(Data.KEY_USER, Parcels.wrap(mUser));
-                                    startActivity(intent);
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            mLoading.dismiss();
+                                            Snackbar.make(mRelativeLayout, R.string.login_siteinfo_error, Snackbar.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
 
                                 @Override

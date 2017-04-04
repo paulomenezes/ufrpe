@@ -27,6 +27,7 @@ public class User extends BaseObservable {
     private String token;
     private int avaID;
     private int unit;
+    private String currentSemester;
 
     private List<Course> courses;
 
@@ -154,5 +155,13 @@ public class User extends BaseObservable {
 
     public void setCourses(List<Course> courses) {
         this.courses = courses;
+    }
+
+    public String getCurrentSemester() {
+        return currentSemester;
+    }
+
+    public void setCurrentSemester(String currentSemester) {
+        this.currentSemester = currentSemester;
     }
 }

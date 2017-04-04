@@ -5,6 +5,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import br.deinfo.ufrpe.models.User;
 
@@ -13,8 +19,9 @@ import br.deinfo.ufrpe.models.User;
  */
 
 public class Data {
-    public static final String KEY_SHARED = "br.deinfo.ufrpe";
+    private static final String KEY_SHARED = "br.deinfo.ufrpe";
     public static final String KEY_USER = "user";
+    public static final String KEY_CALENDAR = "calendar";
 
     public static void saveUser(Activity activity, User user) {
         SharedPreferences sharedPreferences = activity.getSharedPreferences(KEY_SHARED, Context.MODE_PRIVATE);
@@ -32,6 +39,26 @@ public class Data {
 
         if (json != null)
             return new Gson().fromJson(json, User.class);
+        else
+            return null;
+    }
+
+    public static void saveCalendar(Activity activity, List<String> academicEvents) {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(KEY_SHARED, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        String json = new Gson().toJson(academicEvents);
+        editor.putString(KEY_CALENDAR, json);
+        editor.apply();
+    }
+
+    public static List<String> getCalendar(Context activity) {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(KEY_SHARED, Context.MODE_PRIVATE);
+
+        String json = sharedPreferences.getString(KEY_CALENDAR, null);
+
+        if (json != null)
+            return new Gson().fromJson(json, (new TypeToken<List<String>>(){}).getType());
         else
             return null;
     }

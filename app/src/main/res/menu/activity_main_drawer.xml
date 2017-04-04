@@ -47,10 +47,10 @@
 
     <item android:title="@string/system" android:id="@+id/system">
         <menu>
-            <item
+            <!--<item
                 android:id="@+id/settings"
                 android:icon="@drawable/ic_settings_black_24dp"
-                android:title="@string/action_settings" />
+                android:title="@string/action_settings" />-->
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_input_black_24dp"

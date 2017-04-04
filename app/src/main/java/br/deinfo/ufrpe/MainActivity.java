@@ -95,10 +95,10 @@ public class MainActivity extends AppCompatActivity
         Picasso.with(this).load(mUser.getPicture()).into(imageView);
 
         TextView name = (TextView) headerView.findViewById(R.id.name);
-        TextView email = (TextView) headerView.findViewById(R.id.email);
+        TextView semester = (TextView) headerView.findViewById(R.id.semester);
 
         name.setText(String.format(Locale.ENGLISH, "%s %s", mUser.getFirstName(), mUser.getLastName()));
-        email.setText(mUser.getEmail());
+        semester.setText(mUser.getCurrentSemester());
 
         if (savedInstanceState != null) {
             int menu = savedInstanceState.getInt("menu");

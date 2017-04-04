@@ -10,6 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -47,12 +53,15 @@ public class TodayFragment extends Fragment {
     public static List<Classes> sClasses;
     private User mUser;
 
+    private DatabaseReference mDatabase;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_today, container, false);
 
         mUser = Session.getUser(getActivity());
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         boolean classLoaded = false;
 
@@ -65,14 +74,18 @@ public class TodayFragment extends Fragment {
 
         if (!classLoaded) {
             if (sClasses == null || sClasses.size() == 0) {
-                new LoadScheduleAsync(getContext(), new LoadScheduleListener() {
+                mDatabase.child("schedules").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void schedule(List<Classes> classes) {
-                        sClasses = classes;
-
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        sClasses = dataSnapshot.getValue(new GenericTypeIndicator<List<Classes>>() { });
                         load(view);
-                        }
-                }).execute();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             } else {
                 load(view);
             }
