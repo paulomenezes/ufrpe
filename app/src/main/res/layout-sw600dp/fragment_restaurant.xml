@@ -3,7 +3,7 @@
     <data>
         <variable
             name="day"
-            type="br.paulomenezes.ufrpe.models.RestaurantDayOfWeek" />
+            type="br.ufrpe.conectada.models.RestaurantDayOfWeek" />
     </data>
     <android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

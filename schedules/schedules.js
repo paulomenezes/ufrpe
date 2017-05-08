@@ -41,15 +41,6 @@ workbook.xlsx.readFile('horarios_2017.1.xlsx')
           if (timeStart.length >= 5)
             timeStart = timeStart.substr(timeStart.length - 5, 5);
 
-          // if (dayOfWeek.length !== 3 || timeStart.length !== 5 || timeEnd.length !== 5) {
-          //   console.log(x);
-          //   console.log(d, {
-          //     dayOfWeek: dayOfWeek,
-          //     timeStart: timeStart,
-          //     timeEnd: timeEnd
-          //   });
-          // } 
-
           return {
             dayOfWeek: daysOfWeek[dayOfWeek],
             timeStart: timeStart,

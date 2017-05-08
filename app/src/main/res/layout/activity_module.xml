@@ -3,7 +3,7 @@
     <data>
         <variable
             name="module"
-            type="br.paulomenezes.ufrpe.models.Modules" />
+            type="br.ufrpe.conectada.models.Modules" />
     </data>
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -25,7 +25,7 @@
                 android:id="@+id/activity_module"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:context="br.paulomenezes.ufrpe.ModuleActivity"
+                tools:context="br.ufrpe.conectada.ModuleActivity"
                 android:orientation="vertical">
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"

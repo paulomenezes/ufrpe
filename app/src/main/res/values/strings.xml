@@ -4,7 +4,7 @@
     <string name="twitter_secret">jvdO6sRmwKvgavW2UJxSYngHqgZGu9Jszt9PmdjXVzq3uHjfoS</string>
     <string name="fabric_key">uRHTNPaKrPhE3Xs8GF29dgeH9</string>
 
-    <string name="app_name">UFRPE</string>
+    <string name="app_name">Rural Conectada</string>
     <string name="start">Iniciar</string>
     <string name="next">Próximo</string>
     <string name="socialTitle">Fazer Login</string>
@@ -182,6 +182,11 @@
     <string name="total">Total de Cópias</string>
     <string name="ufrpeCalendar">Calendário Acadêmico</string>
     <string name="subjects">Disciplinas</string>
+    <string name="sync">Sincronizar</string>
+    <string name="syncText">Caso algumas de suas disciplinas não estejam aparecendo, você pode tentar sincronizar para resolver esse problema.</string>
+    <string name="syncText2">Lembrando que as disciplinas só apareceram no aplicativo quando estiverem disponível no AVA.</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancelar</string>
 
     <!-- Map Places -->
     <string-array name="places_names">

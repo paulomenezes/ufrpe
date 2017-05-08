@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="br.ufrpe.conectada.RestaurantActivity">
+    <item
+        android:icon="@drawable/ic_sync_white_24dp"
+        android:id="@+id/sync"
+        android:title="@string/sync"
+        app:showAsAction="always" />
+</menu>

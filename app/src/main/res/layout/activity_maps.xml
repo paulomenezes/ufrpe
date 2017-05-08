@@ -9,7 +9,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="br.paulomenezes.ufrpe.MapsActivity" />
+        tools:context="br.ufrpe.conectada.MapsActivity" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"

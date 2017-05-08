@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="br.paulomenezes.ufrpe.BookDetailActivity">
+    tools:context="br.ufrpe.conectada.BookDetailActivity">
 
     <LinearLayout
         android:id="@+id/test"

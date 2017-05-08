@@ -6,7 +6,7 @@
     android:id="@+id/activity_course"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.paulomenezes.ufrpe.CourseActivity">
+    tools:context="br.ufrpe.conectada.CourseActivity">
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
