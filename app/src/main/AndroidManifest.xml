@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="br.deinfo.ufrpe">
+    package="br.paulomenezes.ufrpe">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -32,19 +32,19 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:theme" />
         <activity
-            android:name=".start.TipsActivity"
+            android:name="br.paulomenezes.ufrpe.start.TipsActivity"
             android:theme="@style/AppThemeNoActionbar" />
         <activity
-            android:name=".start.SocialActivity"
-            android:parentActivityName=".start.TipsActivity"
+            android:name="br.paulomenezes.ufrpe.start.SocialActivity"
+            android:parentActivityName="br.paulomenezes.ufrpe.start.TipsActivity"
             android:theme="@style/AppThemeNoActionbar" />
         <activity
-            android:name=".start.ConfirmActivity"
-            android:parentActivityName=".start.SocialActivity"
+            android:name="br.paulomenezes.ufrpe.start.ConfirmActivity"
+            android:parentActivityName="br.paulomenezes.ufrpe.start.SocialActivity"
             android:theme="@style/AppThemeNoActionbar" />
         <activity
-            android:name=".start.LoginActivity"
-            android:parentActivityName=".start.ConfirmActivity"
+            android:name="br.paulomenezes.ufrpe.start.LoginActivity"
+            android:parentActivityName="br.paulomenezes.ufrpe.start.ConfirmActivity"
             android:theme="@style/AppThemeNoActionbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,38 +53,38 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="br.paulomenezes.ufrpe.MainActivity"
             android:label="@string/overview"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CourseActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="br.paulomenezes.ufrpe.CourseActivity"
+            android:parentActivityName="br.paulomenezes.ufrpe.MainActivity" />
         <activity
-            android:name=".ModuleActivity"
-            android:parentActivityName=".CourseActivity" />
+            android:name="br.paulomenezes.ufrpe.ModuleActivity"
+            android:parentActivityName="br.paulomenezes.ufrpe.CourseActivity" />
         <activity
-            android:name=".ModuleRepliesActivity"
-            android:parentActivityName=".ModuleActivity" />
+            android:name="br.paulomenezes.ufrpe.ModuleRepliesActivity"
+            android:parentActivityName="br.paulomenezes.ufrpe.ModuleActivity" />
         <activity
-            android:name=".MessageActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="br.paulomenezes.ufrpe.MessageActivity"
+            android:parentActivityName="br.paulomenezes.ufrpe.MainActivity" />
         <activity
-            android:name=".BookDetailActivity"
+            android:name="br.paulomenezes.ufrpe.BookDetailActivity"
             android:label="@string/title_activity_book_detail"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="br.paulomenezes.ufrpe.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.deinfo.ufrpe.MainActivity" />
+                android:value="br.paulomenezes.ufrpe.MainActivity" />
         </activity>
         <activity
-            android:name=".RestaurantActivity"
+            android:name="br.paulomenezes.ufrpe.RestaurantActivity"
             android:label="@string/restaurant"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="br.paulomenezes.ufrpe.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.deinfo.ufrpe.MainActivity" />
+                android:value="br.paulomenezes.ufrpe.MainActivity" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -99,11 +99,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="br.paulomenezes.ufrpe.MapsActivity"
             android:label="@string/map">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="br.deinfo.ufrpe.MainActivity" />
+                android:value="br.paulomenezes.ufrpe.MainActivity" />
         </activity>
     </application>
 

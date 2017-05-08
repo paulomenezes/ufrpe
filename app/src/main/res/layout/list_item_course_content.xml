@@ -4,7 +4,7 @@
     <data>
         <variable
             name="content"
-            type="br.deinfo.ufrpe.models.CourseContent" />
+            type="br.paulomenezes.ufrpe.models.CourseContent" />
     </data>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

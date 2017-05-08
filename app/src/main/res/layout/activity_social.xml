@@ -5,13 +5,13 @@
     <data>
         <variable
             name="handlers"
-            type="br.deinfo.ufrpe.start.SocialActivity" />
+            type="br.paulomenezes.ufrpe.start.SocialActivity" />
     </data>
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="br.deinfo.ufrpe.start.SocialActivity">
+        tools:context="br.paulomenezes.ufrpe.start.SocialActivity">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

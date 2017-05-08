@@ -5,10 +5,10 @@
         <import type="android.view.View"/>
         <variable
             name="course"
-            type="br.deinfo.ufrpe.models.Course" />
+            type="br.paulomenezes.ufrpe.models.Course" />
         <variable
             name="handler"
-            type="br.deinfo.ufrpe.adapters.CoursesAdapter" />
+            type="br.paulomenezes.ufrpe.adapters.CoursesAdapter" />
     </data>
     <LinearLayout
         android:orientation="horizontal"

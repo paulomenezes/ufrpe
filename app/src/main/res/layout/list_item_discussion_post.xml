@@ -5,7 +5,7 @@
     <data>
         <variable
             name="post"
-            type="br.deinfo.ufrpe.models.Posts" />
+            type="br.paulomenezes.ufrpe.models.Posts" />
     </data>
     <LinearLayout
         android:orientation="vertical"
