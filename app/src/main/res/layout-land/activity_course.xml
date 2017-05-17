@@ -6,7 +6,7 @@
     android:id="@+id/activity_course"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.ufrpe.conectada.CourseActivity">
+    tools:context="br.paulomenezes.ufrpe.CourseActivity">
 
     <com.roughike.bottombar.BottomBar
         android:id="@+id/bottomBar"
@@ -15,6 +15,18 @@
         android:layout_gravity="bottom"
         app:bb_tabletMode="true"
         app:bb_tabXmlResource="@xml/bottombar_course" />
+
+
+    <RelativeLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+        <ProgressBar
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

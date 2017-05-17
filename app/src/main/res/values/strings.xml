@@ -157,7 +157,7 @@
     <string name="fastgrill">Fastgrill</string>
     <string name="accompaniment">Acompanhamento</string>
     <string name="salad">Salada</string>
-    <string name="dessert">Salada</string>
+    <string name="dessert">Sobremesa</string>
     <string name="juice">Suco</string>
     <string name="dinner">Jantar</string>
     <string name="about">Sobre</string>
@@ -187,6 +187,8 @@
     <string name="syncText2">Lembrando que as disciplinas só apareceram no aplicativo quando estiverem disponível no AVA.</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancelar</string>
+    <string name="share">Compartilhar</string>
+    <string name="nextSubjects">Outras Cadeiras</string>
 
     <!-- Map Places -->
     <string-array name="places_names">

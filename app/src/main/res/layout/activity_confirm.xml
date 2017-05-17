@@ -6,16 +6,16 @@
     <data>
         <variable
             name="user"
-            type="br.ufrpe.conectada.models.User" />
+            type="br.paulomenezes.ufrpe.models.User" />
         <variable
             name="handlers"
-            type="br.ufrpe.conectada.start.ConfirmActivity" />
+            type="br.paulomenezes.ufrpe.start.ConfirmActivity" />
     </data>
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="br.ufrpe.conectada.start.ConfirmActivity">
+        tools:context="br.paulomenezes.ufrpe.start.ConfirmActivity">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

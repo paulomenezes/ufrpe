@@ -5,16 +5,25 @@
         <import type="android.view.View"/>
         <variable
             name="course"
-            type="br.ufrpe.conectada.models.Course" />
+            type="br.paulomenezes.ufrpe.models.Course" />
         <variable
             name="handler"
-            type="br.ufrpe.conectada.adapters.CoursesAdapter" />
+            type="br.paulomenezes.ufrpe.adapters.CoursesAdapter" />
     </data>
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true">
+        <TextView
+            android:id="@+id/hiddenTitle"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nextSubjects"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            style="@style/Base.TextAppearance.AppCompat.Title" />
         <android.support.v7.widget.CardView
             android:id="@+id/card"
             android:layout_marginTop="8dp"
@@ -41,6 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <LinearLayout
+                        android:id="@+id/scheduleLayout"
                         android:layout_marginTop="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">

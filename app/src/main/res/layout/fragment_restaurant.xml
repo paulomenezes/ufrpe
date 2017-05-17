@@ -3,7 +3,7 @@
     <data>
         <variable
             name="day"
-            type="br.ufrpe.conectada.models.RestaurantDayOfWeek" />
+            type="br.paulomenezes.ufrpe.models.RestaurantDayOfWeek" />
     </data>
     <android.support.design.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -59,8 +59,8 @@
                         </RelativeLayout>
                         <LinearLayout
                             android:id="@+id/lunchContent"
-                            android:visibility="gone"
                             android:orientation="vertical"
+                            android:visibility="gone"
                             android:layout_marginTop="8dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
@@ -93,6 +93,26 @@
                                 android:layout_height="wrap_content" />
                             <TextView
                                 android:text="@{ day.almoco.grelha }"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginBottom="8dp"
+                                android:textStyle="bold"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@color/colorDivider"/>
+                            <TextView
+                                android:text="@string/dessert"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:text="@{ day.almoco.sobremesa }"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
                                 android:layout_marginBottom="8dp"
@@ -185,26 +205,6 @@
                                 android:layout_marginBottom="8dp"
                                 android:background="@color/colorDivider"/>
                             <TextView
-                                android:text="@string/dessert"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginEnd="16dp"
-                                android:layout_marginBottom="8dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                            <TextView
-                                android:text="@{ day.almoco.salada }"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginEnd="16dp"
-                                android:layout_marginBottom="8dp"
-                                android:textStyle="bold"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginBottom="8dp"
-                                android:background="@color/colorDivider"/>
-                            <TextView
                                 android:text="@string/juice"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
@@ -219,6 +219,13 @@
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
+                            <Button
+                                android:id="@+id/shareLunch"
+                                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                                android:drawableStart="@drawable/ic_share_black_24dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/share"/>
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
@@ -291,6 +298,26 @@
                                 android:layout_height="wrap_content" />
                             <TextView
                                 android:text="@{ day.jantar.grelha }"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginBottom="8dp"
+                                android:textStyle="bold"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="@color/colorDivider"/>
+                            <TextView
+                                android:text="@string/dessert"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:text="@{ day.almoco.sobremesa }"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
                                 android:layout_marginBottom="8dp"
@@ -383,7 +410,7 @@
                                 android:layout_marginBottom="8dp"
                                 android:background="@color/colorDivider"/>
                             <TextView
-                                android:text="@string/dessert"
+                                android:text="@string/salad"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="16dp"
                                 android:layout_marginBottom="8dp"
@@ -417,6 +444,13 @@
                                 android:textStyle="bold"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"/>
+                            <Button
+                                android:id="@+id/shareDinner"
+                                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                                android:drawableStart="@drawable/ic_share_black_24dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@string/share"/>
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
