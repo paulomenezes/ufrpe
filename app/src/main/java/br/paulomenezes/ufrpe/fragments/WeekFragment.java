@@ -1,31 +1,23 @@
 package br.paulomenezes.ufrpe.fragments;
 
-import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
+import com.alamkanak.weekview.WeekViewEvent;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-import br.paulomenezes.ufrpe.CourseActivity;
 import br.paulomenezes.ufrpe.R;
-import br.paulomenezes.ufrpe.models.Course;
-import br.paulomenezes.ufrpe.models.Timetable;
 import br.paulomenezes.ufrpe.models.User;
 import br.paulomenezes.ufrpe.utils.Functions;
 import br.paulomenezes.ufrpe.utils.Session;
@@ -44,7 +36,7 @@ public class WeekFragment extends Fragment {
 
         mUser = Session.getUser(getActivity());
 
-        List<Timetable> timetableList = new ArrayList<>();
+        final List<WeekViewEvent> timetableList = new ArrayList<>();
 
         int hourStart = 999;
         int hourEnd = 0;
@@ -55,38 +47,53 @@ public class WeekFragment extends Fragment {
                     String[] timeStart = mUser.getCourses().get(i).getClasses().getSchedules().get(j).getTimeStart().split(":");
 
                     Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.DAY_OF_WEEK, mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() + 1);
                     cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeStart[0]));
-                    cal.set(Calendar.MINUTE, Integer.parseInt(timeStart[1]));
-
-                    Date start = cal.getTime();
-
-                    if (Integer.parseInt(timeStart[0]) < hourStart)
-                        hourStart = Integer.parseInt(timeStart[0]);
+                    cal.set(Calendar.MINUTE, Integer.parseInt(timeStart[1]) + 1);
 
                     String[] timeEnd = mUser.getCourses().get(i).getClasses().getSchedules().get(j).getTimeEnd().split(":");
 
                     Calendar cal2 = Calendar.getInstance();
+                    cal2.set(Calendar.DAY_OF_WEEK, mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() + 1);
                     cal2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeEnd[0]));
-                    cal2.set(Calendar.MINUTE, Integer.parseInt(timeEnd[1]));
+                    cal2.set(Calendar.MINUTE, Integer.parseInt(timeEnd[1]) - 1);
 
-                    Date end = cal2.getTime();
-
-                    if (Integer.parseInt(timeEnd[0]) > hourEnd)
-                        hourEnd = Integer.parseInt(timeEnd[0]);
-
-                    Timetable timetable = new Timetable(
-                            getActivity().getResources().getStringArray(R.array.day_of_week)[mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek()],
+                    WeekViewEvent timetable = new WeekViewEvent(
+                            mUser.getCourses().get(i).getId(),
                             Functions.getCamelSentence(mUser.getCourses().get(i).getFullname().split(" \\| ")[1].split(" - ")[0]),
-                            start, end);
-
+                            cal, cal2);
+                    timetable.setColor(Color.parseColor(mUser.getCourses().get(i).getNormalColor()));
                     timetableList.add(timetable);
                 }
             }
         }
 
+        final boolean[] alreadyAdd = {false};
 
         WeekView mWeekView = (WeekView) view.findViewById(R.id.weekView);
+        mWeekView.setOnEventClickListener(new WeekView.EventClickListener() {
+            @Override
+            public void onEventClick(WeekViewEvent event, RectF eventRect) {
 
+            }
+        });
+        mWeekView.setMonthChangeListener(new MonthLoader.MonthChangeListener() {
+            @Override
+            public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+                if (!alreadyAdd[0]) {
+                    alreadyAdd[0] = true;
+                    return timetableList;
+                } else {
+                    return new ArrayList<>();
+                }
+            }
+        });
+        mWeekView.setEventLongPressListener(new WeekView.EventLongPressListener() {
+            @Override
+            public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
+
+            }
+        });
 
         /*Calendar calendar = Calendar.getInstance();
         //final List<Course>[] courses = new List[6];
