@@ -273,7 +273,11 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            onNavigationItemSelected(mNavigationView.getMenu().findItem(R.id.home));
+            if (sSelectedMenu == R.id.home) {
+                finish();
+            } else {
+                onNavigationItemSelected(mNavigationView.getMenu().findItem(R.id.home));
+            }
         }
     }
 

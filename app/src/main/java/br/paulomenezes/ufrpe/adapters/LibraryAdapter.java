@@ -57,7 +57,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.LibraryV
                 e.printStackTrace();
             }
         } else {
-            holder.mImageView.setVisibility(View.GONE);
+            //holder.mImageView.setVisibility(View.GONE);
         }
 
         holder.mTitle.setText(book.getTitle());
