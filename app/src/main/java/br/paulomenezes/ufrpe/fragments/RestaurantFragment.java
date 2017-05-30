@@ -43,7 +43,10 @@ public class RestaurantFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mDataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_restaurant, container, false);
-        mDayOfWeek = getArguments().getInt("dayOfWeek");
+
+        if (getArguments() != null && getArguments().containsKey("dayOfWeek")) {
+            mDayOfWeek = getArguments().getInt("dayOfWeek");
+        }
 
         if (mRestaurant != null)
             mDataBinding.setVariable(BR.day, mRestaurant.getDaysOfWeek()[mDayOfWeek]);

@@ -1,7 +1,6 @@
 package br.paulomenezes.ufrpe.models;
 
 import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 
 import com.google.firebase.database.Exclude;
 

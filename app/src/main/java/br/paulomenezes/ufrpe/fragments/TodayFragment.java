@@ -1,5 +1,6 @@
 package br.paulomenezes.ufrpe.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -47,7 +48,7 @@ public class TodayFragment extends Fragment {
     public static List<Classes> sClasses;
     private User mUser;
 
-    private DatabaseReference mDatabase;
+    private ProgressDialog mLoading;
 
     @Nullable
     @Override
@@ -55,7 +56,7 @@ public class TodayFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_today, container, false);
 
         mUser = Session.getUser(getActivity());
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
         boolean classLoaded = false;
 
@@ -68,10 +69,13 @@ public class TodayFragment extends Fragment {
 
         if (!classLoaded) {
             if (sClasses == null || sClasses.size() == 0) {
+                mLoading = ProgressDialog.show(getActivity(), null, getString(R.string.loading), true);
+
                 mDatabase.child("schedules").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         sClasses = dataSnapshot.getValue(new GenericTypeIndicator<List<Classes>>() { });
+                        mLoading.dismiss();
                         load(view);
                     }
 
@@ -112,10 +116,12 @@ public class TodayFragment extends Fragment {
                     }
                 }
 
-                for (int j = 0; j < mUser.getCourses().get(i).getClasses().getSchedules().size(); j++) {
-                    if (mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() == today) {
-                        todayCourses.add(mUser.getCourses().get(i));
-                        break;
+                if (mUser.getCourses().get(i).getClasses() != null && mUser.getCourses().get(i).getClasses().getSchedules() != null) {
+                    for (int j = 0; j < mUser.getCourses().get(i).getClasses().getSchedules().size(); j++) {
+                        if (mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() == today) {
+                            todayCourses.add(mUser.getCourses().get(i));
+                            break;
+                        }
                     }
                 }
 
@@ -180,12 +186,14 @@ public class TodayFragment extends Fragment {
             public void onResponse(Call<CourseAssignment> call, Response<CourseAssignment> response) {
                 CourseAssignment assignment = response.body();
 
-                for (Courses assigments: assignment.getCourses()) {
-                    for (int j = 0; j < todayCourses.size(); j++) {
-                        if (todayCourses.get(j).getShortname() != null) {
-                            if (assigments.getId().equals(String.valueOf(todayCourses.get(j).getId()))) {
-                                todayCourses.get(j).setAssignments(assigments.getAssignments());
-                                break;
+                if (assignment != null && assignment.getCourses() != null) {
+                    for (Courses assigments : assignment.getCourses()) {
+                        for (int j = 0; j < todayCourses.size(); j++) {
+                            if (todayCourses.get(j).getShortname() != null) {
+                                if (assigments.getId().equals(String.valueOf(todayCourses.get(j).getId()))) {
+                                    todayCourses.get(j).setAssignments(assigments.getAssignments());
+                                    break;
+                                }
                             }
                         }
                     }
