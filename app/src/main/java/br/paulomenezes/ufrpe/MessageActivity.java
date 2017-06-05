@@ -18,6 +18,7 @@ import br.paulomenezes.ufrpe.adapters.ChatAdapter;
 import br.paulomenezes.ufrpe.models.Message;
 import br.paulomenezes.ufrpe.models.Messages;
 import br.paulomenezes.ufrpe.models.SendMessage;
+import br.paulomenezes.ufrpe.models.User;
 import br.paulomenezes.ufrpe.services.AVAService;
 import br.paulomenezes.ufrpe.services.Requests;
 import br.paulomenezes.ufrpe.utils.CompareMessages;
@@ -71,13 +72,15 @@ public class MessageActivity extends AppCompatActivity {
         mType = (EditText) findViewById(R.id.type);
         mSend = (Button) findViewById(R.id.send);
 
+        final User user = Session.getUser(MessageActivity.this);
+
         mSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mType.getText().toString().isEmpty() || mType.getText().toString().replaceAll(" ", "").length() == 0) {
                     mType.setError(getString(R.string.required_field));
                 } else {
-                    Call<List<SendMessage>> send = avaServices.sendMessage(messages.get(0).getUseridto(), mType.getText().toString(), 1, Requests.FUNCTION_SEND_MESSAGE, Session.getUser(MessageActivity.this).getToken());
+                    Call<List<SendMessage>> send = avaServices.sendMessage(user.getAvaID() == messages.get(0).getUseridto() ? messages.get(0).getUseridfrom() : messages.get(0).getUseridto(), mType.getText().toString(), 1, Requests.FUNCTION_SEND_MESSAGE, user.getToken());
                     send.enqueue(new Callback<List<SendMessage>>() {
                         @Override
                         public void onResponse(Call<List<SendMessage>> call, Response<List<SendMessage>> response) {

@@ -60,7 +60,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
         final List<Message> msg = mMessages.get(mMessages.keySet().toArray()[position]);
 
         holder.mName.setText(msg.get(0).getUserfromfullname());
-        holder.mMessage.setText(msg.get(0).getSubject());
+        holder.mMessage.setText(msg.get(0).getFullmessage());
 
         Date date = new Date((long)msg.get(0).getTimecreated() * 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");

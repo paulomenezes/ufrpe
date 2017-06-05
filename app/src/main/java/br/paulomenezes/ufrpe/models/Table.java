@@ -10,7 +10,7 @@ public class Table {
     private int userid;
     private String userfullname;
     private int maxdepth;
-    private List<Tabledatum> tabledata = new ArrayList<Tabledatum>();
+    private List<Object> tabledata = new ArrayList<Object>();
 
     /**
      * 
@@ -89,7 +89,7 @@ public class Table {
      * @return
      *     The tabledata
      */
-    public List<Tabledatum> getTabledata() {
+    public List<Object> getTabledata() {
         return tabledata;
     }
 
@@ -98,7 +98,7 @@ public class Table {
      * @param tabledata
      *     The tabledata
      */
-    public void setTabledata(List<Tabledatum> tabledata) {
+    public void setTabledata(List<Object> tabledata) {
         this.tabledata = tabledata;
     }
 

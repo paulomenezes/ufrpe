@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.internal.LinkedTreeMap;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -160,10 +163,22 @@ public class CourseActivity extends AppCompatActivity {
             Call<Grades> gradesCall = mAvaService.getGrades(mCourse.getId(), user.getAvaID(),
                     Requests.FUNCTION_GET_GRADES, user.getToken());
 
+            final Gson gson = new Gson();
+
             gradesCall.enqueue(new Callback<Grades>() {
                 @Override
                 public void onResponse(Call<Grades> call, Response<Grades> response) {
-                    mGrades = response.body().getTables().get(0).getTabledata();
+                    List<Object> list = response.body().getTables().get(0).getTabledata();
+                    mGrades = new ArrayList<>();
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i) instanceof LinkedTreeMap) {
+                            JsonElement jsonElement = gson.toJsonTree(list.get(i));
+                            Tabledatum pojo = gson.fromJson(jsonElement, Tabledatum.class);
+
+                            mGrades.add(pojo);
+                        }
+                    }
+
                     mGradeAdapter = new GradeAdapter(mGrades);
                     mGradeAdapter.notifyDataSetChanged();
                 }

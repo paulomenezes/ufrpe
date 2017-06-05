@@ -1,5 +1,6 @@
 package br.paulomenezes.ufrpe.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -13,11 +14,15 @@ import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import br.paulomenezes.ufrpe.CourseActivity;
 import br.paulomenezes.ufrpe.R;
+import br.paulomenezes.ufrpe.models.Course;
 import br.paulomenezes.ufrpe.models.User;
 import br.paulomenezes.ufrpe.utils.Functions;
 import br.paulomenezes.ufrpe.utils.Session;
@@ -38,16 +43,31 @@ public class WeekFragment extends Fragment {
 
         final List<WeekViewEvent> timetableList = new ArrayList<>();
 
+        int hour = 24;
+        int dayOfWeek = 7;
+        Calendar firstDay = Calendar.getInstance();
+
         for (int i = 0; i < mUser.getCourses().size(); i++) {
             if (Functions.thisSemester(mUser, mUser.getCourses().get(i).getShortname())) {
                 if (mUser.getCourses().get(i).getClasses() != null && mUser.getCourses().get(i).getClasses().getSchedules() != null) {
                     for (int j = 0; j < mUser.getCourses().get(i).getClasses().getSchedules().size(); j++) {
                         String[] timeStart = mUser.getCourses().get(i).getClasses().getSchedules().get(j).getTimeStart().split(":");
 
+                        int hourStart = Integer.parseInt(timeStart[0]);
+                        if (hourStart < hour)
+                            hour = hourStart;
+
+                        int dayOfWeekStart = mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() + 1;
+
                         Calendar cal = Calendar.getInstance();
-                        cal.set(Calendar.DAY_OF_WEEK, mUser.getCourses().get(i).getClasses().getSchedules().get(j).getDayOfWeek() + 1);
-                        cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeStart[0]));
+                        cal.set(Calendar.DAY_OF_WEEK, dayOfWeekStart);
+                        cal.set(Calendar.HOUR_OF_DAY, hourStart);
                         cal.set(Calendar.MINUTE, Integer.parseInt(timeStart[1]) + 1);
+
+                        if (dayOfWeekStart < dayOfWeek) {
+                            dayOfWeek = dayOfWeekStart;
+                            firstDay.set(Calendar.DAY_OF_WEEK, dayOfWeekStart);
+                        }
 
                         String[] timeEnd = mUser.getCourses().get(i).getClasses().getSchedules().get(j).getTimeEnd().split(":");
 
@@ -73,7 +93,16 @@ public class WeekFragment extends Fragment {
         mWeekView.setOnEventClickListener(new WeekView.EventClickListener() {
             @Override
             public void onEventClick(WeekViewEvent event, RectF eventRect) {
-
+                Intent intent = new Intent(getContext(), CourseActivity.class);
+                Course course = null;
+                for (int i = 0; i < mUser.getCourses().size(); i++) {
+                    if (mUser.getCourses().get(i).getId() == event.getId()) {
+                        course = mUser.getCourses().get(i);
+                        break;
+                    }
+                }
+                intent.putExtra("course", Parcels.wrap(course));
+                getContext().startActivity(intent);
             }
         });
         mWeekView.setMonthChangeListener(new MonthLoader.MonthChangeListener() {
@@ -93,6 +122,9 @@ public class WeekFragment extends Fragment {
 
             }
         });
+
+        mWeekView.goToDate(firstDay);
+        mWeekView.goToHour(hour);
 
         return view;
     }

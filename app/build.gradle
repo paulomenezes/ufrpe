@@ -25,7 +25,7 @@ android {
         applicationId "br.paulomenezes.ufrpe"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 3
+        versionCode 4
         versionName "1.0"
         multiDexEnabled true
         jackOptions {
@@ -80,7 +80,6 @@ dependencies {
     compile 'com.github.alamkanak:android-week-view:1.2.6'
     testCompile 'junit:junit:4.12'
     apt 'org.parceler:parceler:1.1.5'
-    apt 'com.android.databinding:compiler:2.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
