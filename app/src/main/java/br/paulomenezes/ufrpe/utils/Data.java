@@ -21,12 +21,14 @@ public class Data {
     public static final String KEY_CALENDAR = "calendar";
 
     public static void saveUser(Activity activity, User user) {
-        SharedPreferences sharedPreferences = activity.getSharedPreferences(KEY_SHARED, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (activity != null) {
+            SharedPreferences sharedPreferences = activity.getSharedPreferences(KEY_SHARED, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        String json = new Gson().toJson(user);
-        editor.putString(KEY_USER, json);
-        editor.apply();
+            String json = new Gson().toJson(user);
+            editor.putString(KEY_USER, json);
+            editor.apply();
+        }
     }
 
     public static User getUser(Context activity) {

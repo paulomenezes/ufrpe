@@ -174,7 +174,7 @@
     <string name="priceLunchNonClients">- Almoço: R$ 10,00</string>
     <string name="priceDinnerNonClients">- Jantar: R$ 9,00</string>
     <string name="close">Fechar</string>
-    <string name="map">Mapa</string>
+    <string name="map">Contatos</string>
     <string name="ceagri1">CEAGRI I</string>
     <string name="ceagri2">CEAGRI II</string>
     <string name="cegoe">CEGOE</string>
@@ -189,6 +189,7 @@
     <string name="cancel">Cancelar</string>
     <string name="share">Compartilhar</string>
     <string name="nextSubjects">Outras Cadeiras</string>
+    <string name="expired_login">Seu login expirou</string>
 
     <!-- Map Places -->
     <string-array name="places_names">

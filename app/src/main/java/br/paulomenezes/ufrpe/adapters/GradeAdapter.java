@@ -63,7 +63,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.GradeViewHol
 
     @Override
     public int getItemCount() {
-        return mTables.size();
+        return mTables != null ? mTables.size() : 0;
     }
 
     public class GradeViewHolder extends RecyclerView.ViewHolder {

@@ -54,7 +54,9 @@ public class CalendarEventAdapter extends RecyclerView.Adapter<CalendarEventAdap
 
         holder.mColor.setBackgroundColor(Color.parseColor(course.getNormalColor()));
         holder.mName.setText(event.getName());
-        holder.mSubject.setText(course.getClasses().getName());
+        if (course.getClasses() != null) {
+            holder.mSubject.setText(course.getClasses().getName());
+        }
 
         Date date = new Date((long)event.getTimestart() * 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");

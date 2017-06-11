@@ -47,7 +47,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         try {
             Picasso.with(mContext).load(user.getProfileimageurl()).into(holder.mImage);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

@@ -1,5 +1,6 @@
 package br.paulomenezes.ufrpe;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.internal.LinkedTreeMap;
@@ -35,6 +38,8 @@ import br.paulomenezes.ufrpe.models.Tabledatum;
 import br.paulomenezes.ufrpe.models.User;
 import br.paulomenezes.ufrpe.services.AVAService;
 import br.paulomenezes.ufrpe.services.Requests;
+import br.paulomenezes.ufrpe.start.LoginActivity;
+import br.paulomenezes.ufrpe.utils.Data;
 import br.paulomenezes.ufrpe.utils.Functions;
 import br.paulomenezes.ufrpe.utils.Session;
 import retrofit2.Call;
@@ -48,7 +53,7 @@ public class CourseActivity extends AppCompatActivity {
 
     private List<CourseContent> mCourseContent;
     private List<AVAUser> mParticipants;
-    private List<Tabledatum> mGrades;
+    private List<Tabledatum> mGrades = new ArrayList<>();
     private List<Assignments> mAssignments;
 
     private CourseContentAdapter mCourseContentAdapter;
@@ -92,11 +97,21 @@ public class CourseActivity extends AppCompatActivity {
             object.enqueue(new Callback<CourseAssignment>() {
                 @Override
                 public void onResponse(Call<CourseAssignment> call, Response<CourseAssignment> response) {
-                    CourseAssignment assignment = response.body();
-                    mAssignments = Arrays.asList(assignment.getCourses()[0].getAssignments());
-                    mCourse.setAssignments(assignment.getCourses()[0].getAssignments());
-
                     mLoading.setVisibility(View.GONE);
+
+                    CourseAssignment assignment = response.body();
+                    if (assignment.getCourses() != null) {
+                        mAssignments = Arrays.asList(assignment.getCourses()[0].getAssignments());
+                        mCourse.setAssignments(assignment.getCourses()[0].getAssignments());
+                    } else {
+                        Toast.makeText(CourseActivity.this, R.string.expired_login, Toast.LENGTH_LONG).show();
+                        Data.saveUser(CourseActivity.this, null);
+
+                        Intent intent = new Intent(CourseActivity.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
 
                 @Override
@@ -120,9 +135,11 @@ public class CourseActivity extends AppCompatActivity {
                 public void onResponse(Call<List<CourseContent>> call, Response<List<CourseContent>> response) {
                     mCourseContent = response.body();
 
-                    mCourseContentAdapter = new CourseContentAdapter(CourseActivity.this, mCourseContent, mCourse);
-                    mCourseContentAdapter.notifyDataSetChanged();
-                    recyclerView.setAdapter(mCourseContentAdapter);
+                    if (mCourseContent != null && mCourseContent.size() > 0) {
+                        mCourseContentAdapter = new CourseContentAdapter(CourseActivity.this, mCourseContent, mCourse);
+                        mCourseContentAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(mCourseContentAdapter);
+                    }
                 }
 
                 @Override
@@ -144,8 +161,10 @@ public class CourseActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<List<AVAUser>> call, Response<List<AVAUser>> response) {
                     mParticipants = response.body();
-                    mUsersAdapter = new UsersAdapter(mParticipants);
-                    mUsersAdapter.notifyDataSetChanged();
+                    if (mParticipants != null && mParticipants.size() > 0) {
+                        mUsersAdapter = new UsersAdapter(mParticipants);
+                        mUsersAdapter.notifyDataSetChanged();
+                    }
                 }
 
                 @Override
@@ -168,19 +187,21 @@ public class CourseActivity extends AppCompatActivity {
             gradesCall.enqueue(new Callback<Grades>() {
                 @Override
                 public void onResponse(Call<Grades> call, Response<Grades> response) {
-                    List<Object> list = response.body().getTables().get(0).getTabledata();
-                    mGrades = new ArrayList<>();
-                    for (int i = 0; i < list.size(); i++) {
-                        if (list.get(i) instanceof LinkedTreeMap) {
-                            JsonElement jsonElement = gson.toJsonTree(list.get(i));
-                            Tabledatum pojo = gson.fromJson(jsonElement, Tabledatum.class);
+                    if (response.body() != null && response.body().getTables() != null) {
+                        List<Object> list = response.body().getTables().get(0).getTabledata();
 
-                            mGrades.add(pojo);
+                        for (int i = 0; i < list.size(); i++) {
+                            if (list.get(i) instanceof LinkedTreeMap) {
+                                JsonElement jsonElement = gson.toJsonTree(list.get(i));
+                                Tabledatum pojo = gson.fromJson(jsonElement, Tabledatum.class);
+
+                                mGrades.add(pojo);
+                            }
                         }
-                    }
 
-                    mGradeAdapter = new GradeAdapter(mGrades);
-                    mGradeAdapter.notifyDataSetChanged();
+                        mGradeAdapter = new GradeAdapter(mGrades);
+                        mGradeAdapter.notifyDataSetChanged();
+                    }
                 }
 
                 @Override
