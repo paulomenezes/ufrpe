@@ -65,9 +65,11 @@ public class BookDetailAsync extends AsyncTask<String[], Void, Map<String, Strin
                 Elements newsHeadlines = doc.select("table tr");
                 for (Element e: newsHeadlines) {
                     String key = e.select("td div strong").html();
-                    String value = e.select("td div").get(1).html();
+                    if (e.select("td div").size() > 1) {
+                        String value = e.select("td div").get(1).html();
 
-                    book.put(key, value.contains("</a>") ? value : Html.fromHtml(value).toString());
+                        book.put(key, value.contains("</a>") ? value : Html.fromHtml(value).toString());
+                    }
                 }
             }
         } catch (IOException e) {

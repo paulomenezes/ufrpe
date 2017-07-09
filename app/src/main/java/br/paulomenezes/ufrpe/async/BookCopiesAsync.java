@@ -65,12 +65,12 @@ public class BookCopiesAsync extends AsyncTask<String[], Void, List<BookCopies>>
             if (doc != null) {
                 Elements newsHeadlines = doc.select("table");
 
-                for (int k = 1; k < newsHeadlines.size(); k += 3) {
+                for (int k = 2; k < newsHeadlines.size(); k += 3) {
                     BookCopies copies = new BookCopies();
                     copies.setCopies(new ArrayList<BookCopy>());
-                    copies.setLibrary(newsHeadlines.get(k).select("tr td div").get(1).text().substring(2));
-                    copies.setAvailable(Integer.parseInt(newsHeadlines.get(k + 1).select("tr td div").text().split(":")[1].split("-")[0].replaceAll("\\s+", "")));
-                    copies.setLoaned(Integer.parseInt(newsHeadlines.get(k + 1).select("tr td div").text().split(":")[2].replaceAll("\\s+", "")));
+                    copies.setLibrary(newsHeadlines.get(k).select("tr td").get(0).select("div").get(1).text().substring(2)); // newsHeadlines.get(k).select("tr td div").get(1).text().substring(2));
+                    copies.setAvailable(Integer.parseInt(newsHeadlines.get(k + 1).select("tr td div font").get(0).text())); // newsHeadlines.get(k + 1).select("tr td div").text().split(":")[1].split("-")[0].replaceAll("\\s+", "")));
+                    copies.setLoaned(Integer.parseInt(newsHeadlines.get(k + 1).select("tr td div font").get(1).text())); // newsHeadlines.get(k + 1).select("tr td div").text().split(":")[2].replaceAll("\\s+", "")));
 
                     for (int i = 1; i < newsHeadlines.get(k + 2).select("tr").size(); i++) {
                         Elements tds = newsHeadlines.get(k + 2).select("tr").get(i).select("td");
