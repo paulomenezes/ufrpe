@@ -103,7 +103,8 @@ public class MainActivity extends AppCompatActivity
 
         if (Session.getUser(this) == null) {
             mUser = Data.getUser(this);
-            Session.setUser(mUser);
+            if (mUser != null)
+                Session.setUser(mUser);
         } else {
             mUser = Session.getUser(this);
         }
@@ -111,13 +112,25 @@ public class MainActivity extends AppCompatActivity
         View headerView = mNavigationView.inflateHeaderView(R.layout.nav_header_main);
 
         CircularImageView imageView = (CircularImageView) headerView.findViewById(R.id.picture);
-        Picasso.with(this).load(mUser.getPicture()).into(imageView);
+        if (mUser != null) {
+            Picasso.with(this).load(mUser.getPicture()).into(imageView);
+        } else {
+            imageView.setVisibility(View.GONE);
+        }
 
-        TextView name = (TextView) headerView.findViewById(R.id.name);
-        TextView semester = (TextView) headerView.findViewById(R.id.semester);
 
-        name.setText(String.format(Locale.ENGLISH, "%s %s", mUser.getFirstName(), mUser.getLastName()));
-        semester.setText(mUser.getCurrentSemester());
+        if (mUser != null) {
+            TextView name = (TextView) headerView.findViewById(R.id.name);
+            TextView semester = (TextView) headerView.findViewById(R.id.semester);
+
+            name.setText(String.format(Locale.ENGLISH, "%s %s", mUser.getFirstName(), mUser.getLastName()));
+            semester.setText(mUser.getCurrentSemester());
+        } else {
+            mNavigationView.getMenu().removeItem(R.id.calendar);
+            mNavigationView.getMenu().removeItem(R.id.timetable);
+            mNavigationView.getMenu().removeItem(R.id.messages);
+            mNavigationView.getMenu().removeItem(R.id.subjects);
+        }
 
         if (savedInstanceState != null) {
             int menu = savedInstanceState.getInt("menu");
@@ -131,28 +144,11 @@ public class MainActivity extends AppCompatActivity
 
     private int getCheckedItem() {
         return sSelectedMenu;
-
-//        Menu menu = mNavigationView.getMenu();
-//        for (int i = 0; i < menu.size(); i++) {
-//            MenuItem item = menu.getItem(i);
-//            if (item.isChecked()) {
-//                return item.getItemId();
-//            } else if (item.hasSubMenu()) {
-//                for (int j = 0; j < item.getSubMenu().size(); j++) {
-//                    MenuItem subMenu = menu.getItem(i).getSubMenu().getItem(j);
-//
-//                    if (subMenu.isChecked())
-//                        return subMenu.getItemId();
-//                }
-//            }
-//        }
-//
-//        return -1;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (sSelectedMenu == R.id.home)
+        if (sSelectedMenu == R.id.home && mUser != null)
             getMenuInflater().inflate(R.menu.menu_home, menu);
 
         return true;
@@ -325,6 +321,7 @@ public class MainActivity extends AppCompatActivity
             setTitle(getString(R.string.subjects));
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
+            Session.setUser(null);
 
             FirebaseAuth.getInstance().signOut();
 

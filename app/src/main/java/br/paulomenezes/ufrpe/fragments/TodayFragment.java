@@ -1,6 +1,7 @@
 package br.paulomenezes.ufrpe.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +35,7 @@ import br.paulomenezes.ufrpe.models.Courses;
 import br.paulomenezes.ufrpe.models.User;
 import br.paulomenezes.ufrpe.services.AVAService;
 import br.paulomenezes.ufrpe.services.Requests;
+import br.paulomenezes.ufrpe.start.LoginActivity;
 import br.paulomenezes.ufrpe.utils.CompareTodayCourse;
 import br.paulomenezes.ufrpe.utils.Data;
 import br.paulomenezes.ufrpe.utils.Functions;
@@ -56,39 +60,59 @@ public class TodayFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_today, container, false);
 
         mUser = Session.getUser(getActivity());
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+        if (mUser != null) {
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        boolean classLoaded = false;
+            boolean classLoaded = false;
 
-        for (int i = 0; i < mUser.getCourses().size(); i++) {
-            if (mUser.getCourses().get(i).getClasses() != null) {
-                classLoaded = true;
-                break;
+            for (int i = 0; i < mUser.getCourses().size(); i++) {
+                if (mUser.getCourses().get(i).getClasses() != null) {
+                    classLoaded = true;
+                    break;
+                }
             }
-        }
 
-        if (!classLoaded) {
-            if (sClasses == null || sClasses.size() == 0) {
-                mLoading = ProgressDialog.show(getActivity(), null, getString(R.string.loading), true);
+            if (!classLoaded) {
+                if (sClasses == null || sClasses.size() == 0) {
+                    mLoading = ProgressDialog.show(getActivity(), null, getString(R.string.loading), true);
 
-                mDatabase.child("schedules").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        sClasses = dataSnapshot.getValue(new GenericTypeIndicator<List<Classes>>() { });
-                        mLoading.dismiss();
-                        load(view);
-                    }
+                    mDatabase.child("schedules").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            sClasses = dataSnapshot.getValue(new GenericTypeIndicator<List<Classes>>() {
+                            });
+                            mLoading.dismiss();
+                            load(view);
+                        }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    load(view);
+                }
             } else {
                 load(view);
             }
         } else {
-            load(view);
+            LinearLayout avaInfo = (LinearLayout) view.findViewById(R.id.avaInfo);
+            avaInfo.setVisibility(View.VISIBLE);
+
+            Button button = (Button) view.findViewById(R.id.signin);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Data.saveUser(getActivity(), null);
+                    Session.setUser(null);
+
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+            });
         }
 
         return view;

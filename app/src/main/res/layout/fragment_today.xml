@@ -8,6 +8,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/avaInfo"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Entrar com o AVA"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimary"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Ao entrar com sua conta do AVA você tem acesso as suas aulas, exercícios, mensagens entre outros. Caso não deseje você continua com acesso ao cardápio do Restaurante Universitário, consultas na biblioteca, calendário Acadêmico e Contatos."
+            android:textAlignment="center"/>
+        <Button
+            android:id="@+id/signin"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entrar"
+            style="@style/Widget.AppCompat.Button.Colored"/>
+    </LinearLayout>
     <RelativeLayout
         android:id="@+id/content_main"
         android:layout_width="match_parent"

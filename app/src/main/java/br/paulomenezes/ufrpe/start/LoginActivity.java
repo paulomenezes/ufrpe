@@ -79,7 +79,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickSkip(View view) {
-
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(Data.KEY_USER, Parcels.wrap(mUser));
+        startActivity(intent);
     }
 
     public void onClickAccess(View view) {
