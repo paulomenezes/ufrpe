@@ -58,11 +58,13 @@ public class LoginActivity extends AppCompatActivity {
         ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
         User user = Data.getUser(this);
+        boolean anonymous = Data.getAnonymous(this);
 
-        if (user != null) {
+        if (user != null || anonymous) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(Data.KEY_USER, Parcels.wrap(user));
+            if (user != null)
+                intent.putExtra(Data.KEY_USER, Parcels.wrap(user));
             startActivity(intent);
             finish();
         } else {
@@ -79,6 +81,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onClickSkip(View view) {
+        Data.saveAnonymous(this, true);
+
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(Data.KEY_USER, Parcels.wrap(mUser));

@@ -321,6 +321,7 @@ public class MainActivity extends AppCompatActivity
             setTitle(getString(R.string.subjects));
         } else if (id == R.id.logout) {
             Data.saveUser(this, null);
+            Data.saveAnonymous(this, false);
             Session.setUser(null);
 
             FirebaseAuth.getInstance().signOut();

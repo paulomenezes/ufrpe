@@ -105,6 +105,8 @@ public class TodayFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Data.saveUser(getActivity(), null);
+                    Data.saveAnonymous(getActivity(), false);
+
                     Session.setUser(null);
 
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
