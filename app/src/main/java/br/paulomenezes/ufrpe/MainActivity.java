@@ -309,6 +309,9 @@ public class MainActivity extends AppCompatActivity
             setTitle(getString(R.string.library));
 
             mNavigationView.getMenu().findItem(R.id.ufrpe).getSubMenu().findItem(R.id.library).setChecked(true);
+        } else if (id == R.id.news) {
+            Intent i = new Intent(this, NewsActivity.class);
+            startActivity(i);
         } else if (id == R.id.restaurant) {
             Intent i = new Intent(this, RestaurantActivity.class);
             startActivity(i);

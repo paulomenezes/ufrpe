@@ -32,19 +32,19 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:theme" />
         <activity
-            android:name="br.paulomenezes.ufrpe.start.TipsActivity"
+            android:name=".start.TipsActivity"
             android:theme="@style/AppThemeNoActionbar" />
         <activity
-            android:name="br.paulomenezes.ufrpe.start.SocialActivity"
-            android:parentActivityName="br.paulomenezes.ufrpe.start.TipsActivity"
+            android:name=".start.SocialActivity"
+            android:parentActivityName=".start.TipsActivity"
             android:theme="@style/AppThemeNoActionbar" />
         <activity
-            android:name="br.paulomenezes.ufrpe.start.ConfirmActivity"
-            android:parentActivityName="br.paulomenezes.ufrpe.start.SocialActivity"
+            android:name=".start.ConfirmActivity"
+            android:parentActivityName=".start.SocialActivity"
             android:theme="@style/AppThemeNoActionbar" />
         <activity
-            android:name="br.paulomenezes.ufrpe.start.LoginActivity"
-            android:parentActivityName="br.paulomenezes.ufrpe.start.ConfirmActivity"
+            android:name=".start.LoginActivity"
+            android:parentActivityName=".start.ConfirmActivity"
             android:theme="@style/AppThemeNoActionbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,34 +53,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="br.paulomenezes.ufrpe.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/overview"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="br.paulomenezes.ufrpe.CourseActivity"
-            android:parentActivityName="br.paulomenezes.ufrpe.MainActivity" />
+            android:name=".CourseActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name="br.paulomenezes.ufrpe.ModuleActivity"
-            android:parentActivityName="br.paulomenezes.ufrpe.CourseActivity" />
+            android:name=".ModuleActivity"
+            android:parentActivityName=".CourseActivity" />
         <activity
-            android:name="br.paulomenezes.ufrpe.ModuleRepliesActivity"
-            android:parentActivityName="br.paulomenezes.ufrpe.ModuleActivity" />
+            android:name=".ModuleRepliesActivity"
+            android:parentActivityName=".ModuleActivity" />
         <activity
-            android:name="br.paulomenezes.ufrpe.MessageActivity"
-            android:parentActivityName="br.paulomenezes.ufrpe.MainActivity" />
+            android:name=".MessageActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
-            android:name="br.paulomenezes.ufrpe.BookDetailActivity"
+            android:name=".BookDetailActivity"
             android:label="@string/title_activity_book_detail"
-            android:parentActivityName="br.paulomenezes.ufrpe.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.paulomenezes.ufrpe.MainActivity" />
         </activity>
         <activity
-            android:name="br.paulomenezes.ufrpe.RestaurantActivity"
+            android:name=".RestaurantActivity"
             android:label="@string/restaurant"
-            android:parentActivityName="br.paulomenezes.ufrpe.MainActivity"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -99,11 +99,28 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="br.paulomenezes.ufrpe.MapsActivity"
+            android:name=".MapsActivity"
             android:label="@string/map">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.paulomenezes.ufrpe.MainActivity" />
+        </activity>
+        <activity
+            android:name=".NewsActivity"
+            android:parentActivityName=".MainActivity"
+            android:label="@string/news">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.paulomenezes.ufrpe.MainActivity" />
+        </activity>
+        <activity
+            android:name=".NewsPageActivity"
+            android:label="@string/title_activity_news_page"
+            android:parentActivityName=".NewsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.paulomenezes.ufrpe.NewsActivity" />
         </activity>
     </application>
 

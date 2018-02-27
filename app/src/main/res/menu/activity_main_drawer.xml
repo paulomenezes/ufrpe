@@ -27,6 +27,10 @@
     <item android:title="@string/ufrpe" android:id="@+id/ufrpe">
         <menu>
             <item
+                android:id="@+id/news"
+                android:icon="@drawable/ic_school_black_24dp"
+                android:title="@string/news" />
+            <item
                 android:id="@+id/library"
                 android:icon="@drawable/ic_book_black_24dp"
                 android:title="@string/library" />

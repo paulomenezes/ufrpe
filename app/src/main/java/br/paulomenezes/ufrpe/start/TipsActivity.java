@@ -7,15 +7,14 @@ import android.view.View;
 
 import br.paulomenezes.ufrpe.MainActivity;
 import br.paulomenezes.ufrpe.R;
-import com.crashlytics.android.Crashlytics;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.parceler.Parcels;
 
 import br.paulomenezes.ufrpe.models.User;
 import br.paulomenezes.ufrpe.utils.Data;
-import io.fabric.sdk.android.Fabric;
+
+import co.xarx.trix.api.v2.PageableQueryData;
+
 
 public class TipsActivity extends AppCompatActivity {
 
@@ -38,8 +37,6 @@ public class TipsActivity extends AppCompatActivity {
             finish();
         }
 
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
-        Fabric.with(this, new Twitter(authConfig), new Crashlytics());
         setContentView(R.layout.activity_tips);
 
         findViewById(R.id.btnStart).setOnClickListener(new View.OnClickListener() {

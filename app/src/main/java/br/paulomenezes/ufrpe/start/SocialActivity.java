@@ -30,15 +30,6 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.TwitterAuthProvider;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -47,8 +38,6 @@ import java.util.List;
 import br.paulomenezes.ufrpe.R;
 import br.paulomenezes.ufrpe.databinding.ActivitySocialBinding;
 import br.paulomenezes.ufrpe.models.User;
-import io.fabric.sdk.android.DefaultLogger;
-import io.fabric.sdk.android.Fabric;
 
 public class SocialActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, FacebookCallback<LoginResult> {
 
@@ -62,23 +51,11 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private TwitterAuthClient mTwitterAuthClient;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-        TwitterAuthConfig twitterConfig = new TwitterAuthConfig(getString(R.string.twitter_key), getString(R.string.twitter_secret));
-
-        Fabric fabric = new Fabric.Builder(this)
-                .kits(new TwitterCore(twitterConfig))
-                .logger(new DefaultLogger(Log.DEBUG))
-                .debuggable(true)
-                .build();
-
-        Fabric.with(fabric);
-
         ActivitySocialBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_social);
         binding.setHandlers(this);
 
@@ -108,7 +85,6 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
             }
         };
 
-        mTwitterAuthClient = new TwitterAuthClient();
     }
 
     @Override
@@ -139,7 +115,6 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
                 Snackbar.make(mRelativeLayout, R.string.login_failed, Snackbar.LENGTH_SHORT).show();
             }
         } else {
-            mTwitterAuthClient.onActivityResult(requestCode, resultCode, data);
             mCallbackManager.onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -176,27 +151,7 @@ public class SocialActivity extends AppCompatActivity implements GoogleApiClient
     }
 
     public void onClickTwitter(View view) {
-        mTwitterAuthClient.authorize(SocialActivity.this, new Callback<TwitterSession>() {
-            @Override
-            public void success(Result<TwitterSession> result) {
-                AuthCredential credential = TwitterAuthProvider.getCredential(result.data.getAuthToken().token, result.data.getAuthToken().secret);
 
-                mAuth.signInWithCredential(credential)
-                        .addOnCompleteListener(SocialActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (!task.isSuccessful()) {
-                                    Snackbar.make(mRelativeLayout, R.string.login_failed, Snackbar.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                Snackbar.make(mRelativeLayout, R.string.login_failed, Snackbar.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void onClickGooglePlus(View view) {
